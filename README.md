@@ -1,6 +1,6 @@
 # Use Models For Data (dot JS)
 
-![A chat about using models for data](https://raw.githubusercontent.com/Pomax/use-models-for-data/master/chat.svg)
+![A chat about using models for data](chat.svg)
 
 1. Define a model to work with, using straight-forward modern JS syntax.
 
