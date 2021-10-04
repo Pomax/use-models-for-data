@@ -1,0 +1,27 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="30em" height="17em" viewBox="0 0 30 19"
+    xmlns="http://www.w3.org/2000/svg">
+    <g font-family="Arial, Helvetica, sans-serif" font-weight="bold" font-size="1" fill="white">
+        <g>
+            <rect x="0" y="0" width="20.5" height="2.25" rx="0.5" fill="#34F" />
+            <text x="1" y="1.5">Won't this break if I change my model?</text>
+            <g transform="translate(5, 3.5)">
+                <rect x="0" y="0" width="25" height="10" rx="0.5" fill="#34F" />
+                <text x="1" y="1.5">Of course, which is why it has schema tracking.</text>
+                <text x="1" y="3">You use a model, it saves "version 1" of that</text>
+                <text x="1" y="4.5">model's schema. You update it, it goes "whoa!"</text>
+                <text x="1" y="6">and saves the updated model schema, with a new</text>
+                <text x="1" y="7.5">version, generates a migration file that you can</text>
+                <text x="1" y="9">use to uplift all existing data, and halts your run.</text>
+                <g transform="translate(24, 9.75) scale(1,0.8)">
+                    <text x="0" y="0" fill="#ace">✓</text>
+                </g>
+                <g transform="translate(-5,11)">
+                    <rect x="0" y="0" width="7" height="2.25" rx="0.5" fill="#34F" />
+                    <text x="1" y="1.5">...🤯🤯🤯</text>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
