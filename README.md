@@ -1,27 +1,13 @@
 # Use Models For Data (dot JS)
 
-<div style="width:30em; margin: auto; display: flex; flex-direction: column;">
-<p style="align-self: flex-start; display: inline-block; background: #34F; color: white; font-weight:bold; padding: 0.5em 1em; border-radius: 0.5em; max-width: 24em;">
-Just remember to always validate your data. 🔥🔥🔥
-</p>
-<p style="align-self: flex-end; display: inline-block; background: #34F; color: white; font-weight:bold; padding: 0.5em 1em; border-radius: 0.5em; max-width: 24em;">
-Why? I use models for data. My data is always valid.
-</p>
-<p style="align-self: flex-start; display: inline-block; background: #34F; color: white; font-weight:bold; padding: 0.5em 1em; border-radius: 0.5em; max-width: 24em;">
-I mean user-submitted data. ⚠️👀
-</p>
-<p style="align-self: flex-end; display: inline-block; background: #34F; color: white; font-weight:bold; padding: 0.5em 1em; border-radius: 0.5em; max-width: 24em;">
-And I mean *all* my data. All my data is always valid, by definition.
-</p>
-<p style="align-self: flex-start; display: inline-block; background: #34F; color: white; font-weight:bold; padding: 0.5em 1em; border-radius: 0.5em; max-width: 24em;">
-... tell me more?
-</p>
-</div>
+![A chat about using models for data](./chat.svg)
 
 1. Define a model to work with, using straight-forward modern JS syntax.
 
 ```js
-class MyModel extends Model {
+import { Model, Fields } from "use-models-for-data";
+
+export class MyModel extends Model {
     __meta = {
         name: `mymodel`,
         description: `My model, which is going to be consistent by definition.`,
@@ -35,6 +21,8 @@ class MyModel extends Model {
 2. You are done, model instances are by definition always consistent and valid, with invalid assignments automatically getting rejected. No weird syntax, no tricks, you say `data.value = x` and if that `x` is invalid, the assignment throw an error.
 
 ```js
+import { MyModel } from "./my-models.js";
+
 const plainData = {
     name: `my name here!`
 };
@@ -42,10 +30,12 @@ const plainData = {
 // let's lock in some data integrity:
 const modeled = MyModel.from(plainData);
 
+// now we're cooking with data.
 try {
     modeled.age = 12;
-} catch (e) {
+} catch (err) {
     console.log(`Guess I'm not allowed to be 12`);
+    console.error(err.errors);
 }
 ```
 
