@@ -2,9 +2,9 @@
 
 ![A chat about using models for data](chat.svg)
 
-Plain JS objects and JSON extremely convenient for moving data around both in codebases and over the wire, but they're not all that great when it comes to data integrity: at some point, that data needs to actually get used, and when that happens, it better be valid data. Whether you had a typo in your code, or a malicious users submitted a payload designed to break out of the expected payload-handling code path, you're going to have to run data validation in order to make sure data integrity problems are caught, and handled.
+Plain JS objects and JSON are extremely convenient for moving data around both in codebases and over the wire, but they're not all that great when it comes to data integrity: at some point, that data needs to actually get used, and when that happens, it better be valid data. Whether you had a typo in your code, or a malicious users submitted a payload designed to break out of the expected payload-handling code path, you're going to have to run data validation in order to make sure data integrity problems are caught, and handled.
 
-So: what if you don't have to do the data validation part, and you can just focus on the code that really matters, writing the "handling good data vs. bad data"? That's what you want the use models for data for.
+So: what if you don't have to do the data validation part, and you can just focus on the code that really matters: writing the "handling good data vs. bad data" parts that define your application's business logic? That's what you want to use models for data for.
 
 This library lets you declare data models as normal, modern JS classes, using an almost trivial API for model fields, after which you're done: any time you construct or receive data, you "stick it in a model" and if that didn't throw an error you now have a data object that behaves the same as a plain JS object but with automatic validation wrapped around it: any properties you get (both primitive and entire subtrees) are always consistent with your model, and assigning values that would violate your model's schema will get rejected, making the job of writing good code that has to work with application data a lot easier.
 
