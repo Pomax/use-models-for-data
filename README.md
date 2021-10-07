@@ -85,11 +85,49 @@ and that's all you have to do.
 
 From that point on, `data` works exactly the way it did before, acting like a plain (possibly nested) key/value object, but with every value protected with auto-validation.
 
-We now can't assign a bad age anymore, and we can't accidentally forget to specify a name: if we can access this object, we _know_ that whatever data is in it is valid data, and if we try to assign it invalid property values (or we have some code that does a blind assignment form some other data source that we don't control but happens to yield bad data) then that assignment will immediately throw an error, meaning you don't have to hunt down where, in between two validation calls, things went wrong: no hunting required, like any good error, the stacktrace gives you the exact line to look at. No bug hunting required anymore.
+Now, many libraries will say "_and that's all you have to do_" and then they immediately follow that up with "_now whenever you X, just remember to Y_": none of that here. You really are now done, you don't even need to update your code, except for _removing_ the now superfluous code you had in place to explicitly run validation at various points: if you were using `data` as a plain object before, your code needs exactly zero additional changes to accommodate the new model format.
 
-Which also means that data validation is no longer a test target: all your tests that make sure that data stays valid as it travels your code paths become "making sure that your data is an `instanceof Model` at the start of a codepath".
+What to get values out? It's a regular object as far as JS knows, so just do that:
 
-Your test suite is simpler, your errors are faster to fix, your code is cleaner, everyone wins.
+```js
+const { name } = data;
+```
+
+Assign a new value? Again, just do that.
+
+```js
+// this will throw on an illegal assignment. Like it should.
+user.name = name;
+```
+
+Assign an entire subtree of values because you're using a deeply nested model? Again again, just do that:
+
+```js
+// And this too will throw if any value is an illegal assignment.
+user.profile = {
+    name: "new name",
+    password: "this is secure, right?",
+    preferences: {
+        theme: "light",
+        iconset: "playful",
+    },
+};
+```
+
+The most important benefit is that we're no longer ever in a situation where required data is missing (because the model creation will have thrown), nor can we be in a situation where a bad assignment is allowed through.
+
+We can rely on the fact that any line of code that uses a model instance will be using a model instance that is _known_ to be valid data. And if it runs without throwing, we _know_ that on the next line, it's _still_ valid data. If we try to assign any invalid property values (particularly somewhere in a code path that you forgot about, performing a blind assignment form some other data source) then that assignment will immediately throw an error. Meaning: you don't have to hunt down where in your code things _actually_ went wrong, because there is no validation-after-the-fact anymore. If your code, including dependency code you never wrote, does something that would violate data integrity, you get an error _at that exact point in the code_, and the stack trace will tell you exactly where to start fixing the problem.
+
+Which also means that data validation itself is no longer something that you need tests for: you just need tests to make sure that at critical points in your codepaths, `data instanceof ThatModelTheyShouldBe` is true.
+
+So:
+
+1. your test suite is simpler,
+2. your errors are faster to find and fix,
+3. your code becomes cleaner, and
+4. no one needs to be trained to "remember to validate".
+
+Everybody wins.
 
 ---
 
@@ -198,11 +236,16 @@ import {
 } from "./my-middleware.js";
 // with additional express-related imports here
 
-import { ForumUser } from "./my-models.js";
 import { Models } from "use-models-for-data";
+import { ForumUser } from "./my-models.js";
 
-// First, we set the model library to use a filesystem-backed data
-// store. This is a global binding that applies to all models.
+/*
+ * First, we set the model library to use a filesystem-backed data
+ * store relative to our project root, but obviously *not* served by
+ * the express server.
+ *
+ * This is a global binding that applies to all models.
+ */
 const STORE_LOCATION = process.env.STORE_LOCATION ?? `./data-store`;
 Models.useDefaultStore(STORE_LOCATION);
 
@@ -210,7 +253,6 @@ Models.useDefaultStore(STORE_LOCATION);
 const PORT = process.env.PORT ?? 80;
 const app = express();
 // with additional app.use bindings for things like post handling etc.
-
 
 app.post(`register`,
     registerNewUser,
@@ -268,7 +310,7 @@ app.listen(PORT, () => {
 });
 ```
 
-And here are the important bits that make everything work:
+With our middleware showing off using our models:
 
 ```js
 import sessionManager from "./session-manager.js";
@@ -279,15 +321,22 @@ import { ForumUser } from "./my-models.js";
 export async function registerNewUser(req, res, next) {
     const { name, password } = req.body;
     try {
-        // quick check: does this user already exist?
+       /*
+         * Since we have a model store set up through the
+         * use of Models.useDefaultStore(...), and because in
+         * our model we said to use `profile.name` as record
+         * name, we can use .load() and .save() to access our
+         * data by key. The username, in this case.
+         *
+         * So, first: quick check, does this user already exist?
+         */
         if (ForumUser.load(name)) return next(`Username taken`);
 
         /*
-         * Now then: we try to create a user with the provided
+         * If not, we try to create a user with the provided
          * required fields. Since the name and password go in
          * the `profile` submodel, that's what we pass in as
-         * part of the constructor: a plain old JS object with
-         * correct nesting.
+         * part of the constructor:
          */
         const user = ForumUser.create({
             profile: {
@@ -296,7 +345,19 @@ export async function registerNewUser(req, res, next) {
             }
         });
 
-        // Then let's pretend this does something meaningful:
+        /*
+         * Note that we can also do this using a flat object, like
+         * you'd get for e.g. a form submissions, where each value
+         * has a keypath rather than giving us a plain JS object
+         * to work with. In this case, we could have also used:
+         *
+         *   ForumUser.create({
+         *     "profile.name": name,
+         *     "profile.password": password
+         *   })
+         */
+
+        // Then, let's pretend this does something meaningful:
         sessionManager.doSomethingWith(req, user);
 
         /*
@@ -424,9 +485,11 @@ Data validation is easy enough, but models don't stay the same over the lifetime
 
 This library does that, too.
 
-You can tell the library that you're using a data store, in which case it switches to running in schema-aware mode: when you use models, it will keep a record of what schema those models define, and it will compare "previously stored schema data" to the models you're working with: if you shut down your app, update your model, and start it up again, this library can detect the change and store a new copy of the schema, and generate you a standalone runner script for uplifting data.
+When can tell the library that you're using a data store, it turns on schema tracking: whenever you use models, it will keep a record of what schema those models defined, and it will compare "previously stored schema data" to the models you're currently working with: if you shut down your app, update your model, and start it up again, this library can detect the change and store a new copy of the schema, and generate you a standalone runner script for uplifting your data so that it conforms to your updated model.
 
-Did you move a property one level lower, or higher? Did you rename a key to something better? Did you delete some parts that are you longer needed? None of these things should require you to manually go in and update all your data, whether that's with a quick script your wrote, or a well crafted bit of SQL. Your tooling should do that for you.
+And, critically, it lets _you_ decide when to run that, because maybe you're just working on a feature branch and you're still in the middle of figuring out what the best revised model shape is. Sure, twenty schema revisions might be useful while working on that branch, but before you file that merge request you want to have the option to delete all those intermediates and just generate a single migration from the old model to the now finalised model.
+
+Did you move a property one level lower, or higher? Did you rename a key to something better? Did you delete some parts that are you longer needed? Did you reshuffle entire submodels? None of these things should require you to manually update all your data, whether that's with a script you threw together for that, or with some SQL update commands. Your tooling should know how to preserve data integrity, and make that easy for you to do.
 
 So this does.
 
