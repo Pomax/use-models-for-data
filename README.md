@@ -1,4 +1,8 @@
+_Please note that this library is not at v1.0 yet and both the code and docs may be incomplete_
+
+
 # Use Models For Data (dot JS)
+
 
 ![A chat about using models for data](chat.svg)
 
