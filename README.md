@@ -105,7 +105,7 @@ import * as DateTimeLibrary from "some-date-time-library";
 import Themes from "./lib/themes.js";
 
 /**
-    Let's model a user such that the model is equivalent to:
+    And let's model a user such that the model is equivalent to:
 
     {
         isAdmin: bool,
@@ -127,6 +127,7 @@ export class ForumUser extends Model {
     __meta = {
         name: `users`,
         description: `A simple CMS user model.`,
+        recordName: `profile.name`,
     };
 
     isAdmin = Fields.string({ default: false, configurable: false });
@@ -191,13 +192,28 @@ import {
     checkAuthentication,
     saveProfileUpdate
 } from "./my-middleware.js";
-
 // with additional express-related imports here
 
+import { ForumUser } from "./my-models.js";
+import { Models } from "use-models-for-data";
+
+// First, we set the model library to use a filesystem-backed data
+// store. This is a global binding that applies to all models.
+const STORE_LOCATION = process.env.STORE_LOCATION ?? `./data-store`;
+Models.useDefaultStore(STORE_LOCATION);
+
+// Then we bootstrap our express app:
 const PORT = process.env.PORT ?? 80;
 const app = express();
-
 // with additional app.use bindings for things like post handling etc.
+
+
+app.post(`register`,
+    registerNewUser,
+    async function (req, res) => {
+        res.render(`welcome.html`, { user: req.forumUser });
+    }
+);
 
 app.param('username', resolveUsernameParam);
 
@@ -234,7 +250,7 @@ app.update(`profile/:username/`,
   }
 );
 
-app.pody(`message/`,
+app.post(`message/`,
   checkAuthentication,
   getUser,
   processForumPost,
@@ -242,7 +258,6 @@ app.pody(`message/`,
     res.render(`posted.html`, { user: req.forumUser });
   }
 );
-
 
 app.listen(PORT, () => {
   console.log(`server listening on http://localhost:${port}`);
@@ -252,80 +267,142 @@ app.listen(PORT, () => {
 And here are the important bits that make everything work:
 
 ```js
-import backend from "somewhere";
 import sessionManager from "./session-manager.js";
+import postMaster from "./post-master.js";
 import { ForumUser } from "./my-models.js";
 
+// Register a new user into the system.
+export async function registerNewUser(req, res, next) {
+    const { name, password } = req.body;
+    try {
+        // quick check: does this user already exist?
+        if (ForumUser.load(name)) return next(`Username taken`);
 
-// Check whether a user is authenticated, so we'll know whether to
-// allow form submissions for editing their profile.
+        /*
+         * Now then: we try to create a user with the provided
+         * required fields. Since the name and password go in
+         * the `profile` submodel, that's what we pass in as
+         * part of the constructor: a plain old JS object with
+         * correct nesting.
+         */
+        const user = ForumUser.create({
+            profile: {
+                name,
+                password
+            }
+        });
+
+        // Then let's pretend this does something meaningful:
+        sessionManager.doSomethingWith(req, user);
+
+        /*
+         * And since we have a model store set up through the
+         * use of Models.useDefaultStore(...), and because in
+         * our model we said to use `profile.name` as record
+         * name, we can simply call .save() and it will save a
+         * new record keyed on the username, so we can load()
+         * it later on using that same key.
+         */
+        await user.save();
+
+        // Then we bind and continue
+        req.forumUser = user;
+        next();
+    } catch (err) { next(err); }
+}
+
+
+// Check whether a request has an associated authenticated,
+// so we'll know whether to allow form submissions (e.g. for
+// editing their own profile).
 export async function checkAuthentication(req, res, next) {
     req.authInfo = sessionManager.getAuthInfo(req);
     next();
 }
 
-// Proxy for getUser, with the URL-indicated username as target.
+// A proxy for getUser(), for use with app.params()
 export async function resolveUsernameParam(req, res, next, username) {
     req.username = username;
     getUser(req, res, next);
 };
 
-// Find a user in our backend, and wrap it in our user model.
+// Get a ForumUser that matches the URL-indicated username.
 export async function getUser(req, res, next) {
     const username = req.username || req.authInfo.name;
     if (!username) return next(`Could not get user`);
 
-    let data;
-    try { data = await backend.getUser(username); }
-    catch (err) { return next(err); } // some kind of backend error
-
-    // We wrap user our model for our data, and if that succeeds,
-    // our data is now protected from bad downstream edits.
-    try { req.forumUser = ForumUser.from(data); next(); }
-    catch (err) { return next(err); }  // validation error
+    try {
+        /*
+         * Much like user.save(), because we have a data store set
+         * up, and we have our model set to use `profile.name` as
+         * record name, we can simply use the model .load() function
+         * with the username as key to retrieve our stored user.
+         */
+        req.forumUser = ForumUser.load(username);
+        next();
+    }
+    catch (err) {
+        /*
+         * This can fail for a few different reasons.
+         *
+         * 1. This could be a "no file found for that record name", or
+         * 2. the file might exist, but it failed getting parsed to data, or
+         * 3. it's a valid file, it parses to data, but the data is incompatible.
+         */
+        return next(`Could not get user`);
+    }
 }
 
 // Update a user's profile and save it to the backend.
 export async function saveProfileUpdate(req, res, next) {
     const user = req.forumUser;
-    const { authenticated, name } = req.authInfo;
-    const ourProfile = authenticated && name === user.name;
 
+    const { authenticated, name } = req.authInfo;
     if (!authenticated) return next(`Not logged in`);
+
+    const ourProfile = name === user.name;
     if (!ourProfile) return next(`Cannot edit someone else's profile`);
 
     try {
-
        /*
-        *  This is literally all we have to do to make sure this is
-        *  a valid update. If the entire subtree assignment is good,
-        *  the assignment is allowed through, otherwise the assignment
-        *  with throw an error with a list of all values that failed
-        *  validation, and why.
+        * This is literally all we have to do to make sure this
+        * is a valid update: just perform a perfectly normal JS
+        * property assignment, as you would for any plain object.
+        *
+        * If the entire subtree assignment is good, the assignment
+        * is allowed through, otherwise the assignment will throw
+        * an error with a list of all values that failed validation,
+        * and why.
         */
-
         user.profile = req.body;
     }
     catch (err) { return next(err); }
 
-    try { await backend.updateUser(user); }
-    catch (err) { return next(err); } // backend error
+    // Likewise, saving is about as plain as it gets.
+    try { await user.save(); } catch (err) { return next(err); }
 
     next();
 };
 
 // When users post to our forum, we bump out their post count.
 export async function processForumPost(req, res, next) {
-    try { await backend.savePost(req.body); }
-    catch (err) { next(err); }
-
-    // Update the number of times a user posted to our forum:
     const user = res.forumUser;
-    try { user.profile.posts++; } // again, that's all we have to do.
-    catch(err) { return next(err); } // validation error
 
-    try { await backend.saveUser(user); }
-    catch(err) { next(err); } // backend error
+    // First, try to handle the posting.
+    try {
+        await postMaster.savePost(user, req.body);
+    }
+    catch (err) { return next(err); }
+
+    // If that succeeds, mark this user as having one more
+    // post under their belt, again using perfectly mundane JS:
+    try {
+        user.profile.posts++;
+    }
+    catch(err) { return next(err); }
+
+    // And again, saving this to the backend is a single call.
+    try { await user.save(); } catch(err) { next(err); }
 
     next();
 }
@@ -339,7 +416,7 @@ export async function processForumPost(req, res, next) {
 
 ## Dealing with model changes
 
-Data validation is easy enough, but models don't stay the same over the lifetime of an application or API. You're going to need to update your data. And when you do, you want your tooling to make it easy for you to uplift all your old-model-conformant data to be new-model-conformant. If you've used databases, you're probably familiar with schema migrations. 
+Data validation is easy enough, but models don't stay the same over the lifetime of an application or API. You're going to need to update your data. And when you do, you want your tooling to make it easy for you to uplift all your old-model-conformant data to be new-model-conformant. If you've used databases, you're probably familiar with schema migrations.
 
 This library does that, too.
 
