@@ -1,0 +1,18 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="30em" height="8em" viewBox="0 0 34 8" xmlns="http://www.w3.org/2000/svg">
+  <rect x="0" y="0" width="34" height="10" fill="#ebdddd" />
+  <g font-family="Arial, Helvetica, sans-serif" font-weight="bold" font-size="1" fill="white">
+    <g transform="translate(2,1.5)">
+      <rect x="0" y="0" width="22.5" height="2.5" rx="0.5" fill="#34F" />
+      <text x="1" y="1.5">I guess I should read the docs huh? 📜🔬👀</text>
+      <g transform="translate(18, 3)">
+        <rect x="0" y="0" width="12" height="2.5" rx="0.5" fill="#34F" />
+        <text x="1" y="1.5">Always a good idea!</text>
+        <g transform="translate(11, 2.25) scale(1,0.8)">
+          <text x="0" y="0" fill="#ace">✓</text>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

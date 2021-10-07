@@ -1,23 +1,30 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg width="30em" height="11em" viewBox="0 0 30 12"
-    xmlns="http://www.w3.org/2000/svg">
-    <g font-family="Arial, Helvetica, sans-serif" font-weight="bold" font-size="1" fill="white">
-        <g transform="translate(0, 1)">
-            <rect x="0" y="0" width="24" height="3.75" rx="0.5" fill="#34F" />
-            <text x="1" y="1.5">A lot of libraries say they're "easy to use" and</text>
-            <text x="1" y="3"> then you look at the docs and they're not 😞😞</text>
-            <g transform="translate(10.5, 5)">
-                <rect x="0" y="0" width="19.5" height="2.5" rx="0.5" fill="#34F" />
-                <text x="1" y="1.5">Seriously. This one really is, though.</text>
-                <g transform="translate(18.25, 2.25) scale(1,0.8)">
-                    <text x="0" y="0" fill="#ace">✓</text>
-                </g>
-                <g transform="translate(-10.5, 3.5)">
-                    <rect x="0" y="0" width="11.5" height="2.25" rx="0.5" fill="#34F" />
-                    <text x="1" y="1.5">Got an example? 🤔</text>
-                </g>
-            </g>
+<svg width="30em" height="18em" viewBox="0 0 34 18" xmlns="http://www.w3.org/2000/svg">
+  <rect x="0" y="0" width="34" height="24" fill="#ebdddd" />
+  <g font-family="Arial, Helvetica, sans-serif" font-weight="bold" font-size="1" fill="white">
+    <g transform="translate(2, 2)">
+      <rect x="0" y="0" width="24" height="3.75" rx="0.5" fill="#34F" />
+      <text x="1" y="1.5">A lot of libraries say they're "easy to use" and</text>
+      <text x="1" y="3"> then you look at the docs and they're not 😞😞</text>
+      <g transform="translate(10.5, 5.5)">
+        <rect x="0" y="0" width="19.5" height="2.5" rx="0.5" fill="#34F" />
+        <text x="1" y="1.5">Seriously. This one really is, though.</text>
+        <g transform="translate(18.25, 2.25) scale(1,0.8)">
+          <text x="0" y="0" fill="#ace">✓</text>
         </g>
+        <g transform="translate(-10.5, 4)">
+          <rect x="0" y="0" width="11.5" height="2.25" rx="0.5" fill="#34F" />
+          <text x="1" y="1.5">Got an example? 🤔</text>
+          <g transform="translate(17, 3)">
+            <rect x="0" y="0" width="13" height="2.25" rx="0.5" fill="#34F" />
+            <text x="1" y="1.5">Yeah, it's pretty simple.</text>
+            <g transform="translate(12, 2.15) scale(1,0.8)">
+              <text x="0" y="0" fill="#ace">✓</text>
+            </g>
+          </g>
+        </g>
+      </g>
     </g>
+  </g>
 </svg>

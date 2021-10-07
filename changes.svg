@@ -1,35 +1,35 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg width="30em" height="19em" viewBox="0 0 30 21"
-    xmlns="http://www.w3.org/2000/svg">
-    <g font-family="Arial, Helvetica, sans-serif" font-weight="bold" font-size="1" fill="white">
-        <g transform="translate(0,1)">
-            <rect x="0" y="0" width="24.5" height="3.75" rx="0.5" fill="#34F" />
-            <text x="1" y="1.5">That's really cool!... but won't this break if, after</text>
-            <text x="1" y="3">a while, I change my models? 🖥️💔</text>
-            <g transform="translate(5, 5)">
-                <rect x="0" y="0" width="25" height="2.25" rx="0.5" fill="#34F" />
-                <text x="1" y="1.5">Of course, which is why it has schema tracking.</text>
-                <g transform="translate(24, 2) scale(1,0.8)">
-                    <text x="0" y="0" fill="#ace">✓</text>
-                </g>
-
-                <g transform="translate(0, 3)">
-                    <rect x="0" y="0" width="25" height="8.5" rx="0.5" fill="#34F" />
-                    <text x="1" y="1.5">You use a model, it saves "version 1" of that</text>
-                    <text x="1" y="3">model's schema. You update it, it goes "whoa!"</text>
-                    <text x="1" y="4.5">and saves the updated model schema, with a new</text>
-                    <text x="1" y="6">version, generates a migration file that you can</text>
-                    <text x="1" y="7.5">use to uplift all existing data, and halts your run.</text>
-                    <g transform="translate(24, 8.25) scale(1,0.8)">
-                        <text x="0" y="0" fill="#ace">✓</text>
-                    </g>
-                    <g transform="translate(-5,9.5)">
-                        <rect x="0" y="0" width="7" height="2.25" rx="0.5" fill="#34F" />
-                        <text x="1" y="1.5">...🤯🤯🤯</text>
-                    </g>
-                </g>
-            </g>
+<svg width="30em" height="21em" viewBox="0 0 34 21" xmlns="http://www.w3.org/2000/svg">
+  <rect x="0" y="0" width="34" height="24" fill="#ebdddd" />
+  <g font-family="Arial, Helvetica, sans-serif" font-weight="bold" font-size="1" fill="white">
+    <g transform="translate(2,1.5)">
+      <rect x="0" y="0" width="24.5" height="3.75" rx="0.5" fill="#34F" />
+      <text x="1" y="1.5">That's really cool!... but won't this break if, after</text>
+      <text x="1" y="3">a while, I change my models? 🖥️💔</text>
+      <g transform="translate(5, 5)">
+        <path d="M0.5,0 h 24 a.5.5 1.57 01.5.5 v2  h-25 v-2 a.5.5 1.57 11.5.5 z" fill="#34F" />
+        <text x="1" y="1.5">Of course, which is why it has schema tracking.</text>
+        <g transform="translate(24, 2.25) scale(1,0.8)">
+          <text x="0" y="0" fill="#ace">✓</text>
         </g>
+
+        <g transform="translate(0, 3)">
+          <path d="M0,0 h 25 v8 a.5.5 1.57 01-.5.5 h-24 a.5.5 1.57 01-.5-.5 v-8 z" fill="#34F" />Í
+          <text x="1" y="1.5">You use a model, it saves "version 1" of that</text>
+          <text x="1" y="3">model's schema. You update it, it goes "whoa!"</text>
+          <text x="1" y="4.5">and saves the updated model schema, with a new</text>
+          <text x="1" y="6">version, generates a migration file that you can</text>
+          <text x="1" y="7.5">use to uplift all existing data, and halts your run.</text>
+          <g transform="translate(24, 8.25) scale(1,0.8)">
+            <text x="0" y="0" fill="#ace">✓</text>
+          </g>
+          <g transform="translate(-5,9.5)">
+            <rect x="0" y="0" width="7" height="2.25" rx="0.5" fill="#34F" />
+            <text x="1" y="1.5">...🤯🤯🤯</text>
+          </g>
+        </g>
+      </g>
     </g>
+  </g>
 </svg>

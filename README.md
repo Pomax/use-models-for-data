@@ -2,13 +2,19 @@
 
 ![A chat about using models for data](chat.svg)
 
+---
+
 Plain JS objects and JSON are extremely convenient for moving data around, both in codebases and over the wire, but they're not all that great when it comes to data integrity: at some point, that data needs to actually get used, and when that happens it better be valid data. Whether you had a typo in your code, or a malicious users submitted a payload designed to break out of the expected payload-handling code path, you're going to have to run data validation in order to make sure data integrity problems are caught, and handled.
 
 So: what if you don't have to write and data validation code because that part gets handled automatically, and you can just focus on writing (and maintaining) code that really matters?
 
 This library will take care of that for you. It lets you declare data models as normal, modern JS classes, using an almost trivial API for model fields, after which you're done: any time you construct or receive data, you pack it as a model instance, and if that didn't throw an error you now have a data object that behaves exactly same as its plain JS object counterpart, but wrapped in automatic validation. Any properties you get (both individual values as well as and entire subtrees) are always consistent with your model, and assigning values that would violate your model's schema (again, both individual values as well as entire subtrees) will get rejected, making your life as dev or maintainer a lot easier.
 
+---
+
 ![A request for an example](example.svg)
+
+---
 
 ## The simplest example
 
@@ -81,7 +87,11 @@ Which also means that data validation is no longer a test target: all your tests
 
 Your test suite is simpler, your errors are faster to fix, your code is cleaner, everyone wins.
 
+---
+
 ![A request for a more complex example](complex_example.svg)
+
+---
 
 ## A more complex example
 
@@ -132,6 +142,7 @@ class Profile extends Model {
         name: `profile`,
         description:
     };
+
     name = Fields.string({ required: true });
     password = Fields.string({
         required: true,
@@ -158,10 +169,12 @@ class Preferences extends Model {
         name: `user preferences`,
         description: `system preferences`
     };
+
     theme = Fields.string({
         choices: Themes.getThemeNames(),
         default: : Themes.defaultThemeName
     });
+
     timezone = Fields.number({
         choices: DateTimeLibrary.getTimezones(),
     });
@@ -183,6 +196,7 @@ import {
 
 const PORT = process.env.PORT ?? 80;
 const app = express();
+
 // with additional app.use bindings for things like post handling etc.
 
 app.param('username', resolveUsernameParam);
@@ -194,24 +208,31 @@ app.get(`profile/:username/`,
     const { authenticated, name } = req.authInfo;
     const ourProfile = authenticated && name === user.name;
     res.render(`profile.html`, {
-        user,
-        // Models have "form building" built in, because you're going to need it.
-        // They can generate plain HTML, as well as any kind of tree you need.
-        // (for generating (P)React component trees, for example).
-        //
-        // And note that we're building a form for a submodel of user: any
-        // model property that is itself a model fully supports everything that
-        // the top model does. It's models all the way down.
-        editForm: ourProfile ? user.profile.toHTMLForm() : ``,
+      user,
+      /*
+        * Models have "form building" built-in, because you're going to need
+        * it. They can generate plain HTML, as well as any kind of tree you
+        * need (for generating (P)React component trees, for example).
+        *
+        * And note that we're building a form for a submodel of user: any
+        * model property that is itself a model fully supports everything
+        * that the top model does. It's models all the way down.
+        */
+      editForm: ourProfile ? user.profile.toHTMLForm({
+          action: `/profile/${name}`,
+          method: `UPDATE`,
+      }) : ``,
     });
-});
+  }
+);
 
 app.update(`profile/:username/`,
   checkAuthentication,
   saveProfileUpdate,
   async function (req, res) {
     res.render(`profile.html`, { user: req.forumUser, updated: true });
-});
+  }
+);
 
 app.pody(`message/`,
   checkAuthentication,
@@ -219,11 +240,12 @@ app.pody(`message/`,
   processForumPost,
   async function (req, res) {
     res.render(`posted.html`, { user: req.forumUser });
-});
+  }
+);
 
 
 app.listen(PORT, () => {
-    console.log(`server listening on http://localhost:${port}`);
+  console.log(`server listening on http://localhost:${port}`);
 });
 ```
 
@@ -276,7 +298,7 @@ export async function saveProfileUpdate(req, res, next) {
 
        /*
         *  This is literally all we have to do to make sure this is
-        *  valid update. If the entire subtree assignment is good,
+        *  a valid update. If the entire subtree assignment is good,
         *  the assignment is allowed through, otherwise the assignment
         *  with throw an error with a list of all values that failed
         *  validation, and why.
@@ -309,32 +331,42 @@ export async function processForumPost(req, res, next) {
 }
 ```
 
+---
+
 ![A chat about what happens when you change a model](changes.svg)
+
+---
 
 ## Dealing with model changes
 
-There are lots of validation libraries, there are fewer "persistently valid" model libraries, and there are no model libraries that treat model changes as a continuous fact of dev life. Well, no, there's one: this one.
+Data validation is easy enough, but models don't stay the same over the lifetime of an application or API. You're going to need to update your data. And when you do, you want your tooling to make it easy for you to uplift all your old-model-conformant data to be new-model-conformant. If you've used databases, you're probably familiar with schema migrations. 
 
-If you work with models that you save (to file, or database, or some web store like Firebase), then this library can work with that to make sure that your models are backed by schemas, and detect when you've changed your models by looking at "the current model's schema" vs. "the one that previously stored". If there's a mismatch, it'll flag this for you, create a new schema that reflects your new model layout, and generate a `model.v1.to.v2.js` file that you can run in order to uplift all your preexisting data so that it's fully conformant to your new model.
+This library does that, too.
+
+You can tell the library that you're using a data store, in which case it switches to running in schema-aware mode: when you use models, it will keep a record of what schema those models define, and it will compare "previously stored schema data" to the models you're working with: if you shut down your app, update your model, and start it up again, this library can detect the change and store a new copy of the schema, and generate you a standalone runner script for uplifting data.
 
 Did you move a property one level lower, or higher? Did you rename a key to something better? Did you delete some parts that are you longer needed? None of these things should require you to manually go in and update all your data, whether that's with a quick script your wrote, or a well crafted bit of SQL. Your tooling should do that for you.
 
 So this does.
 
+---
 
-# Topics for this library
+![A chat about what happens when you change a model](api_docs.svg)
+
+---
+
+## Topics for this library
 
 - defining models
     - class definitions
+    - field types and options
     - custom validation
         - false for simple validation failure
         - throw an error for detailed validation failure
 - constructing models
     - create default
     - create default even though that means missing required fields (allowIncomplete)
-    - create from data
-    - create from data even if it's missing required fields
-    - loading from a store
+    - create from data (optionally even if it's missing required fields)
 - using models
     - set/get values with automatic validation
     - set/get subtrees with automatic validation
@@ -345,12 +377,14 @@ So this does.
     - HTML form/table
     - (P)React form/table
     - Custom trees
-- redefining models
-    - using a data store
-    - schema change detection
-    - data migrations
+- using a data store
+    - loading models from the store
+    - saving models to the store
+    - redefining models
+      - schema change detection
+      - data migrations
 
-
+<!--
 # Basic use
 
 ```js
@@ -421,10 +455,4 @@ class Address extends Model {
     });
 }
 ```
-
-## Field types
-
-## Saving and loading
-
-## Dealing with model changes
-
+-->
