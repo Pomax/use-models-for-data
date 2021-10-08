@@ -4,7 +4,7 @@
   <rect x="0" y="0" width="34" height="24" fill="#ebdddd" />
   <g font-family="Helvetica" font-weight="bold" font-size="1" fill="white">
     <g transform="translate(2, 2)">
-      <rect x="0" y="0" width="24" height="3.75" rx="0.5" fill="#34F" />
+      <rect x="0" y="0" width="24.5" height="3.75" rx="0.5" fill="#34F" />
       <text x="1" y="1.5">A lot of libraries say they're "easy to use" and</text>
       <text x="1" y="3"> then you look at the docs and they're not 😞😞</text>
       <g transform="translate(10.5, 5.5)">
