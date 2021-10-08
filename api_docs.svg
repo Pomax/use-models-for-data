@@ -2,7 +2,7 @@
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg width="30em" height="8em" viewBox="0 0 34 8" xmlns="http://www.w3.org/2000/svg">
   <rect x="0" y="0" width="34" height="10" fill="#ebdddd" />
-  <g font-family="Arial, Helvetica, sans-serif" font-weight="bold" font-size="1" fill="white">
+  <g font-family="Helvetica" font-weight="bold" font-size="1" fill="white">
     <g transform="translate(2,1.5)">
       <rect x="0" y="0" width="22.5" height="2.5" rx="0.5" fill="#34F" />
       <text x="1" y="1.5">I guess I should read the docs huh? 📜🔬👀</text>

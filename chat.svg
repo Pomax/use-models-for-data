@@ -1,14 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg version="2.0" xmlns="http://www.w3.org/2000/svg" width="30em" height="23em" viewBox="0 0 34 23">
-  <style>
-    @font-face {
-      font-family: Roboto;
-      font-weight: bold;
-      src: url(https://fonts.gstatic.com/s/roboto/v29/KFOlCnqEu92Fr1MmEU9fBBc4.woff2) format('woff2');
-    }
-  </style>
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="30em" height="23em" viewBox="0 0 34 23" xmlns="http://www.w3.org/2000/svg">
   <rect x="0" y="0" width="34" height="24" fill="#ebdddd" />
-  <g font-family="Roboto" font-weight="bold" font-size="1" fill="white">
+  <g font-family="Helvetica" font-weight="bold" font-size="1" fill="white">
     <g transform="translate(2,1)">
       <rect x="0" y="0" width="23" height="3.75" rx="0.5" fill="#34F" />
       <text x="1" y="1.5">Just remember to always validate your data.</text>
