@@ -5,12 +5,12 @@
     <style type="text/css">
       @font-face {
         font-family: customsans;
-        src: url(https://fonts.gstatic.com/s/notosansdisplay/v10/RLpbK4fy6r6tOBEJg0IAKzqdFZVZxpMkXJMhnB9XjO1o90LuV-PT4Doq_AKp_3cKZTaa2w.woff2) format('woff2');
+        src: url(https://fonts.gstatic.com/s/inter/v3/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hiA.woff2) format('woff2');
       }
     </style>
   </defs>
   <rect x="0" y="0" width="34" height="10" fill="#ebdddd" />
-  <g font-family="Helvetica" font-weight="bold" font-size="1" fill="white">
+  <g font-family="customsans" font-weight="bold" font-size="1" fill="white">
     <g transform="translate(2,2)">
       <rect x="0" y="0" width="24" height="2.5" rx="0.5" fill="#34F" />
       <text x="1" y="1.5">I guess I should read the docs huh? 📜🔬👀</text>
