@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
-<svg version="2.0" width="30em" height="21em" viewBox="0 0 34 21" xmlns="http://www.w3.org/2000/svg">
+<svg version="2.0" width="30em" height="15em" viewBox="0 0 34 15"
+  xmlns="http://www.w3.org/2000/svg">
   <defs>
     <style type="text/css">
       @font-face {
@@ -8,9 +9,9 @@
       }
     </style>
   </defs>
-  <rect x="0" y="0" width="34" height="24" fill="#ebdddd" />
+  <rect x="0" y="0" width="34" height="15" fill="#ebdddd" />
   <g font-family="Helvetica" font-weight="bold" font-size="1" fill="white">
-    <g transform="translate(2, 2)">
+    <g transform="translate(2,2)">
       <rect x="0" y="0" width="23" height="3.75" rx="0.5" fill="#34F" />
       <text x="1" y="1.5">Okay, yeah, that's pretty simple. Got a more</text>
       <text x="1" y="3">real-worldy example by any chance? 🤔</text>

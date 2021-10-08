@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<svg version="2.0" width="30em" height="21em" viewBox="0 0 34 21" xmlns="http://www.w3.org/2000/svg">
+<svg version="2.0" width="30em" height="25em" viewBox="0 0 34 25" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <style type="text/css">
       @font-face {
@@ -8,9 +8,9 @@
       }
     </style>
   </defs>
-  <rect x="0" y="0" width="34" height="24" fill="#ebdddd" />
+  <rect x="0" y="0" width="34" height="25" fill="#ebdddd" />
   <g font-family="Helvetica" font-weight="bold" font-size="1" fill="white">
-    <g transform="translate(2,1.5)">
+    <g transform="translate(2,2)">
       <rect x="0" y="0" width="25" height="3.75" rx="0.5" fill="#34F" />
       <text x="1" y="1.5">That's really cool!... but won't this break if, after</text>
       <text x="1" y="3">a while, I change my models? 🖥️💔</text>

@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
-<svg version="2.0" width="30em" height="21em" viewBox="0 0 34 21" xmlns="http://www.w3.org/2000/svg">
+<svg version="2.0" width="30em" height="10em" viewBox="0 0 34 10"
+  xmlns="http://www.w3.org/2000/svg">
   <defs>
     <style type="text/css">
       @font-face {
@@ -10,10 +11,10 @@
   </defs>
   <rect x="0" y="0" width="34" height="10" fill="#ebdddd" />
   <g font-family="Helvetica" font-weight="bold" font-size="1" fill="white">
-    <g transform="translate(2,1.5)">
+    <g transform="translate(2,2)">
       <rect x="0" y="0" width="24" height="2.5" rx="0.5" fill="#34F" />
       <text x="1" y="1.5">I guess I should read the docs huh? 📜🔬👀</text>
-      <g transform="translate(18, 3)">
+      <g transform="translate(18, 3.5)">
         <rect x="0" y="0" width="12" height="2.5" rx="0.5" fill="#34F" />
         <text x="1" y="1.5">Always a good idea!</text>
         <g transform="translate(11, 2.25) scale(1,0.8)">
