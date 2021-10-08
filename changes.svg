@@ -31,7 +31,7 @@
             <text x="0" y="0" fill="#ace">✓</text>
           </g>
           <g transform="translate(-4.5,9.75)">
-            <rect x="0" y="0" width="7" height="2.25" rx="0.5" fill="#34F" />
+            <rect x="0" y="0" width="7.5" height="2.25" rx="0.5" fill="#34F" />
             <text x="1" y="1.5">...🤯🤯🤯</text>
           </g>
         </g>

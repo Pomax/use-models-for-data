@@ -12,18 +12,18 @@
   <rect x="0" y="0" width="34" height="25" fill="#ebdddd" />
   <g font-family="customsans" font-weight="bold" font-size="1" fill="white">
     <g transform="translate(2,2)">
-      <rect x="0" y="0" width="23" height="3.75" rx="0.5" fill="#34F" />
+      <rect x="0" y="0" width="24" height="3.75" rx="0.5" fill="#34F" />
       <text x="1" y="1.5">Just remember to always validate your data.</text>
       <text x="1" y="3"> 🔥🔥🔥</text>
-      <g transform="translate(6, 5)">
-        <rect x="0" y="0" width="24" height="3.75" rx="0.5" fill="#34F" />
+      <g transform="translate(5.5, 5)">
+        <rect x="0" y="0" width="24.5" height="3.75" rx="0.5" fill="#34F" />
         <text x="1" y="1.5">Why? I use models for data. My data is always</text>
         <text x="1" y="3"> valid.</text>
-        <g transform="translate(23, 3.5) scale(1,0.8)">
+        <g transform="translate(23.5, 3.5) scale(1,0.8)">
           <text x="0" y="0" fill="#ace">✓</text>
         </g>
-        <g transform="translate(-6, 5)">
-          <rect x="0" y="0" width="18" height="2.25" rx="0.5" fill="#34F" />
+        <g transform="translate(-5.5, 5)">
+          <rect x="0" y="0" width="19" height="2.25" rx="0.5" fill="#34F" />
           <text x="1" y="1.5">I mean user-submitted data. ⚠️👀</text>
           <g transform="translate(6, 3.5)">
             <rect x="0" y="0" width="24" height="3.75" rx="0.5" fill="#34F" />
