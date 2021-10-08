@@ -1,30 +1,36 @@
-<?xml version="1.0" standalone="no"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg width="30em" height="21em" viewBox="0 0 34 21" xmlns="http://www.w3.org/2000/svg">
+<?xml version="1.0"?>
+<svg version="2.0" width="30em" height="21em" viewBox="0 0 34 21" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style type="text/css">
+      @font-face {
+        font-family: customsans;
+        src: url(https://fonts.gstatic.com/s/notosansdisplay/v10/RLpbK4fy6r6tOBEJg0IAKzqdFZVZxpMkXJMhnB9XjO1o90LuV-PT4Doq_AKp_3cKZTaa2w.woff2) format('woff2');
+      }
+    </style>
+  </defs>
   <rect x="0" y="0" width="34" height="24" fill="#ebdddd" />
   <g font-family="Helvetica" font-weight="bold" font-size="1" fill="white">
     <g transform="translate(2,1.5)">
-      <rect x="0" y="0" width="24.5" height="3.75" rx="0.5" fill="#34F" />
+      <rect x="0" y="0" width="25" height="3.75" rx="0.5" fill="#34F" />
       <text x="1" y="1.5">That's really cool!... but won't this break if, after</text>
       <text x="1" y="3">a while, I change my models? 🖥️💔</text>
-      <g transform="translate(5, 5)">
-        <path d="M0.5,0 h 24 a.5.5 1.57 01.5.5 v2  h-25 v-2 a.5.5 1.57 11.5.5 z" fill="#34F" />
+      <g transform="translate(4.5, 5.5)">
+        <path d="M0.5,0 h 24.5 a.5.5 1.57 01.5.5 v2.25  h-25.5 v-2.25 a.5.5 1.57 11.5.5 z" fill="#34F" />
         <text x="1" y="1.5">Of course, which is why it has schema tracking.</text>
-        <g transform="translate(24, 2.25) scale(1,0.8)">
+        <g transform="translate(24.5, 2.5) scale(1,0.8)">
           <text x="0" y="0" fill="#ace">✓</text>
         </g>
-
-        <g transform="translate(0, 3)">
-          <path d="M0,0 h 25 v8 a.5.5 1.57 01-.5.5 h-24 a.5.5 1.57 01-.5-.5 v-8 z" fill="#34F" />Í
+        <g transform="translate(0, 3.25)">
+          <path d="M0,0 h 25.5 v8.25 a.5.5 1.57 01-.5.5 h-24.5 a.5.5 1.57 01-.5-.5 v-8.25 z" fill="#34F" />Í
           <text x="1" y="1.5">You use a model, it saves "version 1" of that</text>
           <text x="1" y="3">model's schema. You update it, it goes "whoa!"</text>
-          <text x="1" y="4.5">and saves the updated model schema, with a new</text>
-          <text x="1" y="6">version, generates a migration file that you can</text>
-          <text x="1" y="7.5">use to uplift all existing data, and halts your run.</text>
-          <g transform="translate(24, 8.25) scale(1,0.8)">
+          <text x="1" y="4.5">and saves the updated model schema, with a</text>
+          <text x="1" y="6">new version, generates a migration file that you</text>
+          <text x="1" y="7.5">use to uplift all existing data, and halts the run.</text>
+          <g transform="translate(24.5, 8.5) scale(1,0.8)">
             <text x="0" y="0" fill="#ace">✓</text>
           </g>
-          <g transform="translate(-5,9.5)">
+          <g transform="translate(-4.5,9.75)">
             <rect x="0" y="0" width="7" height="2.25" rx="0.5" fill="#34F" />
             <text x="1" y="1.5">...🤯🤯🤯</text>
           </g>

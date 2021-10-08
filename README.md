@@ -31,7 +31,9 @@ const data = {
 }
 ```
 
-Nothing fancy, nothing special, but we do want to make sure that we never work with data that doesn't have a value for `name`, and `data.age` is 14 or less. We could use a validator library for that, so that when we "get" that data object, we run the validator, and then we handle the exception:
+Nothing fancy, nothing special, but we do want to make sure that we never work with data that doesn't have a value for `name`, and `data.age` is 14 or less.
+
+The conventional approach is to use a validator library for that, so that when we "get" that data object, we run the validator, and then we handle the exception:
 
 ```js
 function workWith(data) {
@@ -44,7 +46,7 @@ function workWith(data) {
 }
 ```
 
-But this isn't ideal: real code rare jumps straight from "having a data object" to "and then unpacking it and garbage-collecting it", so if we want to be sure that the data is valid from the get-go, we need to validate at the point where build that data object, _and_ at the point where we unpack it. But quite often, data objects get "built out further" as they travel through your code towards where they finally get fully unpacked, and you better have validation calls at every point where you update that object. Now you have a bug surface with 2+N potential points of failure. And that's just for one data object. And new contributors, or external contractors, or a colleague new to your codebase is almost certainly going to introduce a new point.
+But this isn't ideal: real code rare jumps straight from "having a data object" to "and then unpacking it and garbage-collecting it", so if we want to be sure that the data is valid from the get-go, we need to validate at the point where build that data object, _and_ at the point where we unpack it. However, data objects quite often get "built out further" as they travel through your code towards where they finally get fully unpacked, and you better have validation calls at every point where you update that object. Now you have a bug surface with 2+N potential points of failure. And that's just for one data object. And new contributors, or external contractors, or a colleague new to your codebase is almost certainly going to introduce a new point.
 
 Using "when I *think* I need it" validation means you're always one merge away from bugs.
 
