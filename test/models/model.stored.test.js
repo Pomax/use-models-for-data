@@ -247,13 +247,13 @@ describe(`Testing User model with store backing`, () => {
   test(`Setting "config.player_count" to false is a validation error (direct)`, () => {
     expect(() => {
       user.profile.preferences.config.player_count = false;
-    }).toThrow(`Could not assign key "player_count" value "false".`);
+    }).toThrow(`player_count could not be assigned value [false].`);
   });
 
   test(`Setting "config.player_count" to false is a validation error (pathkey)`, () => {
     expect(() => {
       user.set(`profile.preferences.config.player_count`, false);
-    }).toThrow(`Could not assign key "player_count" value "false".`);
+    }).toThrow(`player_count could not be assigned value [false].`);
   });
 
   test(`Setting nonexistent pathkey is a validation error`, () => {

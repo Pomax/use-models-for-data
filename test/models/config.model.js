@@ -60,22 +60,19 @@ class Config extends Model {
     default: true,
   });
 
-  bot_humanizing_delay = fields.number({
+  bot_humanizing_delay = fields.choice(Config.TIMEOUTS, {
     description: `The artificial delay between bots knowing what they want to do, and executing on that, to make humans feel like they're in a fair game.`,
-    choices: Config.TIMEOUTS,
     default: 100,
   });
 
-  claim_timeout = fields.number({
+  claim_timeout = fields.choice(Config.TIMEOUTS, {
     description: `How long a discarded tile may be claimed before play moves on to the next player.`,
-    choices: Config.TIMEOUTS,
     default: 5000,
   });
 
-  end_of_hand_timeout = fields.number({
+  end_of_hand_timeout = fields.choice(Config.TIMEOUTS, {
     description: `Grace period between a win being declared and the score breakdown getting sent to all users.`,
     icon: `⏱️`,
-    choices: Config.TIMEOUTS,
     default: 10000,
   });
 
@@ -85,24 +82,21 @@ class Config extends Model {
     default: false,
   });
 
-  game_mode = fields.string({
+  game_mode = fields.choice([`beginner`, `normal`, `expert`], {
     description: `Indicate what kind of help we want human players to have.`,
     icon: `💻`,
-    choices: [`beginner`, `normal`, `expert`],
     default: `normal`,
   });
 
-  game_start_timeout = fields.number({
+  game_start_timeout = fields.choice(Config.TIMEOUTS, {
     description: `Grace period between all players joining and the game starting automatically.`,
     icon: `⏱️`,
-    choices: Config.TIMEOUTS,
     default: 0,
   });
 
-  hand_start_timeout = fields.number({
+  hand_start_timeout = fields.choice(Config.TIMEOUTS, {
     description: `Grace period between the initial deal and the first real play tile getting dealt.`,
     icon: `⏱️`,
-    choices: Config.TIMEOUTS,
     default: 10000,
   });
 
@@ -112,10 +106,9 @@ class Config extends Model {
     default: false,
   });
 
-  player_count = fields.number({
+  player_count = fields.choice([2, 3, 4], {
     description: `The number of players in this game`,
     icon: `👪`,
-    choices: [2, 3, 4],
     default: 4,
   });
 
@@ -137,17 +130,15 @@ class Config extends Model {
     default: true,
   });
 
-  ruleset = fields.string({
+  ruleset = fields.choice(Config.RULESETS, {
     description: `The ruleset to use to score a game.`,
     icon: `📜`,
-    choices: Config.RULESETS,
     default: `Chinese Classical`,
   });
 
-  seat_rotation = fields.number({
+  seat_rotation = fields.choice(Config.DIRECTIONS, {
     description: `either -1 (for [0]⇒[n]⇒[n-1]⇒...⇒[0] or 1 (for [0]⇒[1]⇒...⇒[n]⇒[0])`,
     icon: `🔄`,
-    choices: Config.DIRECTIONS,
     default: 1,
   });
 
@@ -163,10 +154,9 @@ class Config extends Model {
     default: false,
   });
 
-  wind_rotation = fields.number({
+  wind_rotation = fields.choice(Config.DIRECTIONS, {
     description: `either -1 (for 東⇒北⇒西⇒南) or 1 (for 東⇒南⇒西⇒北)`,
     icon: `🔄`,
-    choices: Config.DIRECTIONS,
     default: 1,
   });
 
@@ -176,10 +166,9 @@ class Config extends Model {
     default: 0,
   });
 
-  wallhack = fields.string({
+  wallhack = fields.choice([false, ...Config.WALLHACKS], {
     description: `Set up a very specific, predefined wall for testing the various aspects of play/scoring.`,
     debug: true,
-    choices: [false, ...Config.WALLHACKS],
     default: false,
   });
 

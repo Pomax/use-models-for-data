@@ -9,6 +9,7 @@
     "test": "run-s clean test:jest:*",
     "test:jest": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --verbose=false",
     "test:jest:models": "run-s test:jest:models:*",
+    "test:jest:models:base": "npm run test:jest -- test/models/model.base.test.js",
     "test:jest:models:stored": "npm run test:jest -- test/models/model.stored.test.js",
     "test:jest:models:unstored": "npm run test:jest -- test/models/model.unstored.test.js",
     "test:jest:migration": "npm run test:jest -- test/migration/migration.test.js",

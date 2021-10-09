@@ -1,7 +1,7 @@
 import { conforms } from "../../lib/schema/conforms.js";
 
 describe(`...`, () => {
-  // FIXME: TODO: implement actual testing
+  // FIXME: TODO: implement a lot more tests here
 
   test(`empty conformance check`, () => {
     const schema = {};
@@ -10,50 +10,72 @@ describe(`...`, () => {
     const strict = true;
     const allowIncomplete = false;
     const result = conforms(schema, object, strict, allowIncomplete);
-
     expect(result.passed).toBe(true);
   });
 
-  test(`...`, () => {
-    let result;
-
-    const schema = {
+  test(`list test`, () => {
+    let schema = {
       somefield: {
         __meta: {
-          required: true,
+          array: true,
         },
         type: `string`,
+        choices: [`a`, `b`, `c`],
       },
+    };
+
+    const obj = {
+      somefield: ["a", "b", "c"],
     };
 
     const strict = true;
     const allowIncomplete = false;
-
-    result = conforms(schema, {}, strict, allowIncomplete);
-    expect(result.passed).toBe(false);
-    expect(result.errors).toStrictEqual([`somefield: required field missing.`]);
-
-    result = conforms(
-      schema,
-      {
-        somefield: `value`,
-      },
-      strict,
-      allowIncomplete
-    );
+    const result = conforms(schema, obj, strict, allowIncomplete);
+    console.log(result);
     expect(result.passed).toBe(true);
+  });
 
-    result = conforms(
-      schema,
-      {
-        somefield: 1,
+  test(`list test, missing __meta.array`, () => {
+    let schema = {
+      somefield: {
+        __meta: {},
+        type: `string`,
+        choices: [`a`, `b`, `c`],
       },
-      strict,
-      allowIncomplete
-    );
-    expect(result.passed).toBe(false);
+    };
+
+    const obj = {
+      somefield: ["a", "b", "c"],
+    };
+
+    const strict = true;
+    const allowIncomplete = false;
+    const result = conforms(schema, obj, strict, allowIncomplete);
     expect(result.errors).toStrictEqual([
-      `somefield: value is not a valid string.`,
+      `somefield: arrays are not allowed as unmarked field values (add __meta.array:true).`,
+    ]);
+  });
+
+  test(`list test, outside of choices`, () => {
+    let schema = {
+      somefield: {
+        __meta: {
+          array: true,
+        },
+        type: `string`,
+        choices: [`a`, `b`, `c`],
+      },
+    };
+
+    const obj = {
+      somefield: ["a", "b", "c", "d"],
+    };
+
+    const strict = true;
+    const allowIncomplete = false;
+    const result = conforms(schema, obj, strict, allowIncomplete);
+    expect(result.errors).toStrictEqual([
+      `somefield[].3: value [d] is not in the list of permitted values [a,b,c]`,
     ]);
   });
 });

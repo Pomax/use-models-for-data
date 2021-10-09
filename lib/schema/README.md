@@ -22,9 +22,10 @@ The `metadata` definition is an object of the form:
     name: [string],
     version: [integer],
     required: [boolean],
+    array: [boolean],
+    validate: [function],
     configurable: [boolean],
     debug: [boolean],
-    validate_as: [validator name string],
     schema: [relative path string],
 }
 ```
@@ -32,19 +33,20 @@ The top-level `__meta` property _must_ exist, and _must_ specify the `name` and 
 
 Note that custom properties are perfectly allowed inside the __meta object, because it's a convenient place to house application-specific metadata.
 
+
 ### metadata properties
 
 If **`required`** is true, validation/conformance will fail if this field is missing from an instance object.
 
-If **`configurable`** is false, forms that are generated based on this schema will not include this property.
+If **`array`** is true, then this property must be assigned as an array of values, all of which should conform to the field's schema.
+
+If **`validate`** is specified, this should be a function of the form `function(value) { return false, or throw, if invalid }`.
+
+If **`configurable`** is false, forms that are generated based on this schema will not include this property (i.e. it can be updated in code, but not intended for users to change)
 
 If **`debug`** is true, the form building functions will omit this property from the form, unless the build function's options includes a `skipDebug: false` flag.
 
 If **`schema`** exists, there should be no keys other than `__meta` for this property. The shape for this property's subtree is instead defined in a separate schema file.
-
-
->> If **`validate_as`** is specified, more specific validation is performed on a field.
->> NOTE THAT THIS FUNCTIONALITY HAS NOT YET BEEN IMPLEMENTED
 
 
 ## property schema
@@ -59,6 +61,7 @@ The `property-schema` for properties take several forms. All property schema are
 
 but depending on the property type modelled, the rest of the property schema differs.
 
+
 ### primitives
 
 For primitive values, the rest of the schema has the following form:
@@ -70,7 +73,8 @@ For primitive values, the rest of the schema has the following form:
 }
 ```
 
-### arrays
+
+### one-of-the-following
 
 For properties that can be "one of ..." (i.e. an array of values) a `choices` list is used rather than a `type`:
 
@@ -80,6 +84,7 @@ For properties that can be "one of ..." (i.e. an array of values) a `choices` li
     default: [one of the possible value]
 }
 ```
+
 
 ### objects
 
@@ -91,6 +96,12 @@ Properties that represent objects specify a `shape`, which takes the form of an 
 }
 ```
 For embedded schema, the `__meta.name` and `__meta.id` values are not required.
+
+
+### lists
+
+Properties that should be lists of either primitives or objects should set `array: true` in the property `__meta` object.
+
 
 ## Validation
 
@@ -135,29 +146,36 @@ function validateAll(objects, validator) {
 validateAll(objects, validate);
 ```
 
+
 ## Form building
 
 In order to work with schema'd objects, the code comes with dedicated HTML and (P)React form building code:
+
 
 ### ◆ HTML snippets
 
 There are three functions that can be used to generate HTML snippets:
 
+
 #### createFormHTML(schema, object)
 
 This creates a full `<form>...<form>` snippet for working with your object in a schema-conformant way.
+
 
 #### createTableHTML(schema, object)
 
 This creates a `<table>...<table>` snippet for working with your object in a schema-conformant way, but presented in tabular form.
 
+
 #### createTableRowHTML(schema, object)
 
 If you already have `<table>...<table>` code and you simply want to "slot in" the rows for working with your object in a schema-conformant way, you want this function.
 
+
 ### ◆ (P)React code
 
 There are (P)React equivalents for all three above functions:
+
 
 #### createFormTree(schema, object, options = {})
 
@@ -167,17 +185,20 @@ An `options.onSubmit` can be specified, which will be used as submit handler for
 
 An `options.label` function taking a single string argument can be specified, which will be used to convert object key names to useful labels (e.g. replacing `snake_case` with `Sentence case`).
 
+
 #### createTableTree(schema, object, options = {})
 
 This creates a `<table>...<table>` component for working with your object in a schema-conformant way, but presented in tabular form.
 
 An `options.label` function taking a single string argument can be specified, which will be used to convert object key names to useful labels (e.g. replacing `snake_case` with `Sentence case`).
 
+
 #### createTableTreeRows(schema, object, options = {})
 
 If you already have table component and you simply want to template in the rows for working with your object in a schema-conformant way, you want this function.
 
 An `options.label` function taking a single string argument can be specified, which will be used to convert object key names to useful labels (e.g. replacing `snake_case` with `Sentence case`).
+
 
 ### ◆　"Anything", by specfiying a `create` function
 
