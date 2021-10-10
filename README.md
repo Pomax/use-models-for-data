@@ -2,7 +2,7 @@ _Please note that this library is not at v1.0 yet and both the code and docs may
 
 # Use Models For Data (dot JS)
 
-![A chat about using models for data](chat.svg)
+![A chat about using models for data](docs/images/chat.svg)
 
 ---
 
@@ -14,7 +14,7 @@ This library takes care of that for you. It lets you declare data models as norm
 
 ---
 
-![A request for an example](example.svg)
+![A request for an example](docs/images/example.svg)
 
 ---
 
@@ -133,7 +133,7 @@ Everybody wins.
 
 ---
 
-![A request for a more complex example](complex_example.svg)
+![A request for a more complex example](docs/images/complex_example.svg)
 
 ---
 
@@ -490,7 +490,7 @@ export async function processForumPost(req, res, next) {
 
 ---
 
-![A chat about what happens when you change a model](changes.svg)
+![A chat about what happens when you change a model](docs/images/changes.svg)
 
 ---
 
@@ -510,7 +510,7 @@ So this does.
 
 ---
 
-![A chat about what happens when you change a model](api_docs.svg)
+![A chat about what happens when you change a model](docs/images/api_docs.svg)
 
 ---
 
