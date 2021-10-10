@@ -552,8 +552,8 @@ $ npm test
 
 Or look at the "scripts" section of the `package.json` file for which specific npm script to run if you just want to run a specific test file.
 
-
 <!--
+
 # Basic use
 
 ```js
@@ -632,3 +632,4 @@ class Address extends Model {
 because sure, yeah, express, but let's be honest: 50% of the world uses React, let's make sure those folks get what they need here, too.
 
 Let's make this something practical like a Flickr mirror.
+
