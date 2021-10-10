@@ -1,5 +1,7 @@
 # Documentation for this library
 
+(Jump to [the API documentation](#api-documentation) if you just want to look up class names and function signatures.)
+
 - defining models
 
   - class definitions
