@@ -182,7 +182,7 @@ export class ForumUser extends Model {
     // In order to make sure property subtrees are properly
     // managed, all we need to do is define them as models,
     // too, and then just... point to those:
-    profile = Fields.model(new Profile());
+    profile = Fields.model(Profile);
 }
 
 class Profile extends Model {
@@ -208,7 +208,7 @@ class Profile extends Model {
         }
     });
     posts = Fields.number({ default: 0, configurable: false });
-    preferences =  = Fields.model(new Preferences());
+    preferences =  = Fields.model(Preferences);
 }
 
 class Preferences extends Model {

@@ -3,7 +3,7 @@ const { fields } = Models;
 
 class TestModel extends Model {
   string = fields.string();
-  secondary = fields.model(new Secondary());
+  secondary = fields.model(Secondary);
 }
 
 class Secondary extends Model {

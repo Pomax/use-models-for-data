@@ -7,7 +7,7 @@ class TestModel extends Model {
     name: `test`,
   };
   oneOrMore = fields.string({ array: true });
-  secondary = fields.model({ model: new Secondary(), array: true });
+  secondary = fields.model({ model: Secondary, array: true });
 }
 
 class Secondary extends Model {
@@ -33,6 +33,12 @@ describe(`Testing User model with store backing`, () => {
   // ╔══════════════════════╗
   // ║ THE TESTS START HERE ║
   // ╚══════════════════════╝
+
+  test(`Cannot create instances using new Model()`, () => {
+    expect(() => new User()).toThrow(
+      `Use User.create() or User.from(data) to build model instances.`
+    );
+  });
 
   test(`Cannot create without initial data if there are required fields`, () => {
     try {

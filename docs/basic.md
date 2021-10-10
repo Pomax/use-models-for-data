@@ -46,7 +46,7 @@ export class MyDataModel extends Model {
 
     count = Fields.number({ default: 0 });
     name = Fields.string({ required: true, default: "some string "});
-    address = Fields.model(new Address());
+    address = Fields.model(Address);
 }
 
 import someCityList from "./my-city-list.js";

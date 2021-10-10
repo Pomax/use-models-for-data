@@ -14,8 +14,8 @@ export class User extends Model {
   };
 
   admin = fields.boolean({ default: false, configurable: false });
-  profile = fields.model(new Profile());
-  stats = fields.model(new Statistics());
+  profile = fields.model(Profile);
+  stats = fields.model(Statistics);
 }
 
 class Statistics extends Model {
@@ -24,7 +24,7 @@ class Statistics extends Model {
     required: true,
   };
 
-  games = fields.model(new GameStatistics());
+  games = fields.model(GameStatistics);
 }
 
 class GameStatistics extends Model {

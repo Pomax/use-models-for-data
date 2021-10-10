@@ -14,7 +14,7 @@ class User extends Model {
   };
 
   admin = fields.boolean({ default: false, configurable: false });
-  profile = fields.model(new Profile());
+  profile = fields.model(Profile);
 }
 
 /**
@@ -29,7 +29,7 @@ export class Profile extends Model {
 
   name = fields.string({ required: true, configurable: false });
   password = fields.string({ required: true, configurable: false });
-  preferences = fields.model(new Preferences());
+  preferences = fields.model(Preferences);
 }
 
 /**
@@ -54,7 +54,7 @@ class Preferences extends Model {
     default: `traditional`,
   });
 
-  config = fields.model(new Config()); // And this is a fully independent model
+  config = fields.model(Config); // And this is a fully independent model
 }
 
 export { User, Config };

@@ -13,7 +13,7 @@ class User extends Model {
     recordname: `profile.name`,
   };
   admin = fields.boolean({ default: false, configurable: false });
-  profile = fields.model(new Profile());
+  profile = fields.model(Profile);
 }
 
 /**
@@ -27,7 +27,7 @@ export class Profile extends Model {
   };
   name = fields.string({ required: true, configurable: false });
   password = fields.string({ required: true, configurable: false });
-  preferences = fields.model(new Preferences());
+  preferences = fields.model(Preferences);
 }
 
 /**
@@ -50,7 +50,7 @@ class Preferences extends Model {
     default: `traditional`,
   });
   // Everything except for this model is the same as v1
-  config = fields.model(new Config());
+  config = fields.model(Config);
 }
 
 export { User, Config };
