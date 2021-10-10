@@ -2,7 +2,6 @@ _Please note that this library is not at v1.0 yet and both the code and docs may
 
 # Use Models For Data (dot JS)
 
-
 ![A chat about using models for data](chat.svg)
 
 ---
@@ -30,7 +29,7 @@ const data = {
 }
 ```
 
-Nothing fancy, nothing special, but we do want to make sure that we never work with data that doesn't have a value for `name`, and let's pretend anyone actually cares about COPPA and we need to make sure that `data.age` is 13 or over.
+Nothing fancy, nothing special, but we do want to make sure that we never work with data that doesn't have a value for `name`, and let's pretend that age legislation actually means anything on the web, and make sure that `data.age` is 13 or over.
 
 The conventional approach is to use a validator library for that, so that when we "get" that data object, we run the validator, and then we handle the exception:
 
@@ -103,17 +102,17 @@ Assign a new value? Again, just do that.
 user.name = name;
 ```
 
-Assign an entire subtree of values because you're using a deeply nested model? Still again, just do that:
+Assign an entire subtree of values because you defined a deeply nested model? Still again, just do that:
 
 ```js
-// And this too may throw if any value is an illegal assignment.
+// this too may throw if any value is an illegal assignment.
 user.profile = {
-    name: "new name",
-    password: "this is secure, right?",
-    preferences: {
-        theme: "light",
-        iconset: "playful",
-    },
+  name: "new name",
+  password: "this is secure, right?",
+  preferences: {
+    theme: "light",
+    iconSet: "playful",
+  },
 };
 ```
 
@@ -121,7 +120,7 @@ The most important benefit is that we're no longer ever in a situation where req
 
 We can rely on the fact that any line of code that uses a model instance will be using a model instance that is _known_ to be valid data. And if it runs without throwing, we _know_ that on the next line, it's _still_ valid data. If we try to assign any invalid property values (particularly somewhere in a code path that you forgot about, performing a blind assignment form some other data source) then that assignment will immediately throw an error. Meaning that you don't have to hunt down where in your code things _actually_ went wrong, because there is no validation-after-the-fact anymore. If your code, including dependency code you never wrote, does something that would violate data integrity, you get an error _at that exact point in the code_, and the stack trace will tell you exactly where to start fixing the problem.
 
-Which also means that data validation itself is no longer something that you need tests for: you just need tests to make sure that at critical points in your codepaths, `data instanceof ThatModelTheyShouldBe` is true.
+Which also means that data validation itself is no longer something that you need tests for: you just need tests to make sure that at critical points in your code paths, `data instanceof ThatModelTheyShouldBe` is true.
 
 So:
 
@@ -157,7 +156,7 @@ import Themes from "./lib/themes.js";
         profile: {
             name: required string,
             password: required string,
-            avatar: base64 image datauri,
+            avatar: base64 image data-uri,
             posts: number,
             preferences: {
                 theme: string,
@@ -177,7 +176,7 @@ export class ForumUser extends Model {
 
     isAdmin = Fields.string({
       default: false, // obviously
-      configurable: false // users won't be able to toggle this through a form. obviouslsy.
+      configurable: false // users won't be able to toggle this through a form. obviously.
     });
 
     // In order to make sure property subtrees are properly
@@ -324,157 +323,168 @@ import { ForumUser } from "./my-models.js";
 
 // Register a new user into the system.
 export async function registerNewUser(req, res, next) {
-    const { name, password } = req.body;
-    try {
-       /*
-         * Since we have a model store set up through the
-         * use of Models.useDefaultStore(...), and because in
-         * our model we said to use `profile.name` as record
-         * name, we can use .load() and .save() to access our
-         * data by key. The username, in this case.
-         *
-         * So, first: quick check, does this user already exist?
-         */
-        if (ForumUser.load(name)) return next(`Username taken`);
+  const { name, password } = req.body;
+  try {
+    /*
+     * Since we have a model store set up through the
+     * use of Models.useDefaultStore(...), and because in
+     * our model we said to use `profile.name` as record
+     * name, we can use .load() and .save() to access our
+     * data by key. The username, in this case.
+     *
+     * So, first: quick check, does this user already exist?
+     */
+    if (ForumUser.load(name)) return next(`Username taken`);
 
-        /*
-         * If not, we try to create a user with the provided
-         * required fields. Since the name and password go in
-         * the `profile` submodel, that's what we pass in as
-         * part of the constructor:
-         */
-        const user = ForumUser.create({
-            profile: {
-                name,
-                password
-            }
-        });
+    /*
+     * If not, we try to create a user with the provided
+     * required fields. Since the name and password go in
+     * the `profile` submodel, that's what we pass in as
+     * part of the constructor:
+     */
+    const user = ForumUser.create({
+      profile: {
+        name,
+        password,
+      },
+    });
 
-        /*
-         * Note that we can also do this using a flat object, like
-         * you'd get for e.g. a form submissions, where each value
-         * has a keypath rather than giving us a plain JS object
-         * to work with. In this case, we could have also used:
-         *
-         *   ForumUser.create({
-         *     "profile.name": name,
-         *     "profile.password": password
-         *   })
-         */
+    /*
+     * Note that we can also do this using a flat object, like
+     * you'd get for e.g. a form submissions, where each value
+     * has a key-path rather than giving us a plain JS object
+     * to work with. In this case, we could have also used:
+     *
+     *   ForumUser.create({
+     *     "profile.name": name,
+     *     "profile.password": password
+     *   })
+     */
 
-        // Then, let's pretend this does something meaningful:
-        sessionManager.doSomethingWith(req, user);
+    // Then, let's pretend this does something meaningful:
+    sessionManager.doSomethingWith(req, user);
 
-        /*
-         * And since we have a model store set up through the
-         * use of Models.useDefaultStore(...), and because in
-         * our model we said to use `profile.name` as record
-         * name, we can simply call .save() and it will save a
-         * new record keyed on the username, so we can load()
-         * it later on using that same key.
-         */
-        await user.save();
+    /*
+     * And since we have a model store set up through the
+     * use of Models.useDefaultStore(...), and because in
+     * our model we said to use `profile.name` as record
+     * name, we can simply call .save() and it will save a
+     * new record keyed on the username, so we can load()
+     * it later on using that same key.
+     */
+    await user.save();
 
-        // Then we bind and continue
-        req.forumUser = user;
-        next();
-    } catch (err) { next(err); }
+    // Then we bind and continue
+    req.forumUser = user;
+    next();
+  } catch (err) {
+    next(err);
+  }
 }
-
 
 // Check whether a request has an associated authenticated,
 // so we'll know whether to allow form submissions (e.g. for
 // editing their own profile).
 export async function checkAuthentication(req, res, next) {
-    req.authInfo = sessionManager.getAuthInfo(req);
-    next();
+  req.authInfo = sessionManager.getAuthInfo(req);
+  next();
 }
 
 // A proxy for getUser(), for use with app.params()
 export async function resolveUsernameParam(req, res, next, username) {
-    req.username = username;
-    getUser(req, res, next);
-};
+  req.username = username;
+  getUser(req, res, next);
+}
 
 // Get a ForumUser that matches the URL-indicated username.
 export async function getUser(req, res, next) {
-    const username = req.username || req.authInfo.name;
-    if (!username) return next(`Could not get user`);
+  const username = req.username || req.authInfo.name;
+  if (!username) return next(`Could not get user`);
 
-    try {
-        /*
-         * Much like user.save(), because we have a data store set
-         * up, and we have our model set to use `profile.name` as
-         * record name, we can simply use the model .load() function
-         * with the username as key to retrieve our stored user.
-         */
-        req.forumUser = ForumUser.load(username);
-        next();
-    }
-    catch (err) {
-        /*
-         * This can fail for a few different reasons.
-         *
-         * 1. This could be a "no file found for that record name", or
-         * 2. the file might exist, but it failed getting parsed to data, or
-         * 3. it's a valid file, it parses to data, but the data is incompatible.
-         */
-        return next(`Could not get user`);
-    }
+  try {
+    /*
+     * Much like user.save(), because we have a data store set
+     * up, and we have our model set to use `profile.name` as
+     * record name, we can simply use the model .load() function
+     * with the username as key to retrieve our stored user.
+     */
+    req.forumUser = ForumUser.load(username);
+    next();
+  } catch (err) {
+    /*
+     * This can fail for a few different reasons.
+     *
+     * 1. This could be a "no file found for that record name", or
+     * 2. the file might exist, but it failed getting parsed to data, or
+     * 3. it's a valid file, it parses to data, but the data is incompatible.
+     */
+    return next(`Could not get user`);
+  }
 }
 
 // Update a user's profile and save it to the backend.
 export async function saveProfileUpdate(req, res, next) {
-    const user = req.forumUser;
+  const user = req.forumUser;
 
-    const { authenticated, name } = req.authInfo;
-    if (!authenticated) return next(`Not logged in`);
+  const { authenticated, name } = req.authInfo;
+  if (!authenticated) return next(`Not logged in`);
 
-    const ourProfile = name === user.name;
-    if (!ourProfile) return next(`Cannot edit someone else's profile`);
+  const ourProfile = name === user.name;
+  if (!ourProfile) return next(`Cannot edit someone else's profile`);
 
-    try {
-       /*
-        * This is literally all we have to do to make sure this
-        * is a valid update: just perform a perfectly normal JS
-        * property assignment, as you would for any plain object.
-        *
-        * If the entire subtree assignment is good, the assignment
-        * is allowed through, otherwise the assignment will throw
-        * an error with a list of all values that failed validation,
-        * and why.
-        */
-        user.profile = req.body;
-    }
-    catch (err) { return next(err); }
+  try {
+    /*
+     * This is literally all we have to do to make sure this
+     * is a valid update: just perform a perfectly normal JS
+     * property assignment, as you would for any plain object.
+     *
+     * If the entire subtree assignment is good, the assignment
+     * is allowed through, otherwise the assignment will throw
+     * an error with a list of all values that failed validation,
+     * and why.
+     */
+    user.profile = req.body;
+  } catch (err) {
+    return next(err);
+  }
 
-    // Likewise, saving is about as plain as it gets.
-    try { await user.save(); } catch (err) { return next(err); }
+  // Likewise, saving is about as plain as it gets.
+  try {
+    await user.save();
+  } catch (err) {
+    return next(err);
+  }
 
-    next();
-};
+  next();
+}
 
 // When users post to our forum, we bump out their post count.
 export async function processForumPost(req, res, next) {
-    const user = res.forumUser;
+  const user = res.forumUser;
 
-    // First, try to handle the posting.
-    try {
-        await postMaster.savePost(user, req.body);
-    }
-    catch (err) { return next(err); }
+  // First, try to handle the posting.
+  try {
+    await postMaster.savePost(user, req.body);
+  } catch (err) {
+    return next(err);
+  }
 
-    // If that succeeds, mark this user as having one more
-    // post under their belt, again using perfectly mundane JS:
-    try {
-        user.profile.posts++;
-    }
-    catch(err) { return next(err); }
+  // If that succeeds, mark this user as having one more
+  // post under their belt, again using perfectly mundane JS:
+  try {
+    user.profile.posts++;
+  } catch (err) {
+    return next(err);
+  }
 
-    // And again, saving this to the backend is a single call.
-    try { await user.save(); } catch(err) { next(err); }
+  // And again, saving this to the backend is a single call.
+  try {
+    await user.save();
+  } catch (err) {
+    next(err);
+  }
 
-    next();
+  next();
 }
 ```
 
@@ -490,7 +500,7 @@ Data validation is easy enough, but models don't stay the same over the lifetime
 
 This library does that, too.
 
-When you tell the library that you're using a data store (which is a single function call), the library will turn on schema tracking for you: whenever you use models, it will keep a record of what schemas those models defined, and it will compare "previously stored schema definitions" to the models you're currently working with: if you shut down your app, update your models, and start it up again, this library can detect the change and store a new, up to date copy of your model schema  generate you a standalone runner script for uplifting your data so that it conforms to your updated model, and then shut down your run.
+When you tell the library that you're using a data store (which is a single function call), the library will turn on schema tracking for you: whenever you use models, it will keep a record of what schemas those models defined, and it will compare "previously stored schema definitions" to the models you're currently working with: if you shut down your app, update your models, and start it up again, this library can detect the change and store a new, up to date copy of your model schema generate you a standalone runner script for uplifting your data so that it conforms to your updated model, and then shut down your run.
 
 Because, critically, _you_ should decide what to do next. Do you want to migrate your data, or change your code some more first? And if you want to migrate your data, you get to decide when to do that, because maybe you're just working on a feature branch and you're still in the middle of figuring out what the best revised model shape is. Sure, twenty schema revisions might be useful while working on that branch over the course of a week, but before you file that merge request you want to have the option to delete all those intermediates and just generate a single migration from the old model to the now finalised model.
 
@@ -504,132 +514,19 @@ So this does.
 
 ---
 
-## Topics for this library
+Whether you just want the API documentation, or some more examples, hit up the docs by heading over to [the `docs` directory](https://github.com/Pomax/use-models-for-data/tree/master/docs)!
 
-- defining models
-    - class definitions
-    - field types and options
-    - custom validation
-        - false for simple validation failure
-        - throw an error for detailed validation failure
-- constructing models
-    - create default
-    - create default even though that means missing required fields (allowIncomplete)
-    - create from data (optionally even if it's missing required fields)
-- using models
-    - set/get values with automatic validation
-    - set/get subtrees with automatic validation
-    - toString (formatted JSON without defaults)
-    - valueOf (fully qualified plain object)
-    - reset([data])
-- using models in the browser
-    - HTML form/table
-    - (P)React form/table
-    - Custom trees
-- using a data store
-    - loading models from the store
-    - saving models to the store
-    - redefining models
-      - schema change detection
-      - data migrations
+## Thoughts, comments, discussions
 
-## Working on the code
+To discuss this library, head on over to the [discussions]() for this project, or file a [new issue]() if you think you've found a bug that needs fixing.
 
-Clone and install the project:
-```
-$ git clone git@github.com:Pomax/use-models-for-data.git
-$ cd use-models-for-data
-$ npm install
-```
+And if you just want to do a shout-out or engine in a short-term exchange, hit me up on [Twitter@TheRealPomax](https://twitter.com/TheRealPomax) or [Mastodon@TheRealPomax](https://mastodon.social/users/TheRealPomax).
 
-The library code can be found in the `lib` directory, and the tests can be found in the `test` directory.
-
-To run the tests, either run all tests in one go using:
-
-```
-$ npm test
-```
-
-Or look at the "scripts" section of the `package.json` file for which specific npm script to run if you just want to run a specific test file.
 
 <!--
 
-# Basic use
-
-```js
-import { Models } from "use-models-for-data";
-import { MyDataModel } from "./my-data-model.js";
-Models.useDefaultStore(`./data-store`);
-
-const model = MyDataModel.from({
-    count: 0,
-    name: `My name`,
-    address: {
-        street: `First street`,
-        number: 1334,
-        city: `My City`
-    }
-});
-
-model.save();
-```
-
-This will write a file `./data-store/My data model/My name.json` to disk, with only non-default values saved:
-
-```json
-{
-    "name": "My name",
-    "address": {
-        "street": "First street",
-        "number": 1334,
-        "city": "My City"
-    }
-}
-```
-
-
-```js
-import { Model, Fields } from "use-models-for-data";
-
-export class MyDataModel extends Model {
-    __meta = {
-        name: `My data model`,
-        distinct: true,
-        recordkey: (record) => record.name,
-    };
-
-    count = Fields.number({ default: 0 });
-    name = Fields.string({ required: true, default: "some string "});
-    address = Fields.model(new Address());
-}
-
-import someCityList from "./my-city-list.js";
-
-class Address extends Model {
-    __meta = {
-        name: `A simplified address model`,
-    };
-
-    street = Fields.string({
-        validate: (value) => {
-            // throw error if value is not a valid street
-        },
-    });
-
-    number = Fields.number({ required: true });
-
-    city = Fields.string({
-        required: true,
-        choices: someCityList,
-    });
-}
-```
--->
-
-
 # We still need a fun section that explains client side
 
-because sure, yeah, express, but let's be honest: 50% of the world uses React, let's make sure those folks get what they need here, too.
+because sure, yeah, express, but let's be honest: 50% of the world uses React, let's make sure those folks get what they need here, too. Extend the express example to serve a React app that lets people log in and update their profile?
 
-Let's make this something practical like a Flickr mirror.
-
+-->

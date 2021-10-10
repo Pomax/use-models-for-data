@@ -1,7 +1,7 @@
 {
   "name": "use-models-for-data",
   "version": "0.0.2",
-  "description": "Work with your data through well-defined, always-consistent models, instead of rando plain JS objects",
+  "description": "Instead of plain JS objects, work with your data through well-defined, always-consistent models, using this one simple trick",
   "main": "index.js",
   "type": "module",
   "scripts": {
@@ -11,8 +11,8 @@
     "test:jest:models": "run-s test:jest:models:*",
     "test:jest:models:base": "npm run test:jest -- test/models/model.base.test.js",
     "test:jest:models:stored": "npm run test:jest -- test/models/model.stored.test.js",
-    "test:jest:models:unstored": "npm run test:jest -- test/models/model.unstored.test.js",
-    "test:jest:models:metaless": "npm run test:jest -- test/models/model.metaless.test.js",
+    "test:jest:models:plain": "npm run test:jest -- test/models/model.plain.test.js",
+    "test:jest:models:bare": "npm run test:jest -- test/models/model.bare.test.js",
     "test:jest:migration": "npm run test:jest -- test/migration/migration.test.js",
     "test:jest:forms": "npm run test:jest -- test/forms/forms.test.js",
     "test:jest:schema": "run-s test:jest:schema:*",
