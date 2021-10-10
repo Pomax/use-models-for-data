@@ -150,13 +150,13 @@ import * as DateTimeLibrary from "some-date-time-library";
 import Themes from "./lib/themes.js";
 
 /**
-    And let's model a user such that the model is equivalent to:
+    Let's model a user such that the model object is equivalent to:
 
     {
         isAdmin: bool,
         profile: {
-            name: string,
-            password: string,
+            name: required string,
+            password: required string,
             avatar: base64 image datauri,
             posts: number,
             preferences: {

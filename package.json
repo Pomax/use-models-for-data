@@ -12,6 +12,7 @@
     "test:jest:models:base": "npm run test:jest -- test/models/model.base.test.js",
     "test:jest:models:stored": "npm run test:jest -- test/models/model.stored.test.js",
     "test:jest:models:unstored": "npm run test:jest -- test/models/model.unstored.test.js",
+    "test:jest:models:metaless": "npm run test:jest -- test/models/model.metaless.test.js",
     "test:jest:migration": "npm run test:jest -- test/migration/migration.test.js",
     "test:jest:forms": "npm run test:jest -- test/forms/forms.test.js",
     "test:jest:schema": "run-s test:jest:schema:*",
