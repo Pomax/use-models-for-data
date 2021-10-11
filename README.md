@@ -58,11 +58,6 @@ First, we define a property/value model, using plain JS class syntax, where each
 import { Model, Fields } from "use-models-for-data";
 
 export class User extends Model {
-    __meta = {
-        name: `user-models`,
-        description: `A trivial way to ensure data consistence.`,
-    };
-
     name = Fields.string({ required: true });
     age = Fields.number({ validate: value => (value > 13) )});
 }
@@ -171,7 +166,7 @@ export class ForumUser extends Model {
     __meta = {
         name: `users`,
         description: `A simple CMS user model.`,
-        recordName: `profile.name`,
+        recordName: `profile.name`, // this is used for saving/loading model instances
     };
 
     isAdmin = Fields.string({
@@ -186,17 +181,15 @@ export class ForumUser extends Model {
 }
 
 class Profile extends Model {
-    __meta = {
-        name: `profile`,
-        description:
-    };
     name = Fields.string({ required: true });
+
     password = Fields.string({
         required: true,
         validate: function(value) {
             return daysToCrack(value) > 1000;
         }
     });
+
     avatar = Fields.string({
         validate: function(value) {
             try {
@@ -207,16 +200,13 @@ class Profile extends Model {
             }
         }
     });
+
     posts = Fields.number({ default: 0, configurable: false });
+
     preferences =  = Fields.model(Preferences);
 }
 
 class Preferences extends Model {
-    __meta = {
-        name: `user preferences`,
-        description: `system preferences`
-    };
-
     theme = Fields.string({
         choices: Themes.getThemeNames(),
         default: : Themes.defaultThemeName
@@ -521,7 +511,6 @@ Whether you just want the API documentation, or some more examples, hit up the d
 To discuss this library, head on over to the [discussions]() for this project, or file a [new issue]() if you think you've found a bug that needs fixing.
 
 And if you just want to do a shout-out or engine in a short-term exchange, hit me up on [Twitter@TheRealPomax](https://twitter.com/TheRealPomax) or [Mastodon@TheRealPomax](https://mastodon.social/users/TheRealPomax).
-
 
 <!--
 
