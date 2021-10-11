@@ -47,9 +47,9 @@ describe(`Testing User model with store backing`, () => {
   /**
    * Load our test user "afresh" before every test.
    */
-  beforeEach(() => {
+  beforeEach(async () => {
     try {
-      user = User.load(`TestUser`);
+      user = await User.load(`TestUser`);
     } catch (e) {
       // this will fail for the first test, which then builds this record.
     }
@@ -84,9 +84,9 @@ describe(`Testing User model with store backing`, () => {
   });
 
   test(`Can create and save user TestUser`, () => {
-    expect(() => {
+    expect(async () => {
       const user = User.from(testData);
-      user.save();
+      await user.save();
     }).not.toThrow();
   });
 
@@ -99,15 +99,15 @@ describe(`Testing User model with store backing`, () => {
     expect(json).toBeDefined();
   });
 
-  test(`Saving user to file after changing value works`, () => {
+  test(`Saving user to file after changing value works`, async () => {
     let val = !user.profile.preferences.config.allow_chat;
 
-    expect(() => {
+    expect(async () => {
       user.profile.preferences.config.allow_chat = val;
-      user.save();
+      await user.save();
     }).not.toThrow();
 
-    user = User.load(`TestUser`);
+    user = await User.load(`TestUser`);
     expect(user.profile.preferences.config.allow_chat).toBe(val);
   });
 
@@ -129,7 +129,7 @@ describe(`Testing User model with store backing`, () => {
     expect(user.profile.password).toBe(password);
 
     // and we should be able to save this user without errors, still
-    expect(() => user.save()).not.toThrow();
+    expect(async() => await user.save()).not.toThrow();
   });
 
   test(`Model resetting with a post-reset payload works as expected`, () => {
@@ -148,10 +148,10 @@ describe(`Testing User model with store backing`, () => {
     expect(user.profile.preferences.avatar).toBe(`New Avatar.png`);
     expect(user.profile.name).toBe(name);
     expect(user.profile.password).toBe(password);
-    expect(() => user.save()).not.toThrow();
+    expect(async() => await user.save()).not.toThrow();
   });
 
-  test(`Incomplete models can be created but not saved`, () => {
+  test(`Incomplete models can be created but not saved`, async () => {
     let incomplete;
     expect(() => {
       incomplete = User.create(
@@ -160,12 +160,14 @@ describe(`Testing User model with store backing`, () => {
       );
     }).not.toThrow();
 
-    expect(() => {
-      incomplete.save();
-    }).toThrow(`Cannot save incomplete model (created with ALLOW_INCOMPLETE`);
+    try {
+      await incomplete.save();
+    } catch (err) {
+      expect(err.message).toBe(`Cannot save incomplete model (created with ALLOW_INCOMPLETE)`);
+    }
 
     try {
-      incomplete.save();
+      await incomplete.save();
     } catch (err) {
       expect(err.errors).toStrictEqual([
         "profile.password: required field missing.",
