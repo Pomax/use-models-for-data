@@ -1,6 +1,6 @@
 # Documentation for this library
 
-(Jump to [the API documentation](#api-documentation) if you just want to look up class names and function signatures.)
+(Jump to [the API documentation](api.md) if you just want to look up class names and function signatures.)
 
 - defining models
 
@@ -37,11 +37,3 @@
   - redefining models
     - schema change detection
     - data migrations
-
-# API Documentation
-  - Model
-  - Fields
-  - Models
-  - basic js schema
-  - JS diffing
-  - equals

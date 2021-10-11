@@ -7,7 +7,7 @@ class TestModel extends Model {
     name: `test`,
   };
   oneOrMore = fields.string({ array: true });
-  secondary = fields.model({ model: Secondary, array: true });
+  secondary = fields.model(Secondary, { array: true });
 }
 
 class Secondary extends Model {
@@ -70,7 +70,7 @@ describe(`Testing User model with store backing`, () => {
 
   test(`User.from without a payload is an error`, () => {
     expect(() => User.from()).toThrow(
-      `Model.from() must be called with a data object.`
+      `User.from() must be called with a data object.`
     );
   });
 

@@ -129,7 +129,7 @@ describe(`Testing User model with store backing`, () => {
     expect(user.profile.password).toBe(password);
 
     // and we should be able to save this user without errors, still
-    expect(async() => await user.save()).not.toThrow();
+    expect(async () => await user.save()).not.toThrow();
   });
 
   test(`Model resetting with a post-reset payload works as expected`, () => {
@@ -148,7 +148,7 @@ describe(`Testing User model with store backing`, () => {
     expect(user.profile.preferences.avatar).toBe(`New Avatar.png`);
     expect(user.profile.name).toBe(name);
     expect(user.profile.password).toBe(password);
-    expect(async() => await user.save()).not.toThrow();
+    expect(async () => await user.save()).not.toThrow();
   });
 
   test(`Incomplete models can be created but not saved`, async () => {
@@ -163,7 +163,9 @@ describe(`Testing User model with store backing`, () => {
     try {
       await incomplete.save();
     } catch (err) {
-      expect(err.message).toBe(`Cannot save incomplete model (created with ALLOW_INCOMPLETE)`);
+      expect(err.message).toBe(
+        `Cannot save incomplete model (created with ALLOW_INCOMPLETE)`
+      );
     }
 
     try {

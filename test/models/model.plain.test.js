@@ -30,7 +30,7 @@ describe(`Testing User model without store backing`, () => {
 
   test(`User.from without a payload is an error`, () => {
     expect(() => User.from()).toThrow(
-      `Model.from() must be called with a data object.`
+      `User.from() must be called with a data object.`
     );
   });
 

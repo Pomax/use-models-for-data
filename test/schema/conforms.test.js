@@ -31,7 +31,6 @@ describe(`...`, () => {
     const strict = true;
     const allowIncomplete = false;
     const result = conforms(schema, obj, strict, allowIncomplete);
-    console.log(result);
     expect(result.passed).toBe(true);
   });
 
