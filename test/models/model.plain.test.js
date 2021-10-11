@@ -25,7 +25,7 @@ describe(`Testing User model without store backing`, () => {
   });
 
   test(`User.create without a payload is not an error`, () => {
-    expect(() => User.create(undefined, true)).not.toThrow();
+    expect(() => User.create(undefined, User.ALLOW_INCOMPLETE)).not.toThrow();
   });
 
   test(`User.from without a payload is an error`, () => {

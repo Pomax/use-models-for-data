@@ -65,7 +65,7 @@ describe(`Testing User model with store backing`, () => {
 
   test(`User.create without a payload but allowIncomplete is not an error`, () => {
     const allowIncomplete = true;
-    expect(() => User.create(undefined, allowIncomplete)).not.toThrow();
+    expect(() => User.create(undefined, User.ALLOW_INCOMPLETE)).not.toThrow();
   });
 
   test(`User.from without a payload is an error`, () => {
