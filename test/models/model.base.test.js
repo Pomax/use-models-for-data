@@ -217,7 +217,7 @@ describe(`Testing User model with store backing`, () => {
     const secondary = Secondary.create({ label: `test` });
     expect(() => {
       instance.secondary = secondary;
-    }).toThrow(`Assignment must be an array.`);
+    }).toThrow(`Assignment for [secondary] must be an array.`);
 
     expect(() => {
       instance.secondary = [secondary];

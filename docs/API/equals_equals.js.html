@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: equals/equals.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: equals/equals.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { TYPES } from "./types.js";
+const { array, iterable, object } = TYPES;
+const definedOnly = ([_k, v]) => v !== undefined;
+
+/**
+ * Standard, but unfortunately not built-in, equality checking for arbitrarily
+ * data, including nested objects. As JS can do coerced equality checking, and
+ * because in rare cases that's essential, the third argument is a "strict"
+ * flag that defaults to true, but can be explicitly set to "false" to perform
+ * coercive equality checking.
+ */
+export function equals(v1, v2, strict = true) {
+  // primitive and alias equality?
+  if (strict ? v1 === v2 : v1 == v2) return true;
+
+  // complex equality?
+  if (array(v1) &amp;&amp; array(v2)) return arrayEquals(v1, v2, strict);
+  if (iterable(v1) &amp;&amp; iterable(v2)) return iterableEquals(v1, v2, strict);
+  if (object(v1) &amp;&amp; object(v2)) return objectEquals(v1, v2, strict);
+
+  // no equality.
+  return false;
+}
+
+/**
+ * Arrays are considered equal if they have the same length, contain
+ * the same elements, and those elements are in the same order.
+ */
+function arrayEquals(v1, v2, strict = true) {
+  if (v1.length !== v2.length) return false;
+  return v1.every((e, i) => equals(e, v2[i], strict));
+}
+
+/**
+ * Iterables are objects like String, Array, TypedArray, Map and Set.
+ * Of these, only Array is considered primitive, and all the others
+ * require casting to array in order to evaluate their equality.
+ *
+ * (But note that we want to deal with String objects as string literals)
+ */
+function iterableEquals(v1, v2, strict = true) {
+  if (strict &amp;&amp; v1.__proto__.constructor !== v2.__proto__.constructor) {
+    return false;
+  }
+  v1 = Array.from(v1);
+  v2 = Array.from(v2);
+  return arrayEquals(v1, v2, strict);
+}
+
+/**
+ * Objects are considered the same if they contain the same unordered
+ * set of enumerable keys (note: read that again, because "enumerable"
+ * is not the same as "actually defined"), and each key points to the
+ * same value (as determined through recursion)
+ */
+function objectEquals(v1, v2, strict = true) {
+  // Note that properties that are explicitly assigned as `undefined`
+  // are functionality identical in a JS engine to nonexistent properties.
+  const m1 = Object.entries(v1).filter(definedOnly);
+  const m2 = Object.entries(v2).filter(definedOnly);
+
+  // Key ordering is irrelevant, but let's not waste more time
+  // on sorting if we  know these are not equal based on length:
+  if (m1.length !== m2.length) return false;
+  m1.sort();
+  m2.sort();
+
+  return m1.every((e, i) => arrayEquals(e, m2[i], strict));
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Fields.html">Fields</a></li><li><a href="Model.html">Model</a></li><li><a href="Models.html">Models</a></li></ul><h3>Global</h3><ul><li><a href="global.html#applyDiff">applyDiff</a></li><li><a href="global.html#arrayEquals">arrayEquals</a></li><li><a href="global.html#conforms">conforms</a></li><li><a href="global.html#createDefault">createDefault</a></li><li><a href="global.html#createDiff">createDiff</a></li><li><a href="global.html#createFormHTML">createFormHTML</a></li><li><a href="global.html#createFormTree">createFormTree</a></li><li><a href="global.html#createTableHTML">createTableHTML</a></li><li><a href="global.html#createTableRowHTML">createTableRowHTML</a></li><li><a href="global.html#createValidator">createValidator</a></li><li><a href="global.html#equals">equals</a></li><li><a href="global.html#finalizeMigration">finalizeMigration</a></li><li><a href="global.html#getRecordNameFor">getRecordNameFor</a></li><li><a href="global.html#inflate">inflate</a></li><li><a href="global.html#iterableEquals">iterableEquals</a></li><li><a href="global.html#linkSchema">linkSchema</a></li><li><a href="global.html#makeChangeHandler">makeChangeHandler</a></li><li><a href="global.html#makeMigration">makeMigration</a></li><li><a href="global.html#migrate">migrate</a></li><li><a href="global.html#objectEquals">objectEquals</a></li><li><a href="global.html#reverseDiff">reverseDiff</a></li><li><a href="global.html#sortedObjectKeys">sortedObjectKeys</a></li><li><a href="global.html#testArray">testArray</a></li><li><a href="global.html#testField">testField</a></li><li><a href="global.html#unlinkSchema">unlinkSchema</a></li><li><a href="global.html#validate">validate</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Fri Oct 15 2021 15:20:32 GMT-0700 (Pacific Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

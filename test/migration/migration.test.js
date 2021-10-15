@@ -13,13 +13,10 @@ const moduleDir = path.dirname(
  * Our battery of User tests
  */
 describe(`Testing User model`, () => {
-  const keepFiles = process.argv.includes(`--keep`);
-
   const storePath = `${moduleDir}/store`;
 
   afterEach(() => {
     Models.resetRegistrations();
-    if (keepFiles) return;
     fs.rmSync(storePath, { recursive: true });
   });
 

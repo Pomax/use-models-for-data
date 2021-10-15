@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: forms/create-tree.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: forms/create-tree.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import labelFunction from "./label-function.js";
+import { getCreateFunction, __appendChildNode } from "./tree-helpers.js";
+
+/**
+ * similar to createFormHTML, except we're not building an HTML string,
+ * we're building DOM or (P)React content.
+ */
+export function createFormTree(schema, object, options) {
+  const create = getCreateFunction(options);
+  const { onSubmit, footer, ...otherOptions } = options;
+  delete otherOptions.create;
+
+  return create(`form`, {
+    id: schema.__meta.name,
+    ...otherOptions,
+    onSubmit: onSubmit,
+    children: [
+      ...createFormTreeComponents(schema, object, options),
+      footer,
+    ].filter(Boolean),
+  });
+}
+
+function createFormTreeComponents(schema, object, options) {
+  const create = getCreateFunction(options);
+  const label = options.label ?? labelFunction;
+
+  return Object.keys(schema)
+    .filter((v) => v !== `__meta`)
+    .map((field_name) => {
+      const ref = object[field_name];
+      const schemaEntry = schema[field_name];
+      const { type, choices, shape } = schemaEntry;
+      const { required, debug, configurable, description } = schemaEntry.__meta;
+
+      if (configurable === false) return;
+      if (debug === true &amp;&amp; options.skipDebug !== false) return;
+
+      const id = `${
+        schema.__meta.prefix ? `${schema.__meta.prefix}.` : ``
+      }${field_name}`;
+
+      if (shape) {
+        if (!shape.__meta) {
+          shape.__meta = {};
+        }
+        shape.__meta.prefix = id;
+
+        // DIFFERENCE COMPARED TO createTableTreeRows STARTS HERE
+        return create(`fieldset`, {
+          id: id,
+          children: [
+            ...createFormTreeComponents(shape, ref, { create, label }),
+          ],
+        });
+      }
+
+      const children = [create(`label`, { children: [label(field_name)] })];
+
+      __appendChildNode(
+        children,
+        create,
+        id,
+        choices,
+        type,
+        ref,
+        required,
+        options.disabled,
+        options.inputHandler
+      );
+
+      children.push(create(`p`, { children: [description] }));
+
+      const div = create(`div`, { children });
+
+      // END OF DIFFERENCE COMPARED TO createTableTreeRots
+
+      return div;
+    })
+    .filter(Boolean);
+}
+
+export function createTableTree(schema, object, options) {
+  const create = getCreateFunction(options);
+  const { footer, ...otherOptions } = options;
+  delete otherOptions.create;
+
+  return create(`table`, {
+    id: schema.__meta?.name,
+    ...otherOptions,
+    children: [
+      ...createTableTreeRows(schema, object, options),
+      options.footer,
+    ].filter(Boolean),
+  });
+}
+
+export function createTableTreeRows(schema, object, options) {
+  const create = getCreateFunction(options);
+  const label = options.label ?? labelFunction;
+
+  return Object.keys(schema)
+    .filter((v) => v !== `__meta`)
+    .map((field_name) => {
+      const ref = object ? object[field_name] : undefined;
+      const schemaEntry = schema[field_name];
+      const { type, choices, shape } = schemaEntry;
+      const { required, debug, configurable, description } = schemaEntry.__meta;
+
+      if (configurable === false) return;
+      if (debug === true &amp;&amp; options.skipDebug !== false) return;
+
+      const id = `${
+        schema.__meta?.prefix ? `${schema.__meta.prefix}.` : ``
+      }${field_name}`;
+
+      if (shape) {
+        if (!shape.__meta) {
+          shape.__meta = {};
+        }
+        shape.__meta.prefix = id;
+        const subfields = createTableTreeRows(shape, ref, {
+          ...options,
+          create,
+        });
+        if (subfields.length === 0) return [];
+        return [
+          create(`tr`, {
+            children: [
+              create(`td`, { colspan: 2, children: [label(field_name)] }),
+            ],
+          }),
+          ...subfields,
+        ];
+      }
+
+      const row = create(`tr`, {
+        children: [
+          create(`td`, { title: description, children: [label(field_name)] }),
+          create(`td`, {
+            children: __appendChildNode(
+              [],
+              create,
+              id,
+              choices,
+              type,
+              ref !== undefined ? ref : schemaEntry.default,
+              required,
+              options.disabled,
+              options.inputHandler
+            ),
+          }),
+        ],
+      });
+
+      return row;
+    })
+    .filter(Boolean)
+    .flat();
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Fields.html">Fields</a></li><li><a href="Model.html">Model</a></li><li><a href="Models.html">Models</a></li></ul><h3>Global</h3><ul><li><a href="global.html#applyDiff">applyDiff</a></li><li><a href="global.html#arrayEquals">arrayEquals</a></li><li><a href="global.html#conforms">conforms</a></li><li><a href="global.html#createDefault">createDefault</a></li><li><a href="global.html#createDiff">createDiff</a></li><li><a href="global.html#createFormHTML">createFormHTML</a></li><li><a href="global.html#createFormTree">createFormTree</a></li><li><a href="global.html#createTableHTML">createTableHTML</a></li><li><a href="global.html#createTableRowHTML">createTableRowHTML</a></li><li><a href="global.html#createValidator">createValidator</a></li><li><a href="global.html#equals">equals</a></li><li><a href="global.html#finalizeMigration">finalizeMigration</a></li><li><a href="global.html#getRecordNameFor">getRecordNameFor</a></li><li><a href="global.html#inflate">inflate</a></li><li><a href="global.html#iterableEquals">iterableEquals</a></li><li><a href="global.html#linkSchema">linkSchema</a></li><li><a href="global.html#makeChangeHandler">makeChangeHandler</a></li><li><a href="global.html#makeMigration">makeMigration</a></li><li><a href="global.html#migrate">migrate</a></li><li><a href="global.html#objectEquals">objectEquals</a></li><li><a href="global.html#reverseDiff">reverseDiff</a></li><li><a href="global.html#sortedObjectKeys">sortedObjectKeys</a></li><li><a href="global.html#testArray">testArray</a></li><li><a href="global.html#testField">testField</a></li><li><a href="global.html#unlinkSchema">unlinkSchema</a></li><li><a href="global.html#validate">validate</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Fri Oct 15 2021 15:20:32 GMT-0700 (Pacific Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

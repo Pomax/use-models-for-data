@@ -16,7 +16,8 @@
     "test:jest:migration": "npm run test:jest -- test/migration/migration.test.js",
     "test:jest:forms": "npm run test:jest -- test/forms/forms.test.js",
     "test:jest:schema": "run-s test:jest:schema:*",
-    "test:jest:schema:conforms": "npm run test:jest -- test/schema/conforms.test.js"
+    "test:jest:schema:conforms": "npm run test:jest -- test/schema/conforms.test.js",
+    "docs": "jsdoc -r lib -d ./docs/API && \"./out/index.html\""
   },
   "keywords": [
     "js",
@@ -31,7 +32,7 @@
     "cross-env": "^7.0.3",
     "jest": "^27.2.2",
     "jsdoc": "^3.6.7",
-    "jsdoc-to-markdown": "^7.0.1",
+    "jsdoc-to-markdown": "^7.1.0",
     "jsdom": "^17.0.0",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.4.1"
