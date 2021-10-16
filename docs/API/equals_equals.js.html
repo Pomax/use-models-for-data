@@ -26,16 +26,27 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import { TYPES } from "./types.js";
+            <pre class="prettyprint source linenums"><code>/**
+ * @namespace equals
+ */
+
+import { TYPES } from "./types.js";
 const { array, iterable, object } = TYPES;
 const definedOnly = ([_k, v]) => v !== undefined;
 
 /**
- * Standard, but unfortunately not built-in, equality checking for arbitrarily
- * data, including nested objects. As JS can do coerced equality checking, and
- * because in rare cases that's essential, the third argument is a "strict"
- * flag that defaults to true, but can be explicitly set to "false" to perform
- * coercive equality checking.
+ * &lt;p>Equality checking for arbitrary JS data, including nested objects.&lt;/p>
+ *
+ * &lt;p>As JS can do coerced equality checking, and because in rare cases that's
+ * essential, the third argument is a "strict" flag that defaults to true, but
+ * can be explicitly set to "false" to perform coercive equality checking.&lt;/p>
+ *
+ * @name equals.equals
+ * @function
+ * @param {*} v1 - One of the two things part of this equality check.
+ * @param {*} v2 - The other thing that's part of this equality check.
+ * @param {boolean} strict - True to check with strict type equality, false for coercive equality
+ * @returns {boolean} True if v1 equals v2, false if not.
  */
 export function equals(v1, v2, strict = true) {
   // primitive and alias equality?
@@ -53,6 +64,12 @@ export function equals(v1, v2, strict = true) {
 /**
  * Arrays are considered equal if they have the same length, contain
  * the same elements, and those elements are in the same order.
+ *
+ * @param {array} v1 - One of the two things part of this equality check.
+ * @param {array} v2 - The other thing that's part of this equality check.
+ * @param {boolean} strict - True to check with strict type equality, false for coercive equality
+ * @returns {boolean} True if v1 equals v2, false if not.
+ * @ignore
  */
 function arrayEquals(v1, v2, strict = true) {
   if (v1.length !== v2.length) return false;
@@ -65,6 +82,12 @@ function arrayEquals(v1, v2, strict = true) {
  * require casting to array in order to evaluate their equality.
  *
  * (But note that we want to deal with String objects as string literals)
+ *
+ * @param {Iterable} v1 - One of the two things part of this equality check.
+ * @param {Iterable} v2 - The other thing that's part of this equality check.
+ * @param {boolean} strict - True to check with strict type equality, false for coercive equality
+ * @returns {boolean} True if v1 equals v2, false if not.
+ * @ignore
  */
 function iterableEquals(v1, v2, strict = true) {
   if (strict &amp;&amp; v1.__proto__.constructor !== v2.__proto__.constructor) {
@@ -80,6 +103,12 @@ function iterableEquals(v1, v2, strict = true) {
  * set of enumerable keys (note: read that again, because "enumerable"
  * is not the same as "actually defined"), and each key points to the
  * same value (as determined through recursion)
+ *
+ * @param {object} v1 - One of the two things part of this equality check.
+ * @param {object} v2 - The other thing that's part of this equality check.
+ * @param {boolean} strict - True to check with strict type equality, false for coercive equality
+ * @returns {boolean} True if v1 equals v2, false if not.
+ * @ignore
  */
 function objectEquals(v1, v2, strict = true) {
   // Note that properties that are explicitly assigned as `undefined`
@@ -105,13 +134,13 @@ function objectEquals(v1, v2, strict = true) {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Fields.html">Fields</a></li><li><a href="Model.html">Model</a></li><li><a href="Models.html">Models</a></li></ul><h3>Global</h3><ul><li><a href="global.html#applyDiff">applyDiff</a></li><li><a href="global.html#arrayEquals">arrayEquals</a></li><li><a href="global.html#conforms">conforms</a></li><li><a href="global.html#createDefault">createDefault</a></li><li><a href="global.html#createDiff">createDiff</a></li><li><a href="global.html#createFormHTML">createFormHTML</a></li><li><a href="global.html#createFormTree">createFormTree</a></li><li><a href="global.html#createTableHTML">createTableHTML</a></li><li><a href="global.html#createTableRowHTML">createTableRowHTML</a></li><li><a href="global.html#createValidator">createValidator</a></li><li><a href="global.html#equals">equals</a></li><li><a href="global.html#finalizeMigration">finalizeMigration</a></li><li><a href="global.html#getRecordNameFor">getRecordNameFor</a></li><li><a href="global.html#inflate">inflate</a></li><li><a href="global.html#iterableEquals">iterableEquals</a></li><li><a href="global.html#linkSchema">linkSchema</a></li><li><a href="global.html#makeChangeHandler">makeChangeHandler</a></li><li><a href="global.html#makeMigration">makeMigration</a></li><li><a href="global.html#migrate">migrate</a></li><li><a href="global.html#objectEquals">objectEquals</a></li><li><a href="global.html#reverseDiff">reverseDiff</a></li><li><a href="global.html#sortedObjectKeys">sortedObjectKeys</a></li><li><a href="global.html#testArray">testArray</a></li><li><a href="global.html#testField">testField</a></li><li><a href="global.html#unlinkSchema">unlinkSchema</a></li><li><a href="global.html#validate">validate</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="diff.html">diff</a></li><li><a href="equals.html">equals</a></li><li><a href="Errors.html">Errors</a></li><li><a href="schema.html">schema</a></li><li><a href="utils.html">utils</a></li></ul><h3>Classes</h3><ul><li><a href="Fields.html">Fields</a></li><li><a href="Model.html">Model</a></li><li><a href="Models.html">Models</a></li></ul><h3>Global</h3><ul><li><a href="global.html#createDefault">createDefault</a></li><li><a href="global.html#createFormHTML">createFormHTML</a></li><li><a href="global.html#createFormTree">createFormTree</a></li><li><a href="global.html#createTableHTML">createTableHTML</a></li><li><a href="global.html#createTableRowHTML">createTableRowHTML</a></li><li><a href="global.html#createValidator">createValidator</a></li><li><a href="global.html#finalizeMigration">finalizeMigration</a></li><li><a href="global.html#makeMigration">makeMigration</a></li><li><a href="global.html#migrate">migrate</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Fri Oct 15 2021 15:20:32 GMT-0700 (Pacific Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Sat Oct 16 2021 13:02:58 GMT-0700 (Pacific Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>

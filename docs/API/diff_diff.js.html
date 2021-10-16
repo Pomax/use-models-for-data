@@ -26,17 +26,33 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import crc16 from "./crc/crc16.js";
+            <pre class="prettyprint source linenums"><code>/**
+ * @namespace diff
+ */
+
+import crc16 from "./crc/crc16.js";
 import { equals } from "../equals/equals.js";
 import { findSubtree } from "./object-recurse.js";
 
+/**
+ * Remove an element from an array.
+ * @param {*} arr
+ * @param {*} element
+ * @returns The array with the element removed
+ * @ignore
+ */
 function remove(arr, element) {
   const i = arr.indexOf(element);
   if (i > -1) arr.splice(i, 1);
   return arr;
 }
 
-// ...
+/**
+ * Determine if some value is a JS primitive
+ * @param {*} value
+ * @returns {boolean} true if &lt;code>value&lt;/code> is a JS primitive, otherwise false
+ * @ignore
+ */
 function primitive(v) {
   if (v === true || v === false) return true;
   if (typeof v === `number`) return true;
@@ -44,12 +60,22 @@ function primitive(v) {
   if (v instanceof Array) return true;
 }
 
-// ...
+/**
+ * Hash a string for levenstein distance.
+ * @param {*} data
+ * @returns {String} 16 bit CRC hex string
+ * @ignore
+ */
 function stringHash(data) {
   return crc16(data).toString(16);
 }
 
-// ...
+/**
+ * Convert any data to "some kind of hash value".
+ * @param {*} data
+ * @returns {String} a hash string
+ * @ignore
+ */
 function valueHash(data) {
   if (typeof data === `boolean`) data = data.toString();
   else if (typeof data === `number`) data = data.toString();
@@ -66,23 +92,48 @@ function valueHash(data) {
   );
 }
 
-// uppercase regular expression replacement function
+/**
+ * Uppercase function for use in regular expression replacements.
+ *
+ * @param {*} _ - the full capture group, which we don't care about
+ * @param {*} letter - the initial letter in a word
+ * @returns {String} The initial letter, uppercased
+ * @ignore
+ */
 function ucre(_, letter) {
   return letter.toUpperCase();
 }
 
-// convert namespaces to something that'll work as part of a JS method name.
+/**
+ * Convert namespaces to something that'll work as part of a JS method name.
+ *
+ * @param {String} str - the input string to convert to camelCase
+ * @param {String} [namespace] - Optional namespace prefix to resolve into the full name
+ * @returns {String} The camelCase representation of the input
+ * @ignore
+ */
 function camelCase(str = ``, namespace) {
   if (namespace) str = `${namespace}.${str}`;
   return str.replace(/^\s*(\w)/, ucre).replace(/[_.]+(\w)/g, ucre);
 }
 
 /**
- * The most important function.
+ * &lt;p>Create a diff between two JS objects, structured as a sequence of
+ * operational transforms, consisting of:&lt;/p>
  *
- * @param {*} object1
- * @param {*} object2
- * @returns {operations} An array of operational transforms that turn object1 into object2
+ * &lt;ul>
+ *   &lt;li>&lt;code>add&lt;/code>&lt;/li>
+ *   &lt;li>&lt;code>update&lt;/code>&lt;/li>
+ *   &lt;li>&lt;code>move&lt;/code>&lt;/li>
+ *   &lt;li>&lt;code>rename&lt;/code>&lt;/li>
+ * &lt;/ul>
+ *
+ * @name diff.createDiff
+ * @function
+ * @param {Object} object1 - The original object
+ * @param {Object} object2 - The target object
+ * @returns {operations} An array of operational transforms that turns the original object into the target object.
+ * @see applyDiff
  */
 export function createDiff(object1, object2) {
   if (equals(object1, object2)) return [];
@@ -145,8 +196,12 @@ export function createDiff(object1, object2) {
   return operations;
 }
 
-// Perform breadth-first diff resolution: we first want to make sure all 1st level keys work out.
-// Then we can sort out all 2nd level keys, and so on until we run out of objects to iterate into.
+/**
+ * Perform breadth-first diff resolution: we first want to make sure all 1st level keys work out.
+ * Then we can sort out all 2nd level keys, and so on until we run out of objects to iterate into.
+ *
+ * @ignore
+ */
 function diffUntilStable(object1, object2, key = ``) {
   const orderedOperations = [];
 
@@ -276,16 +331,46 @@ function diffUntilStable(object1, object2, key = ``) {
 }
 
 /**
- * The second most important function
- * @param {*} changeOperations
- * @param {*} object
- * @param {*} changeHandler (optional)
- * @returns {Object} The result of applying the set of operations transforms to the provided object.
+ * &lt;p>Apply a diff to a JS object, where the diff is structured as a
+ * sequence of operational transforms, consisting of:&lt;/p>
+ *
+ * &lt;ul>
+ *   &lt;li>&lt;code>add&lt;/code>&lt;/li>
+ *   &lt;li>&lt;code>update&lt;/code>&lt;/li>
+ *   &lt;li>&lt;code>move&lt;/code>&lt;/li>
+ *   &lt;li>&lt;code>rename&lt;/code>&lt;/li>
+ * &lt;/ul>
+ *
+ * &lt;p>Note that in order to control the diff application behaviour, a
+ * change handler function object can be passed in. See {@link diff.makeChangeHandler}
+ * for details on this function object&lt;/p>
+ *
+ * &lt;p>When called without an explicit handler, a default change handler
+ * is used that performs "straight" diffing, without ignoring keys
+ * or transforming values during application. This default change
+ * handler is created by the {@link diff.makeChangeHandler} method.&lt;/p>
+ *
+ * &lt;p>However, in order to perform schema diffing, where the diff is
+ * computed between two schema objects, but then needs to be applied
+ * to plain data objects, this functionality allows the same diffing
+ * process to run, turning the sequence of operational transforms
+ * for schema objects into a sequence of concrete operational
+ * transforms for plain data objects.&lt;/p>
+ *
+ * &lt;p>See {@link schema.makeSchemaChangeHandler} for how this type of
+ * indirect diffing is achieved.&lt;/p>
+ *
+ * @name diff.applyDiff
+ * @function
+ * @param {diffOperation[]} changeOperations - the sequence of operational transforms to apply
+ * @param {Object} object - the JS object to transform
+ * @param {changeHandler} [changeHandler] - a function object that can be used to fine-control the diff application process.
+ * @returns {Object} The result of applying the set of operational transforms to the provided object.
  */
 export function applyDiff(
   changeOperations,
   object,
-  changeHandler = makeDefaultChangeHandler()
+  changeHandler = makeChangeHandler()
 ) {
   changeOperations.forEach((operation) => {
     changeHandler(object, operation);
@@ -296,26 +381,58 @@ export function applyDiff(
   return object;
 }
 
-function makeDefaultChangeHandler() {
-  return makeChangeHandler();
-}
-
 /**
- * Not all diffs should be applied equally, especially when
- * it's schema'd diff. While the default handler works as
- * your standard differ, things like basic-js-schema.migrate
- * can build their own change handler using this function to
- * ensure that diffs based on schema changes get applied to
- * schema-conformant *objects* instead.
+ * &lt;p>Create a change handler function object that can be used during
+ * diff application to control how the diff gets applied. This object
+ * takes three functions as arguments that each control a different
+ * aspect of the application process:&lt;/p>
  *
- * @param {*} ignoreKey
- * @param {*} filterKeyString
- * @returns {function} a change handling function
+ * &lt;pre>&lt;code>
+ *   ignoreKey = function(keypath, type) {
+ *     // returns false if the diff application should skip the
+ *     // indicated type of transform for properties with the
+ *     // indicated keypath, using a dot separated value.
+ *   }
+ *
+ *   filterKeyString = function(keypath) {
+ *     // returns a (possibly) rewritten keypath, or
+ *     // false if the keypath should be ignored entirely
+ *     // for all possible operational transform types.
+ *   }
+ *
+ *   transformValue = function(keypath, value) {
+ *     // returns a (possibly) new value for the given keypath.
+ *   }
+ * &lt;/code>&lt;/pre>
+ *
+ * Any or all three functions may be omitted, in which case the
+ * following defaults are used:
+ *
+ * &lt;pre>&lt;code>
+ *   ignoreKey = function(keypath, type) {
+ *     return false;
+ *   }
+ *
+ *   filterKeyString = function(keypath) {
+ *     return keypath;
+ *   }
+ *
+ *   transformValue = function(keypath, value) {
+ *     return value;
+ *   }
+ * &lt;/code>&lt;/pre>
+ *
+ * @name diff.makeChangeHandler
+ * @function
+ * @param {function} ignoreKey - controls whether to apply diffs for specific key/type tuples.
+ * @param {function} filterKeyString - controls keypath mappings during diff application.
+ * @param {function} transformValue - controls value mappings during diff application.
+ * @returns {function} a change handling function object.
  */
 export function makeChangeHandler(
   ignoreKey = (key, type) => false,
   filterKeyString = (key) => key,
-  transformValue = (value) => value
+  transformValue = (key, value) => value
 ) {
   const changeHandler = function changeHandler(object, operation) {
     const { type, key, value, fn, rollback } = operation;
@@ -372,21 +489,21 @@ function getObjectLevel(object, key) {
 }
 
 /**
- * Reverse an operational diff sequence, including swapping
- * adds for removals, removals for adds, switching relocation
- * order, and swapping the fn/rollback bindings.
+ * Reverse the sequence of operational transforms, such that
+ * if for a tuple &lt;code>(object1, object2)&lt;/code> the input
+ * operations transform object1 into object2, the reversed
+ * sequence turns object2 into object1.
  *
- * Note that this acts just like Array.prototype.reverse,
- * reversing the list itself rather than creating a derivative
- * list, as well as updating all the operation objects.
+ * This function is idempotent, such that:
  *
- * To restore the original list of operations, run this function
- * a second time on the same data:
- *
+ * &lt;pre>&lt;code>
  *   operations = reverseDiff(reverseDiff(operations))
+ * &lt;/code>&lt;/pre>
  *
- * @param {*} operations
- * @returns {operations} A list of operational transforms that roll back the list of input operations.
+ * @name diff.reverseDiff
+ * @function
+ * @param {operation[]} operations - A sequence of operational transforms.
+ * @returns {operation[]} A list of operational transforms that rolls back the list of input operations.
  */
 export function reverseDiff(operations) {
   operations.reverse();
@@ -412,7 +529,38 @@ export function reverseDiff(operations) {
 }
 
 // aliases
-export { createDiff as create, applyDiff as apply, reverseDiff as reverse };
+export {
+  /**
+   * An alias for {@link diff.createDiff }
+   * @name diff.create
+   * @function
+   * @param {Object} object1 - The original object
+   * @param {Object} object2 - The target object
+   * @returns {operations} An array of operational transforms that turns the original object into the target object.
+   * @see diff.createDiff
+   */
+  createDiff as create,
+  /**
+   * Alias for {@link diff.applyDiff}
+   * @name diff.apply
+   * @function
+   * @param {diffOperation[]} changeOperations - the sequence of operational transforms to apply
+   * @param {Object} object - the JS object to transform
+   * @param {changeHandler} [changeHandler] - a function object that can be used to fine-control the diff application process.
+   * @returns {Object} The result of applying the set of operational transforms to the provided object.
+   * @see diff.applyDiff
+   */
+  applyDiff as apply,
+  /**
+   * Alias for {@link diff.reverseDiff}
+   * @name diff.reverse
+   * @function
+   * @param {operation[]} A sequence of operational transforms.
+   * @returns {operation[]} A list of operational transforms that rolls back the list of input operations.
+   * @see diff.reverseDiff
+   */
+  reverseDiff as reverse,
+};
 </code></pre>
         </article>
     </section>
@@ -423,13 +571,13 @@ export { createDiff as create, applyDiff as apply, reverseDiff as reverse };
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Fields.html">Fields</a></li><li><a href="Model.html">Model</a></li><li><a href="Models.html">Models</a></li></ul><h3>Global</h3><ul><li><a href="global.html#applyDiff">applyDiff</a></li><li><a href="global.html#arrayEquals">arrayEquals</a></li><li><a href="global.html#conforms">conforms</a></li><li><a href="global.html#createDefault">createDefault</a></li><li><a href="global.html#createDiff">createDiff</a></li><li><a href="global.html#createFormHTML">createFormHTML</a></li><li><a href="global.html#createFormTree">createFormTree</a></li><li><a href="global.html#createTableHTML">createTableHTML</a></li><li><a href="global.html#createTableRowHTML">createTableRowHTML</a></li><li><a href="global.html#createValidator">createValidator</a></li><li><a href="global.html#equals">equals</a></li><li><a href="global.html#finalizeMigration">finalizeMigration</a></li><li><a href="global.html#getRecordNameFor">getRecordNameFor</a></li><li><a href="global.html#inflate">inflate</a></li><li><a href="global.html#iterableEquals">iterableEquals</a></li><li><a href="global.html#linkSchema">linkSchema</a></li><li><a href="global.html#makeChangeHandler">makeChangeHandler</a></li><li><a href="global.html#makeMigration">makeMigration</a></li><li><a href="global.html#migrate">migrate</a></li><li><a href="global.html#objectEquals">objectEquals</a></li><li><a href="global.html#reverseDiff">reverseDiff</a></li><li><a href="global.html#sortedObjectKeys">sortedObjectKeys</a></li><li><a href="global.html#testArray">testArray</a></li><li><a href="global.html#testField">testField</a></li><li><a href="global.html#unlinkSchema">unlinkSchema</a></li><li><a href="global.html#validate">validate</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="diff.html">diff</a></li><li><a href="equals.html">equals</a></li><li><a href="Errors.html">Errors</a></li><li><a href="schema.html">schema</a></li><li><a href="utils.html">utils</a></li></ul><h3>Classes</h3><ul><li><a href="Fields.html">Fields</a></li><li><a href="Model.html">Model</a></li><li><a href="Models.html">Models</a></li></ul><h3>Global</h3><ul><li><a href="global.html#createDefault">createDefault</a></li><li><a href="global.html#createFormHTML">createFormHTML</a></li><li><a href="global.html#createFormTree">createFormTree</a></li><li><a href="global.html#createTableHTML">createTableHTML</a></li><li><a href="global.html#createTableRowHTML">createTableRowHTML</a></li><li><a href="global.html#createValidator">createValidator</a></li><li><a href="global.html#finalizeMigration">finalizeMigration</a></li><li><a href="global.html#makeMigration">makeMigration</a></li><li><a href="global.html#migrate">migrate</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Fri Oct 15 2021 15:20:32 GMT-0700 (Pacific Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Sat Oct 16 2021 13:02:58 GMT-0700 (Pacific Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>
