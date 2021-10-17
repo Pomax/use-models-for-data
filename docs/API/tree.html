@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Namespace: html</title>
+    <title>JSDoc: Namespace: tree</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Namespace: html</h1>
+    <h1 class="page-title">Namespace: tree</h1>
 
     
 
@@ -28,7 +28,7 @@
 
 <header>
     
-        <h2>html</h2>
+        <h2>tree</h2>
         
     
 </header>
@@ -70,7 +70,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="forms_create-html.js.html">forms/create-html.js</a>, <a href="forms_create-html.js.html#line1">line 1</a>
+        <a href="forms_create-tree.js.html">forms/create-tree.js</a>, <a href="forms_create-tree.js.html#line1">line 1</a>
     </li></ul></dd>
     
 
@@ -103,16 +103,35 @@
 
         
             
-<h4 class="name" id=".createFormHTML"><span class="type-signature">(static) </span>createFormHTML<span class="type-signature"></span></h4>
+<h4 class="name" id=".createFormTree"><span class="type-signature">(static) </span>createFormTree<span class="type-signature"></span></h4>
 
 
 
 
 <div class="description">
-    <p>create the form code for updating a schema-conformant object</p>
+    <p>
+similar to <a href="html.html#.createFormHTML">html.createFormHTML</a>, except we're not building an
+HTML string, we're building a DOM-like (e.g. (P)React) tree of content.
+</p>
 
 <p>
-The options object should take the form documented in <a href="tree.html#.createFormTree">tree.createFormTree</a>.
+The options object should take the following form:
+</p>
+
+<pre><code>
+  {
+    create: function,
+    onSubmit: function,
+    footer: string,
+    label: function,
+    skipDebug: boolean,
+    disabled: boolean,
+    inputHandler: function,
+  }
+</code></pre>
+
+<p>
+TODO: write the rest of the docs here, explaining how each of these options affect code generation.
 </p>
 </div>
 
@@ -151,7 +170,7 @@ The options object should take the form documented in <a href="tree.html#.create
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="forms_create-html.js.html">forms/create-html.js</a>, <a href="forms_create-html.js.html#line31">line 31</a>
+        <a href="forms_create-tree.js.html">forms/create-tree.js</a>, <a href="forms_create-tree.js.html#line8">line 8</a>
     </li></ul></dd>
     
 
@@ -169,15 +188,15 @@ The options object should take the form documented in <a href="tree.html#.create
 
         
             
-<h4 class="name" id=".createTableHTML"><span class="type-signature">(static) </span>createTableHTML<span class="type-signature"></span></h4>
+<h4 class="name" id=".createFormTreeComponents"><span class="type-signature">(static) </span>createFormTreeComponents<span class="type-signature"></span></h4>
 
 
 
 
 <div class="description">
     <p>
-For when you need table content, not a form. Note that nesting
-is not preserved using this call because you don't nest tables.
+similar to <a href="html.html#.createTableHTML">html.createTableHTML</a>, except we're not building an
+HTML string, we're building a DOM-like (e.g. (P)React) tree of content.
 </p>
 </div>
 
@@ -216,7 +235,7 @@ is not preserved using this call because you don't nest tables.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="forms_create-html.js.html">forms/create-html.js</a>, <a href="forms_create-html.js.html#line50">line 50</a>
+        <a href="forms_create-tree.js.html">forms/create-tree.js</a>, <a href="forms_create-tree.js.html#line115">line 115</a>
     </li></ul></dd>
     
 
@@ -234,15 +253,16 @@ is not preserved using this call because you don't nest tables.
 
         
             
-<h4 class="name" id=".createTableRowHTML"><span class="type-signature">(static) </span>createTableRowHTML<span class="type-signature"></span></h4>
+<h4 class="name" id=".createTableTreeRows"><span class="type-signature">(static) </span>createTableTreeRows<span class="type-signature"></span></h4>
 
 
 
 
 <div class="description">
     <p>
-For when you need table content, not a form. Note that nesting
-is not preserved using this call because you don't nest tables.
+similar to <a href="html.html#.createTableRowHTML">html.createTableRowHTML</a>, except we're not building an
+HTML string, we're building am array of DOM-like (e.g. (P)React) nods, mapping
+to table rows.
 </p>
 </div>
 
@@ -281,7 +301,7 @@ is not preserved using this call because you don't nest tables.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="forms_create-html.js.html">forms/create-html.js</a>, <a href="forms_create-html.js.html#line66">line 66</a>
+        <a href="forms_create-tree.js.html">forms/create-tree.js</a>, <a href="forms_create-tree.js.html#line142">line 142</a>
     </li></ul></dd>
     
 
