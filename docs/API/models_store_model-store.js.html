@@ -26,14 +26,20 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import { MISSING_IMPLEMENTATION } from "../../errors.js";
+            <pre class="prettyprint source linenums"><code>import { MissingImplementation } from "../../errors.js";
 
 /**
- * &lt;p>To write a valid model store, extend this &lt;code>ModelStore&lt;/code> class.&lt;/p>
+ * &lt;p>
+ * This is the base class for model stores, which are used to give the
+ * {@link Models} management class a data backend to work with, allowing
+ * you to save and load {@link Model} instances.
+ * &lt;/p>
  *
- * &lt;p>For an example of a ModelStore implementation, see {@link FileSystemStore}.&lt;/p>
+ * &lt;p>
+ * For an example of a ModelStore implementation, see {@link FileSystemStore}.
+ * &lt;/p>
  *
- * @ignore
+ * @hideconstructor
  */
 export class ModelStore {
   /**
@@ -44,24 +50,36 @@ export class ModelStore {
   }
 
   /**
-   * ...
-   * @param {*} schema
-   * @param {*} recordName
+   * This method must load a data object, keyed to both the indicated
+   * &lt;code>recordName&lt;/code> and schema. How your model store implementation
+   * does that is up to you, and schemas could map to directories, or
+   * database tables, or even database files, or completely different
+   * disks or domains - all that matters is that given a schema and a
+   * recordname, this method yields the data previously stored for that tuple.
+   *
+   * @param {schema} schema - The schema that this record conforms to.
+   * @param {string} recordName - The key with which the record was previously saved.
    */
   async loadRecord(schema, recordName) {
-    throw new MISSING_IMPLEMENTATION(
+    throw new MissingImplementation(
       `${this.__proto__.constructor.name}.loadRecord(schema, recordName)`
     );
   }
 
   /**
+   * This method must save a data object, keyed to both the indicated
+   * &lt;code>recordName&lt;/code> and schema. How your model store implementation
+   * does that is up to you, and schemas could map to directories, or
+   * database tables, or even database files, or completely different
+   * disks or domains - all that matters is that given a schema and a
+   * recordname, this method saves data in a way that it can be loaded later.
    *
-   * @param {*} schema
-   * @param {*} instance
-   * @param {*} recordName
+   * @param {schema} schema - The schema that this record conforms to.
+   * @param {object} instance - The schema-conformant data that is to be saved.
+   * @param {string} recordName - The key with which this data should be saved.
    */
   async saveRecord(schema, instance, recordName) {
-    throw new MISSING_IMPLEMENTATION(
+    throw new MissingImplementation(
       `${this.__proto__.constructor.name}.saveRecord(schema, instance, recordName)`
     );
   }
@@ -71,7 +89,7 @@ export class ModelStore {
    * @param {*} schema
    */
   loadSchema(schema) {
-    throw new MISSING_IMPLEMENTATION(
+    throw new MissingImplementation(
       `${this.__proto__.constructor.name}.loadSchema(schema)`
     );
   }
@@ -81,7 +99,7 @@ export class ModelStore {
    * @param {*} Model
    */
   saveSchema(Model) {
-    throw new MISSING_IMPLEMENTATION(
+    throw new MissingImplementation(
       `${this.__proto__.constructor.name}.saveSchema(Model)`
     );
   }
@@ -93,7 +111,7 @@ export class ModelStore {
    * @param {*} migration
    */
   saveMigration(schema1, schema2, migration) {
-    throw new MISSING_IMPLEMENTATION(
+    throw new MissingImplementation(
       `${this.__proto__.constructor.name}.saveMigration(schema1, schema2, migration)`
     );
   }
@@ -108,13 +126,13 @@ export class ModelStore {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="diff.html">diff</a></li><li><a href="equals.html">equals</a></li><li><a href="Errors.html">Errors</a></li><li><a href="schema.html">schema</a></li><li><a href="utils.html">utils</a></li></ul><h3>Classes</h3><ul><li><a href="Fields.html">Fields</a></li><li><a href="Model.html">Model</a></li><li><a href="Models.html">Models</a></li></ul><h3>Global</h3><ul><li><a href="global.html#createDefault">createDefault</a></li><li><a href="global.html#createFormHTML">createFormHTML</a></li><li><a href="global.html#createFormTree">createFormTree</a></li><li><a href="global.html#createTableHTML">createTableHTML</a></li><li><a href="global.html#createTableRowHTML">createTableRowHTML</a></li><li><a href="global.html#createValidator">createValidator</a></li><li><a href="global.html#finalizeMigration">finalizeMigration</a></li><li><a href="global.html#makeMigration">makeMigration</a></li><li><a href="global.html#migrate">migrate</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="conforms.html">conforms</a></li><li><a href="diff.html">diff</a></li><li><a href="equals.html">equals</a></li><li><a href="Errors.html">Errors</a></li><li><a href="html.html">html</a></li><li><a href="schema.html">schema</a></li><li><a href="utils.html">utils</a></li></ul><h3>Classes</h3><ul><li><a href="Fields.html">Fields</a></li><li><a href="FileSystemStore.html">FileSystemStore</a></li><li><a href="Model.html">Model</a></li><li><a href="Models.html">Models</a></li><li><a href="ModelStore.html">ModelStore</a></li></ul><h3>Global</h3><ul><li><a href="global.html#createFormTree">createFormTree</a></li><li><a href="global.html#createTableHTML">createTableHTML</a></li><li><a href="global.html#createTableRowHTML">createTableRowHTML</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Sat Oct 16 2021 13:02:58 GMT-0700 (Pacific Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Sun Oct 17 2021 11:27:48 GMT-0700 (Pacific Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>

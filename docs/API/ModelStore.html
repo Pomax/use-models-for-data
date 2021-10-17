@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: Fields</title>
+    <title>JSDoc: Class: ModelStore</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: Fields</h1>
+    <h1 class="page-title">Class: ModelStore</h1>
 
     
 
@@ -28,23 +28,17 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>Fields</h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>ModelStore</h2>
         
-            <div class="class-description">Static model field builder.
+            <div class="class-description"><p>
+This is the base class for model stores, which are used to give the
+<a href="Models.html">Models</a> management class a data backend to work with, allowing
+you to save and load <a href="Model.html">Model</a> instances.
+</p>
 
-<p><strong>note</strong>: "one-or-more" is handled as `array: true` in the options, rather than being its own type of model field. (On the schema side this is the __meta.array:true property)</p>
-
-<p>All fields can be passed an options object that supports arbitrary keywords, with some exceptions that are used by the schema system itself:</p>, see above.
-
-<pre><code>
-  {
-    required: boolean,
-    default: any value,
-    choices: array of possible values,
-    configurable: boolean,
-    debug: boolean,
-  }
-</code></pre></div>
+<p>
+For an example of a ModelStore implementation, see <a href="FileSystemStore.html">FileSystemStore</a>.
+</p></div>
         
     
 </header>
@@ -97,7 +91,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_fields.js.html">models/fields.js</a>, <a href="models_fields.js.html#line66">line 66</a>
+        <a href="models_store_model-store.js.html">models/store/model-store.js</a>, <a href="models_store_model-store.js.html#line16">line 16</a>
     </li></ul></dd>
     
 
@@ -153,7 +147,7 @@
     
 
     
-    <h4 class="name" id=".boolean"><span class="type-signature">(static) </span>boolean<span class="signature">(options)</span><span class="type-signature"> &rarr; {ModelField}</span></h4>
+    <h4 class="name" id="loadRecord"><span class="type-signature">(async) </span>loadRecord<span class="signature">(schema, recordName)</span><span class="type-signature"></span></h4>
     
 
     
@@ -161,7 +155,12 @@
 
 
 <div class="description">
-    Model field definition for boolean values.
+    This method must load a data object, keyed to both the indicated
+<code>recordName</code> and schema. How your model store implementation
+does that is up to you, and schemas could map to directories, or
+database tables, or even database files, or completely different
+disks or domains - all that matters is that given a schema and a
+recordname, this method yields the data previously stored for that tuple.
 </div>
 
 
@@ -197,13 +196,13 @@
 
         <tr>
             
-                <td class="name"><code>options</code></td>
+                <td class="name"><code>schema</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Object</span>
+<span class="param-type"><a href="schema.html">schema</a></span>
 
 
             
@@ -213,7 +212,30 @@
 
             
 
-            <td class="description last">an options object, see above.</td>
+            <td class="description last">The schema that this record conforms to.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>recordName</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The key with which the record was previously saved.</td>
         </tr>
 
     
@@ -254,7 +276,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_fields.js.html">models/fields.js</a>, <a href="models_fields.js.html#line73">line 73</a>
+        <a href="models_store_model-store.js.html">models/store/model-store.js</a>, <a href="models_store_model-store.js.html#line35">line 35</a>
     </li></ul></dd>
     
 
@@ -279,24 +301,6 @@
 
 
 
-<h5>Returns:</h5>
-
-        
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">ModelField</span>
-
-
-    </dd>
-</dl>
-
-    
 
 
 
@@ -308,7 +312,7 @@
     
 
     
-    <h4 class="name" id=".choice"><span class="type-signature">(static) </span>choice<span class="signature">(choices, options)</span><span class="type-signature"> &rarr; {ModelField}</span></h4>
+    <h4 class="name" id="loadSchema"><span class="type-signature"></span>loadSchema<span class="signature">(schema)</span><span class="type-signature"></span></h4>
     
 
     
@@ -348,13 +352,13 @@
 
         <tr>
             
-                <td class="name"><code>choices</code></td>
+                <td class="name"><code>schema</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Array.&lt;any></span>
+<span class="param-type">*</span>
 
 
             
@@ -364,30 +368,7 @@
 
             
 
-            <td class="description last">Array of valid values for this field.</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>options</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">an options object, see above.</td>
+            <td class="description last"></td>
         </tr>
 
     
@@ -428,7 +409,91 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_fields.js.html">models/fields.js</a>, <a href="models_fields.js.html#line105">line 105</a>
+        <a href="models_store_model-store.js.html">models/store/model-store.js</a>, <a href="models_store_model-store.js.html#line63">line 63</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="ready"><span class="type-signature"></span>ready<span class="signature">()</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_store_model-store.js.html">models/store/model-store.js</a>, <a href="models_store_model-store.js.html#line20">line 20</a>
     </li></ul></dd>
     
 
@@ -456,6 +521,10 @@
 <h5>Returns:</h5>
 
         
+<div class="param-desc">
+    whether this store is ready for use or not.
+</div>
+
 
 
 <dl>
@@ -464,7 +533,7 @@
     </dt>
     <dd>
         
-<span class="param-type">ModelField</span>
+<span class="param-type">boolean</span>
 
 
     </dd>
@@ -482,7 +551,7 @@
     
 
     
-    <h4 class="name" id=".model"><span class="type-signature">(static) </span>model<span class="signature">(model, options)</span><span class="type-signature"> &rarr; {ModelField}</span></h4>
+    <h4 class="name" id="saveMigration"><span class="type-signature"></span>saveMigration<span class="signature">(schema1, schema2, migration)</span><span class="type-signature"></span></h4>
     
 
     
@@ -522,13 +591,13 @@
 
         <tr>
             
-                <td class="name"><code>model</code></td>
+                <td class="name"><code>schema1</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type"><a href="Model.html">Model</a></span>
+<span class="param-type">*</span>
 
 
             
@@ -545,13 +614,13 @@
 
         <tr>
             
-                <td class="name"><code>options</code></td>
+                <td class="name"><code>schema2</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Object</span>
+<span class="param-type">*</span>
 
 
             
@@ -561,7 +630,30 @@
 
             
 
-            <td class="description last">an options object, see above.</td>
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>migration</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
         </tr>
 
     
@@ -602,7 +694,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_fields.js.html">models/fields.js</a>, <a href="models_fields.js.html#line118">line 118</a>
+        <a href="models_store_model-store.js.html">models/store/model-store.js</a>, <a href="models_store_model-store.js.html#line85">line 85</a>
     </li></ul></dd>
     
 
@@ -627,24 +719,6 @@
 
 
 
-<h5>Returns:</h5>
-
-        
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">ModelField</span>
-
-
-    </dd>
-</dl>
-
-    
 
 
 
@@ -656,7 +730,195 @@
     
 
     
-    <h4 class="name" id=".number"><span class="type-signature">(static) </span>number<span class="signature">(options)</span><span class="type-signature"> &rarr; {ModelField}</span></h4>
+    <h4 class="name" id="saveRecord"><span class="type-signature">(async) </span>saveRecord<span class="signature">(schema, instance, recordName)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    This method must save a data object, keyed to both the indicated
+<code>recordName</code> and schema. How your model store implementation
+does that is up to you, and schemas could map to directories, or
+database tables, or even database files, or completely different
+disks or domains - all that matters is that given a schema and a
+recordname, this method saves data in a way that it can be loaded later.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>schema</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="schema.html">schema</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The schema that this record conforms to.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>instance</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The schema-conformant data that is to be saved.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>recordName</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The key with which this data should be saved.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_store_model-store.js.html">models/store/model-store.js</a>, <a href="models_store_model-store.js.html#line53">line 53</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="saveSchema"><span class="type-signature"></span>saveSchema<span class="signature">(Model)</span><span class="type-signature"></span></h4>
     
 
     
@@ -696,13 +958,13 @@
 
         <tr>
             
-                <td class="name"><code>options</code></td>
+                <td class="name"><code>Model</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">Object</span>
+<span class="param-type">*</span>
 
 
             
@@ -712,7 +974,7 @@
 
             
 
-            <td class="description last">an options object, see above.</td>
+            <td class="description last"></td>
         </tr>
 
     
@@ -753,7 +1015,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_fields.js.html">models/fields.js</a>, <a href="models_fields.js.html#line93">line 93</a>
+        <a href="models_store_model-store.js.html">models/store/model-store.js</a>, <a href="models_store_model-store.js.html#line73">line 73</a>
     </li></ul></dd>
     
 
@@ -778,175 +1040,6 @@
 
 
 
-<h5>Returns:</h5>
-
-        
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">ModelField</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id=".string"><span class="type-signature">(static) </span>string<span class="signature">(options)</span><span class="type-signature"> &rarr; {ModelField}</span></h4>
-    
-
-    
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>options</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">an options object, see above.</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_fields.js.html">models/fields.js</a>, <a href="models_fields.js.html#line82">line 82</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">ModelField</span>
-
-
-    </dd>
-</dl>
-
-    
 
 
 

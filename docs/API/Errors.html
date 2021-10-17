@@ -37,8 +37,33 @@
     <div class="container-overview">
     
         
-            <div class="description">This is the only file that is permitted to create new Error objects.
-Everything that wants to throw must get its error objects here.</div>
+            <div class="description"><p>
+This is the only file that is permitted to create new Error objects.
+Any throw that occurs in this library will be one of the errors listed.
+</p>
+
+<p>
+As such, any try/catch code you write against this library should make
+sure to not blind-catch, but catch intentionally:
+<p>
+
+<pre><code>
+  import { Errors } from "use-models-for-data";
+  import { MyModel } from "./my-models.js";
+
+  try {
+    MyModel.load(`someRecordName`);
+  } catch (err) {
+    const type = err.__proto__.constructor;
+    switch(type) {
+      case (Errors.FileDoesNotExist): ...
+      case (Errors.FileReadError): ...
+      ...
+      case (TypeError): ...
+      default: throw err;
+    }
+  }
+</code></pre></div>
         
 
         
@@ -102,6 +127,1374 @@ Everything that wants to throw must get its error objects here.</div>
     
 
     
+        <h3 class="subsection-title">Members</h3>
+
+        
+            
+<h4 class="name" id=".AssignmentMustBeArray"><span class="type-signature">(static) </span>AssignmentMustBeArray<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Used in <a href="Models.html">Models</a> to signal that an assignment to an <code>array</code> property was not an array.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="errors.js.html">errors.js</a>, <a href="errors.js.html#line233">line 233</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id=".BadModelDataSubmission"><span class="type-signature">(static) </span>BadModelDataSubmission<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Used in <a href="Model.html">Model</a> to signal that a data update using a form submission object did not succeed due to validation failure.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="errors.js.html">errors.js</a>, <a href="errors.js.html#line189">line 189</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id=".CouldNotFindModel"><span class="type-signature">(static) </span>CouldNotFindModel<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Used in the <a href="ModelRegistry.html">ModelRegistry</a> to signal that the code tried to access an unknown schema.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="errors.js.html">errors.js</a>, <a href="errors.js.html#line122">line 122</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id=".DoNotUseModelConstructor"><span class="type-signature">(static) </span>DoNotUseModelConstructor<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Thrown when code tries to construct a model using the <code>new</code> keyword, rather than the <code>create()</code> function.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="errors.js.html">errors.js</a>, <a href="errors.js.html#line176">line 176</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id=".FieldFailedCustomValidation"><span class="type-signature">(static) </span>FieldFailedCustomValidation<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Used in the model field code to signal that a value did not pass custom validation (even if it passed basic validation).
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="errors.js.html">errors.js</a>, <a href="errors.js.html#line109">line 109</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id=".FileDoesNotExist"><span class="type-signature">(static) </span>FileDoesNotExist<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Used to signal a filepath does not resolve to an actual file.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="errors.js.html">errors.js</a>, <a href="errors.js.html#line262">line 262</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id=".FileReadError"><span class="type-signature">(static) </span>FileReadError<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Used to signal a filepath resolves to a file, but that file could not be read in.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="errors.js.html">errors.js</a>, <a href="errors.js.html#line275">line 275</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id=".IncompleteModelSave"><span class="type-signature">(static) </span>IncompleteModelSave<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Used in <a href="Model.html">Model</a> to signal that the user tried to save a model that is missing required values (something which can only be the case if the model was built using the ALLOW_INCOMPLETE symbol)
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="errors.js.html">errors.js</a>, <a href="errors.js.html#line161">line 161</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id=".InvalidAssignment"><span class="type-signature">(static) </span>InvalidAssignment<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Used in {@Models} to signal that a property assignment was not permitted according to the model schema.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="errors.js.html">errors.js</a>, <a href="errors.js.html#line246">line 246</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id=".MissingChoicesArray"><span class="type-signature">(static) </span>MissingChoicesArray<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Used in the model fields code to signal that an expected <code>choices</code> array is missing from the field properties.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="errors.js.html">errors.js</a>, <a href="errors.js.html#line72">line 72</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id=".MissingCreateFunction"><span class="type-signature">(static) </span>MissingCreateFunction<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Used by the form building code to warn the user that they forgot to provide a create() function for transforming tag/props tuples into nodes.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="errors.js.html">errors.js</a>, <a href="errors.js.html#line35">line 35</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id=".MissingImplementation"><span class="type-signature">(static) </span>MissingImplementation<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Thrown by anything that intends to be an abstract superclass, to make sure subclasses implement the necessary methods.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="errors.js.html">errors.js</a>, <a href="errors.js.html#line314">line 314</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id=".MissingRecordNameBinding"><span class="type-signature">(static) </span>MissingRecordNameBinding<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Used by the schema code to signal that a model could not be saved using an unqualified <code>save()</code> call.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="errors.js.html">errors.js</a>, <a href="errors.js.html#line301">line 301</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id=".ModelFromMissingData"><span class="type-signature">(static) </span>ModelFromMissingData<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Used in <a href="Model.html">Model</a> to signal that .from(data) was called without a data payload.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="errors.js.html">errors.js</a>, <a href="errors.js.html#line148">line 148</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id=".NoStoreFound"><span class="type-signature">(static) </span>NoStoreFound<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Used in the <a href="Models.html">Models</a> code when a code path assumes that there is a store available when there isn't.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="errors.js.html">errors.js</a>, <a href="errors.js.html#line84">line 84</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id=".NothingToMigrate"><span class="type-signature">(static) </span>NothingToMigrate<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Used in migration code to signal that there are no actual diffs to migrate, despite being in a codepath that assumes that there are.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="errors.js.html">errors.js</a>, <a href="errors.js.html#line47">line 47</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id=".PropertySchemaViolation"><span class="type-signature">(static) </span>PropertySchemaViolation<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Used in schema validation code, specifically the array wrapper, to signal an illegal value assignment.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="errors.js.html">errors.js</a>, <a href="errors.js.html#line59">line 59</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id=".RecordParseError"><span class="type-signature">(static) </span>RecordParseError<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Used to signal a filepath resolves to a file, but its content could not be parse as model record data.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="errors.js.html">errors.js</a>, <a href="errors.js.html#line288">line 288</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id=".RequiredFieldsMissing"><span class="type-signature">(static) </span>RequiredFieldsMissing<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Used in <a href="Models.html">Models</a> to signal that something tried to build a <a href="Model.html">Model</a> without specifying values for all <code>required</code> properties in that model.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="errors.js.html">errors.js</a>, <a href="errors.js.html#line218">line 218</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id=".SchemaMismatchForModel"><span class="type-signature">(static) </span>SchemaMismatchForModel<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Used in the <a href="ModelRegistry.html">ModelRegistry</a> to signal that the currently loaded version of a schema does not match the stored version of that same schema.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="errors.js.html">errors.js</a>, <a href="errors.js.html#line135">line 135</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id=".TypeNotMatchedToChoices"><span class="type-signature">(static) </span>TypeNotMatchedToChoices<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Used in the model fields code when a choice field with a <code>default</code> value does not contain that value in the available choices.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="errors.js.html">errors.js</a>, <a href="errors.js.html#line96">line 96</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+            
+<h4 class="name" id=".UndefinedKey"><span class="type-signature">(static) </span>UndefinedKey<span class="type-signature"></span></h4>
+
+
+
+
+<div class="description">
+    Used in <a href="Model.html">Model</a> to signal a missing object property that was expect to exist, based on the model schema.
+</div>
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="errors.js.html">errors.js</a>, <a href="errors.js.html#line204">line 204</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+        
+    
 
     
 
@@ -118,13 +1511,13 @@ Everything that wants to throw must get its error objects here.</div>
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="diff.html">diff</a></li><li><a href="equals.html">equals</a></li><li><a href="Errors.html">Errors</a></li><li><a href="schema.html">schema</a></li><li><a href="utils.html">utils</a></li></ul><h3>Classes</h3><ul><li><a href="Fields.html">Fields</a></li><li><a href="Model.html">Model</a></li><li><a href="Models.html">Models</a></li></ul><h3>Global</h3><ul><li><a href="global.html#createDefault">createDefault</a></li><li><a href="global.html#createFormHTML">createFormHTML</a></li><li><a href="global.html#createFormTree">createFormTree</a></li><li><a href="global.html#createTableHTML">createTableHTML</a></li><li><a href="global.html#createTableRowHTML">createTableRowHTML</a></li><li><a href="global.html#createValidator">createValidator</a></li><li><a href="global.html#finalizeMigration">finalizeMigration</a></li><li><a href="global.html#makeMigration">makeMigration</a></li><li><a href="global.html#migrate">migrate</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="conforms.html">conforms</a></li><li><a href="diff.html">diff</a></li><li><a href="equals.html">equals</a></li><li><a href="Errors.html">Errors</a></li><li><a href="html.html">html</a></li><li><a href="schema.html">schema</a></li><li><a href="utils.html">utils</a></li></ul><h3>Classes</h3><ul><li><a href="Fields.html">Fields</a></li><li><a href="FileSystemStore.html">FileSystemStore</a></li><li><a href="Model.html">Model</a></li><li><a href="Models.html">Models</a></li><li><a href="ModelStore.html">ModelStore</a></li></ul><h3>Global</h3><ul><li><a href="global.html#createFormTree">createFormTree</a></li><li><a href="global.html#createTableHTML">createTableHTML</a></li><li><a href="global.html#createTableRowHTML">createTableRowHTML</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Sat Oct 16 2021 13:02:58 GMT-0700 (Pacific Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Sun Oct 17 2021 11:27:48 GMT-0700 (Pacific Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>

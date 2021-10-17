@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Namespace: utils</title>
+    <title>JSDoc: Namespace: html</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Namespace: utils</h1>
+    <h1 class="page-title">Namespace: html</h1>
 
     
 
@@ -28,7 +28,7 @@
 
 <header>
     
-        <h2>utils</h2>
+        <h2>html</h2>
         
     
 </header>
@@ -70,7 +70,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_utils.js.html">models/utils.js</a>, <a href="models_utils.js.html#line1">line 1</a>
+        <a href="forms_create-html.js.html">forms/create-html.js</a>, <a href="forms_create-html.js.html#line1">line 1</a>
     </li></ul></dd>
     
 
@@ -99,33 +99,34 @@
     
 
     
-
-    
-        <h3 class="subsection-title">Methods</h3>
+        <h3 class="subsection-title">Members</h3>
 
         
             
+<h4 class="name" id=".createFormHTML"><span class="type-signature">(static) </span>createFormHTML<span class="type-signature"></span></h4>
 
-    
-
-    
-    <h4 class="name" id=".sortedObjectKeys"><span class="type-signature">(static) </span>sortedObjectKeys<span class="signature">()</span><span class="type-signature"></span></h4>
-    
-
-    
 
 
 
 <div class="description">
-    This is a function for use in <code>JSON.stringify(input, sortedObjectKeys, [number])</code>
-that ensures that object keys are always sorted in alphanumerical order.
+    <p>create the form code for updating a schema-conformant object</p>
+
+<p>The options object should take the following form:</p>
+
+<pre><code>
+  {
+    create: function,
+    onSubmit: function,
+    footer: string,
+    label: function,
+    skipDebug: boolean,
+    disabled: boolean,
+    inputHandler: function,
+  }
+</code></pre>
+
+<p>TODO: write the rest of the docs here</p>
 </div>
-
-
-
-
-
-
 
 
 
@@ -162,7 +163,7 @@ that ensures that object keys are always sorted in alphanumerical order.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_utils.js.html">models/utils.js</a>, <a href="models_utils.js.html#line5">line 5</a>
+        <a href="forms_create-html.js.html">forms/create-html.js</a>, <a href="forms_create-html.js.html#line30">line 30</a>
     </li></ul></dd>
     
 
@@ -178,31 +179,9 @@ that ensures that object keys are always sorted in alphanumerical order.
 
 
 
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
         
-<div class="param-desc">
-    The original data if not an object, otherwise an object with its keys sorted alphanumerically.
-</div>
-
-
-
     
 
-
-
-
-
-        
     
 
     

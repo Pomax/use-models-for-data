@@ -27,10 +27,13 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
+ * &lt;p>
+ * The schema part of using models for data.
+ * &lt;/p>
+ *
  * @namespace schema
  */
-
-import { MISSING_RECORD_NAME_BINDING } from "../errors.js";
+import { MissingRecordNameBinding } from "../errors.js";
 import { conforms } from "./conforms.js";
 import { fromSchemaToData } from "../models/models.js";
 import { createDiff, applyDiff, makeChangeHandler } from "../diff/diff.js";
@@ -48,7 +51,7 @@ export function getRecordNameFor(schema, instance) {
   const indicator = schema.__meta.recordname;
 
   if (!indicator) {
-    throw new MISSING_RECORD_NAME_BINDING(schema.__proto__.constructor.name);
+    throw new MissingRecordNameBinding(schema.__proto__.constructor.name);
   }
 
   // If the recordname is a function, it will yield the record name given an instance.
@@ -187,7 +190,7 @@ export function getModelSet(Model) {
  * code does need to perform coercion in order for validation to pass,
  * the object will be updated such that it will now pass strict validation.&lt;/p>
  *
- * @name schema.Validate
+ * @name schema.validate
  * @function
  * @param {schema} schema - The schema that the object should conform to
  * @param {object} object - The object to check conformance for
@@ -203,14 +206,32 @@ export function validate(
 ) {
   inflate(object);
   const results = conforms(schema, object, strict, allowIncomplete);
-  if (!results.errors.length) {
-    results.passed = true;
-  }
+  results.passed = !!results.conforms;
   return results;
 }
 
 /**
- * Create a validator for convert a schema object to a validator.
+ *
+ */
+/**
+ * A convenience function for creating a validator that can be passed
+ * around, bound to objects, etc.
+ *
+ * &lt;pre>&lt;code>
+ *   import { schema } from "use-models-for-data";
+ *
+ *   Object.defineProperty(mySchema, `validate`, {
+ *     enumerable: false,
+ *     value: schema.createValidator(mySchema, false)
+ *   });
+ * &lt;/code>&lt;/pre>
+ *
+ * @name schema.createValidator
+ * @function
+ * @param {schema} schema - The schema against which to validate data objects.
+ * @param {boolean} [strict] - True to perform strict validation, or false to validate with coercion. Defaults to &lt;code>true&lt;/code>.
+ * @param {boolean} [allowIncomplete] - True to allow missing required fields. Defaults to &lt;code>false&lt;/code>.
+ * @returns {function} a function with the same signature as {@link schema.validate}.
  */
 export function createValidator(
   schema,
@@ -221,7 +242,12 @@ export function createValidator(
 }
 
 /**
- * Create an object that has all the "default" values as indicated by a schema.
+ * Create a schema instance with all values initialised to their default values.
+ *
+ * @name schema.createDefault
+ * @function
+ * @param {*} schema - The schema to instantiate
+ * @returns {object} A schema-conformant object with all properties set to their default values.
  */
 export function createDefault(schema) {
   return Object.fromEntries(
@@ -237,6 +263,19 @@ export function createDefault(schema) {
 
 /**
  * Migrate an object from being schema1-conformant to schema2-conformant.
+ * @name schema.migrate
+ * @function
+ * @param {object} object - The object to migrate
+ * @param {operations} operations - A sequence of operational transforms (e.g. a "diff").
+ * @returns An object that conforms to the updated schema.
+ */
+/**
+ * @name schema.migrate^2
+ * @function
+ * @param {object} object - The object to migrate
+ * @param {schema} schema1 - The "original" schema from which to migrate our object.
+ * @param {schema} schema2 - The "current" schema to which we want to migrate our object.
+ * @returns An object that conforms to the updated schema.
  */
 export function migrate(object, ...args) {
   const len = args.length;
@@ -269,6 +308,8 @@ function migrateWithSchema(object, schema1, schema2) {
  *
  * You should never need to invoke this function yourself.
  *
+ * @name schema.makeSchemaChangeHandler
+ * @function
  * @returns the schema-conformant object diff changeHandler.
  * @ignore
  */
@@ -277,6 +318,8 @@ export function makeSchemaChangeHandler() {
 }
 
 /**
+ * @name schema.ignoreKey
+ * @function
  * @param {*} key - An operational-transform-associated key path
  * @param {*} type - operational transform type (add, update, move, remove)
  * @returns {boolean} True if this key/type tuple should be ignored for diff application purposes.
@@ -289,6 +332,8 @@ function ignoreKey(key, _type) {
 }
 
 /**
+ * @name schema.filterKeyString
+ * @function
  * @param {String} key - A key path string for an operational transform operation.
  * @returns {String} A (possibly different) key path string.
  * @ignore
@@ -298,6 +343,8 @@ function filterKeyString(key) {
 }
 
 /**
+ * @name schema.transformValue
+ * @function
  * @param {String} key - A key path string for an operational transform operation.
  * @param {*} value - Any kind of JS data
  * @returns The key-path associated value after forcing "schema-to-data" conversion (which don't do anything if the value is already plain data)
@@ -319,13 +366,13 @@ function transformValue(key, value) {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="diff.html">diff</a></li><li><a href="equals.html">equals</a></li><li><a href="Errors.html">Errors</a></li><li><a href="schema.html">schema</a></li><li><a href="utils.html">utils</a></li></ul><h3>Classes</h3><ul><li><a href="Fields.html">Fields</a></li><li><a href="Model.html">Model</a></li><li><a href="Models.html">Models</a></li></ul><h3>Global</h3><ul><li><a href="global.html#createDefault">createDefault</a></li><li><a href="global.html#createFormHTML">createFormHTML</a></li><li><a href="global.html#createFormTree">createFormTree</a></li><li><a href="global.html#createTableHTML">createTableHTML</a></li><li><a href="global.html#createTableRowHTML">createTableRowHTML</a></li><li><a href="global.html#createValidator">createValidator</a></li><li><a href="global.html#finalizeMigration">finalizeMigration</a></li><li><a href="global.html#makeMigration">makeMigration</a></li><li><a href="global.html#migrate">migrate</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="conforms.html">conforms</a></li><li><a href="diff.html">diff</a></li><li><a href="equals.html">equals</a></li><li><a href="Errors.html">Errors</a></li><li><a href="html.html">html</a></li><li><a href="schema.html">schema</a></li><li><a href="utils.html">utils</a></li></ul><h3>Classes</h3><ul><li><a href="Fields.html">Fields</a></li><li><a href="FileSystemStore.html">FileSystemStore</a></li><li><a href="Model.html">Model</a></li><li><a href="Models.html">Models</a></li><li><a href="ModelStore.html">ModelStore</a></li></ul><h3>Global</h3><ul><li><a href="global.html#createFormTree">createFormTree</a></li><li><a href="global.html#createTableHTML">createTableHTML</a></li><li><a href="global.html#createTableRowHTML">createTableRowHTML</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Sat Oct 16 2021 13:02:58 GMT-0700 (Pacific Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Sun Oct 17 2021 11:27:48 GMT-0700 (Pacific Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>

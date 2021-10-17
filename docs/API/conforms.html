@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Namespace: equals</title>
+    <title>JSDoc: Namespace: conforms</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Namespace: equals</h1>
+    <h1 class="page-title">Namespace: conforms</h1>
 
     
 
@@ -28,7 +28,7 @@
 
 <header>
     
-        <h2>equals</h2>
+        <h2>conforms</h2>
         
     
 </header>
@@ -70,7 +70,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="equals_equals.js.html">equals/equals.js</a>, <a href="equals_equals.js.html#line1">line 1</a>
+        <a href="schema_conforms.js.html">schema/conforms.js</a>, <a href="schema_conforms.js.html#line1">line 1</a>
     </li></ul></dd>
     
 
@@ -109,7 +109,7 @@
     
 
     
-    <h4 class="name" id=".equals"><span class="type-signature">(static) </span>equals<span class="signature">(v1, v2, strict)</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+    <h4 class="name" id=".conforms"><span class="type-signature">(static) </span>conforms<span class="signature">(schema, object, strict<span class="signature-attributes">opt</span>, allowIncomplete<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {object}</span></h4>
     
 
     
@@ -117,11 +117,21 @@
 
 
 <div class="description">
-    <p>Equality checking for arbitrary JS data, including nested objects.</p>
+    <p>Check whether an object conforms to some schema. This function does not
+return a boolean, but a result object that takes the following form:</p>
 
-<p>As JS can do coerced equality checking, and because in rare cases that's
-essential, the third argument is a "strict" flag that defaults to true, but
-can be explicitly set to "false" to perform coercive equality checking.</p>
+<pre><code>
+  {
+    conforms: boolean,
+    warnings: string[],
+    errors: string[],
+  }
+</code></pre>
+
+<p>Note that the <code>strict</code> flag determines whether or not
+to perform coercive validation. If <code>strict=false</code> and the
+code does need to perform coercion in order for validation to pass,
+the object will be updated such that it will now pass strict validation.</p>
 </div>
 
 
@@ -145,6 +155,8 @@ can be explicitly set to "false" to perform coercive equality checking.</p>
         <th>Type</th>
 
         
+        <th>Attributes</th>
+        
 
         
 
@@ -157,46 +169,62 @@ can be explicitly set to "false" to perform coercive equality checking.</p>
 
         <tr>
             
-                <td class="name"><code>v1</code></td>
+                <td class="name"><code>schema</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">*</span>
+<span class="param-type"><a href="schema.html">schema</a></span>
 
 
             
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
 
             
 
-            <td class="description last">One of the two things part of this equality check.</td>
+            <td class="description last">The schema that the object should conform to</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>v2</code></td>
+                <td class="name"><code>object</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">*</span>
+<span class="param-type">object</span>
 
 
             
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
 
             
 
-            <td class="description last">The other thing that's part of this equality check.</td>
+            <td class="description last">The object to check conformance for</td>
         </tr>
 
     
@@ -216,10 +244,53 @@ can be explicitly set to "false" to perform coercive equality checking.</p>
             </td>
 
             
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
 
             
 
-            <td class="description last">True to check with strict type equality, false for coercive equality</td>
+            <td class="description last">True if strict type validation is required, false for coercive. Defaults to true.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>allowIncomplete</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">Do not fail validation if there are fields missing from this object. Defaults to false.</td>
         </tr>
 
     
@@ -260,7 +331,7 @@ can be explicitly set to "false" to perform coercive equality checking.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="equals_equals.js.html">equals/equals.js</a>, <a href="equals_equals.js.html#line9">line 9</a>
+        <a href="schema_conforms.js.html">schema/conforms.js</a>, <a href="schema_conforms.js.html#line22">line 22</a>
     </li></ul></dd>
     
 
@@ -289,7 +360,7 @@ can be explicitly set to "false" to perform coercive equality checking.</p>
 
         
 <div class="param-desc">
-    True if v1 equals v2, false if not.
+    See description above
 </div>
 
 
@@ -300,7 +371,7 @@ can be explicitly set to "false" to perform coercive equality checking.</p>
     </dt>
     <dd>
         
-<span class="param-type">boolean</span>
+<span class="param-type">object</span>
 
 
     </dd>

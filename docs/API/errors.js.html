@@ -27,18 +27,43 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
+ * &lt;p>
  * This is the only file that is permitted to create new Error objects.
- * Everything that wants to throw must get its error objects here.
+ * Any throw that occurs in this library will be one of the errors listed.
+ * &lt;/p>
+ *
+ * &lt;p>
+ * As such, any try/catch code you write against this library should make
+ * sure to not blind-catch, but catch intentionally:
+ * &lt;p>
+ *
+ * &lt;pre>&lt;code>
+ *   import { Errors } from "use-models-for-data";
+ *   import { MyModel } from "./my-models.js";
+ *
+ *   try {
+ *     MyModel.load(`someRecordName`);
+ *   } catch (err) {
+ *     const type = err.__proto__.constructor;
+ *     switch(type) {
+ *       case (Errors.FileDoesNotExist): ...
+ *       case (Errors.FileReadError): ...
+ *       ...
+ *       case (TypeError): ...
+ *       default: throw err;
+ *     }
+ *   }
+ * &lt;/code>&lt;/pre>
+ *
  *
  * @namespace Errors
  */
 
-export class MISSING_CREATE_FUNCTION extends Error {
+export class MissingCreateFunction extends Error {
   /**
    * Used by the form building code to warn the user that they forgot to provide a create() function for transforming tag/props tuples into nodes.
-   * @name Errors.MISSING_CREATE_FUNCTION
-   * @constructor
-   * @ignore
+   * @name Errors.MissingCreateFunction
+   * @member
    */
   constructor() {
     super();
@@ -46,12 +71,11 @@ export class MISSING_CREATE_FUNCTION extends Error {
   }
 }
 
-export class NOTHING_TO_MIGRATE extends Error {
+export class NothingToMigrate extends Error {
   /**
    * Used in migration code to signal that there are no actual diffs to migrate, despite being in a codepath that assumes that there are.
-   * @name Errors.NOTHING_TO_MIGRATE
-   * @constructor
-   * @ignore
+   * @name Errors.NothingToMigrate
+   * @member
    */
   constructor() {
     super();
@@ -59,12 +83,11 @@ export class NOTHING_TO_MIGRATE extends Error {
   }
 }
 
-export class PROPERTY_SCHEMA_VIOLATION extends Error {
+export class PropertySchemaViolation extends Error {
   /**
    * Used in schema validation code, specifically the array wrapper, to signal an illegal value assignment.
-   * @name Errors.PROPERTY_SCHEMA_VIOLATION
-   * @constructor
-   * @ignore
+   * @name Errors.PropertySchemaViolation
+   * @member
    */
   constructor(errors) {
     super();
@@ -73,12 +96,11 @@ export class PROPERTY_SCHEMA_VIOLATION extends Error {
   }
 }
 
-export class MISSING_CHOICES_ARRAY extends Error {
+export class MissingChoicesArray extends Error {
   /**
    * Used in the model fields code to signal that an expected &lt;code>choices&lt;/code> array is missing from the field properties.
-   * @name Errors.MISSING_CHOICES_ARRAY
-   * @constructor
-   * @ignore
+   * @name Errors.MissingChoicesArray
+   * @member
    */
   constructor() {
     super();
@@ -86,12 +108,11 @@ export class MISSING_CHOICES_ARRAY extends Error {
   }
 }
 
-export class NO_STORE_FOUND extends Error {
+export class NoStoreFound extends Error {
   /**
    * Used in the {@link Models} code when a code path assumes that there is a store available when there isn't.
-   * @name Errors.NO_STORE_FOUND
-   * @constructor
-   * @ignore
+   * @name Errors.NoStoreFound
+   * @member
    */
   constructor() {
     super();
@@ -99,12 +120,11 @@ export class NO_STORE_FOUND extends Error {
   }
 }
 
-export class TYPE_NOT_MATCHED_TO_CHOICES extends Error {
+export class TypeNotMatchedToChoices extends Error {
   /**
    * Used in the model fields code when a choice field with a &lt;code>default&lt;/code> value does not contain that value in the available choices.
-   * @name Errors.TYPE_NOT_MATCHED_TO_CHOICES
-   * @constructor
-   * @ignore
+   * @name Errors.TypeNotMatchedToChoices
+   * @member
    * @param {String} type - Field type for model field.
    */
   constructor(type) {
@@ -113,12 +133,11 @@ export class TYPE_NOT_MATCHED_TO_CHOICES extends Error {
   }
 }
 
-export class FIELD_FAILED_CUSTOM_VALIDATION extends Error {
+export class FieldFailedCustomValidation extends Error {
   /**
    * Used in the model field code to signal that a value did not pass custom validation (even if it passed basic validation).
-   * @name Errors.FIELD_FAILED_CUSTOM_VALIDATION
-   * @constructor
-   * @ignore
+   * @name Errors.FieldFailedCustomValidation
+   * @member
    * @param {String} key - Model field name.
    */
   constructor(key) {
@@ -127,12 +146,11 @@ export class FIELD_FAILED_CUSTOM_VALIDATION extends Error {
   }
 }
 
-export class COULD_NOT_FIND_MODEL extends Error {
+export class CouldNotFindModel extends Error {
   /**
    * Used in the {@link ModelRegistry} to signal that the code tried to access an unknown schema.
-   * @name Errors.COULD_NOT_FIND_MODEL
-   * @constructor
-   * @ignore
+   * @name Errors.CouldNotFindModel
+   * @member
    * @param {String} modelName - Model class name.
    */
   constructor(modelName) {
@@ -141,12 +159,11 @@ export class COULD_NOT_FIND_MODEL extends Error {
   }
 }
 
-export class SCHEMA_MISMATCH_FOR_MODEL extends Error {
+export class SchemaMismatchForModel extends Error {
   /**
    * Used in the {@link ModelRegistry} to signal that the currently loaded version of a schema does not match the stored version of that same schema.
-   * @name Errors.SCHEMA_MISMATCH_FOR_MODEL
-   * @constructor
-   * @ignore
+   * @name Errors.SchemaMismatchForModel
+   * @member
    * @param {String} modelName - Model class name.
    */
   constructor(modelName) {
@@ -155,12 +172,11 @@ export class SCHEMA_MISMATCH_FOR_MODEL extends Error {
   }
 }
 
-export class MODEL_FROM_MISSING_DATA extends Error {
+export class ModelFromMissingData extends Error {
   /**
    * Used in {@link Model} to signal that .from(data) was called without a data payload.
-   * @name Errors.MODEL_FROM_MISSING_DATA
-   * @constructor
-   * @ignore
+   * @name Errors.ModelFromMissingData
+   * @member
    * @param {String} modelName - Model class name.
    */
   constructor(modelName) {
@@ -169,12 +185,11 @@ export class MODEL_FROM_MISSING_DATA extends Error {
   }
 }
 
-export class INCOMPLETE_MODEL_SAVE extends Error {
+export class IncompleteModelSave extends Error {
   /**
    * Used in {@link Model} to signal that the user tried to save a model that is missing required values (something which can only be the case if the model was built using the ALLOW_INCOMPLETE symbol)
-   * @name Errors.INCOMPLETE_MODEL_SAVE
-   * @constructor
-   * @ignore
+   * @name Errors.IncompleteModelSave
+   * @member
    * @param {String} modelName - Model class name.
    * @param {String[]} errors - Array of error strings describing all problems found.
    */
@@ -185,12 +200,11 @@ export class INCOMPLETE_MODEL_SAVE extends Error {
   }
 }
 
-export class DO_NOT_USE_MODEL_CONSTRUCTOR extends Error {
+export class DoNotUseModelConstructor extends Error {
   /**
    * Thrown when code tries to construct a model using the &lt;code>new&lt;/code> keyword, rather than the &lt;code>create()&lt;/code> function.
-   * @name Errors.DO_NOT_USE_MODEL_CONSTRUCTOR
-   * @constructor
-   * @ignore
+   * @name Errors.DoNotUseModelConstructor
+   * @member
    * @param {String} modelName - Model class name.
    */
   constructor(modelName) {
@@ -199,12 +213,11 @@ export class DO_NOT_USE_MODEL_CONSTRUCTOR extends Error {
   }
 }
 
-export class BAD_MODEL_DATA_SUBMISSION extends Error {
+export class BadModelDataSubmission extends Error {
   /**
    * Used in {@link Model} to signal that a data update using a form submission object did not succeed due to validation failure.
-   * @name Errors.BAD_MODEL_DATA_SUBMISSION
-   * @constructor
-   * @ignore
+   * @name Errors.BadModelDataSubmission
+   * @member
    * @param {String} modelName - Model class name.
    * @param {String[]} errors - Array of error strings describing all problems found.
    */
@@ -215,12 +228,11 @@ export class BAD_MODEL_DATA_SUBMISSION extends Error {
   }
 }
 
-export class UNDEFINED_KEY extends Error {
+export class UndefinedKey extends Error {
   /**
    * Used in {@link Model} to signal a missing object property that was expect to exist, based on the model schema.
-   * @name Errors.UNDEFINED_KEY
-   * @constructor
-   * @ignore
+   * @name Errors.UndefinedKey
+   * @member
    * @param {String} key - Model field name.
    * @param {String} modelName - Model class name.
    */
@@ -230,12 +242,11 @@ export class UNDEFINED_KEY extends Error {
   }
 }
 
-export class REQUIRED_FIELDS_MISSING extends Error {
+export class RequiredFieldsMissing extends Error {
   /**
    * Used in {@link Models} to signal that something tried to build a {@link Model} without specifying values for all &lt;code>required&lt;/code> properties in that model.
-   * @name Errors.REQUIRED_FIELDS_MISSING
-   * @constructor
-   * @ignore
+   * @name Errors.RequiredFieldsMissing
+   * @member
    * @param {String} modelName - Model class name.
    * @param {String[]} errors - Array of error strings describing all problems found.
    */
@@ -246,12 +257,11 @@ export class REQUIRED_FIELDS_MISSING extends Error {
   }
 }
 
-export class ASSIGNMENT_MUST_BE_ARRAY extends Error {
+export class AssignmentMustBeArray extends Error {
   /**
    * Used in {@link Models} to signal that an assignment to an &lt;code>array&lt;/code> property was not an array.
-   * @name Errors.ASSIGNMENT_MUST_BE_ARRAY
-   * @constructor
-   * @ignore
+   * @name Errors.AssignmentMustBeArray
+   * @member
    * @param {String} key - Model field name.
    */
   constructor(key) {
@@ -260,12 +270,11 @@ export class ASSIGNMENT_MUST_BE_ARRAY extends Error {
   }
 }
 
-export class INVALID_ASSIGNMENT extends Error {
+export class InvalidAssignment extends Error {
   /**
    * Used in {@Models} to signal that a property assignment was not permitted according to the model schema.
-   * @name Errors.INVALID_ASSIGNMENT
-   * @constructor
-   * @ignore
+   * @name Errors.InvalidAssignment
+   * @member
    * @param {String} key - Model field name.
    * @param {*} value - Property value for model field.
    * @param {String[]} errors - Array of error strings describing all problems found.
@@ -277,12 +286,11 @@ export class INVALID_ASSIGNMENT extends Error {
   }
 }
 
-export class FILE_DOES_NOT_EXIST extends Error {
+export class FileDoesNotExist extends Error {
   /**
    * Used to signal a filepath does not resolve to an actual file.
-   * @name Errors.FILE_DOES_NOT_EXIST
-   * @constructor
-   * @ignore
+   * @name Errors.FileDoesNotExist
+   * @member
    * @param {filepath} path - Path to a file in the filesystem.
    */
   constructor(path) {
@@ -291,12 +299,11 @@ export class FILE_DOES_NOT_EXIST extends Error {
   }
 }
 
-export class FILE_READ_ERROR extends Error {
+export class FileReadError extends Error {
   /**
    * Used to signal a filepath resolves to a file, but that file could not be read in.
-   * @name Errors.FILE_READ_ERROR
-   * @constructor
-   * @ignore
+   * @name Errors.FileReadError
+   * @member
    * @param {filepath} path - Path to a file in the filesystem.
    */
   constructor(path) {
@@ -305,12 +312,11 @@ export class FILE_READ_ERROR extends Error {
   }
 }
 
-export class RECORD_PARSE_ERROR extends Error {
+export class RecordParseError extends Error {
   /**
    * Used to signal a filepath resolves to a file, but its content could not be parse as model record data.
-   * @name Errors.RECORD_PARSE_ERROR
-   * @constructor
-   * @ignore
+   * @name Errors.RecordParseError
+   * @member
    * @param {filepath} path - Path to a file in the filesystem.
    */
   constructor(path) {
@@ -319,12 +325,11 @@ export class RECORD_PARSE_ERROR extends Error {
   }
 }
 
-export class MISSING_RECORD_NAME_BINDING extends Error {
+export class MissingRecordNameBinding extends Error {
   /**
    * Used by the schema code to signal that a model could not be saved using an unqualified &lt;code>save()&lt;/code> call.
-   * @name Errors.MISSING_RECORD_NAME_BINDING
-   * @constructor
-   * @ignore
+   * @name Errors.MissingRecordNameBinding
+   * @member
    * @param {String} modelName - Model class name.
    */
   constructor(modelName) {
@@ -333,12 +338,11 @@ export class MISSING_RECORD_NAME_BINDING extends Error {
   }
 }
 
-export class MISSING_IMPLEMENTATION extends Error {
+export class MissingImplementation extends Error {
   /**
    * Thrown by anything that intends to be an abstract superclass, to make sure subclasses implement the necessary methods.
-   * @name Errors.MISSING_IMPLEMENTATION
-   * @constructor
-   * @ignore
+   * @name Errors.MissingImplementation
+   * @member
    * @param {String} classAndMethodName - String representation of a class.method(signature).
    */
   constructor(classAndMethodName) {
@@ -356,13 +360,13 @@ export class MISSING_IMPLEMENTATION extends Error {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="diff.html">diff</a></li><li><a href="equals.html">equals</a></li><li><a href="Errors.html">Errors</a></li><li><a href="schema.html">schema</a></li><li><a href="utils.html">utils</a></li></ul><h3>Classes</h3><ul><li><a href="Fields.html">Fields</a></li><li><a href="Model.html">Model</a></li><li><a href="Models.html">Models</a></li></ul><h3>Global</h3><ul><li><a href="global.html#createDefault">createDefault</a></li><li><a href="global.html#createFormHTML">createFormHTML</a></li><li><a href="global.html#createFormTree">createFormTree</a></li><li><a href="global.html#createTableHTML">createTableHTML</a></li><li><a href="global.html#createTableRowHTML">createTableRowHTML</a></li><li><a href="global.html#createValidator">createValidator</a></li><li><a href="global.html#finalizeMigration">finalizeMigration</a></li><li><a href="global.html#makeMigration">makeMigration</a></li><li><a href="global.html#migrate">migrate</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="conforms.html">conforms</a></li><li><a href="diff.html">diff</a></li><li><a href="equals.html">equals</a></li><li><a href="Errors.html">Errors</a></li><li><a href="html.html">html</a></li><li><a href="schema.html">schema</a></li><li><a href="utils.html">utils</a></li></ul><h3>Classes</h3><ul><li><a href="Fields.html">Fields</a></li><li><a href="FileSystemStore.html">FileSystemStore</a></li><li><a href="Model.html">Model</a></li><li><a href="Models.html">Models</a></li><li><a href="ModelStore.html">ModelStore</a></li></ul><h3>Global</h3><ul><li><a href="global.html#createFormTree">createFormTree</a></li><li><a href="global.html#createTableHTML">createTableHTML</a></li><li><a href="global.html#createTableRowHTML">createTableRowHTML</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Sat Oct 16 2021 13:02:58 GMT-0700 (Pacific Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Sun Oct 17 2021 11:27:48 GMT-0700 (Pacific Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>
