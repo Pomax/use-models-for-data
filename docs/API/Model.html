@@ -670,7 +670,7 @@ If no data is provided, this method will throw.
 
 
 <div class="description">
-    Load a stored record that uses this model.
+    Load a stored record that uses this model from the back end.
 
 Note that this will throw if:
 
@@ -856,6 +856,123 @@ Note that this will throw if:
     
 
     
+    <h4 class="name" id="delete"><span class="type-signature">(async) </span>delete<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Delete this model from the backend.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line140">line 140</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Throws:</h5>
+
+        
+
+<dl>
+    <dt>
+        <div class="param-desc">
+        one of several errors
+        </div>
+    </dt>
+    <dd></dd>
+    <dt>
+        <dl>
+            <dt>
+                Type
+            </dt>
+            <dd>
+                
+<span class="param-type">*</span>
+
+
+            </dd>
+        </dl>
+    </dt>
+    <dd></dd>
+</dl>
+
+
+    
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
     <h4 class="name" id="get"><span class="type-signature"></span>get<span class="signature">(pathkey)</span><span class="type-signature"> &rarr; {*}</span></h4>
     
 
@@ -957,7 +1074,7 @@ Note that this will throw if:
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line160">line 160</a>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line165">line 165</a>
     </li></ul></dd>
     
 
@@ -1117,7 +1234,7 @@ value that has a default set in its associated schema.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line217">line 217</a>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line222">line 222</a>
     </li></ul></dd>
     
 
@@ -1161,15 +1278,11 @@ value that has a default set in its associated schema.
 
 
 <div class="description">
-    Save this model to file, either by explicitly specifying
-a filename, or by relying on the Model's __meta.filename
-attribute, which must indicate which key path to use as
-"primary key" equivalent.
-
-Note that the filename is just the name, without any
-directory or extension information. The directory will
-be automatically determined based on the model name,
-and all models are saved as json, using the .json extension.
+    Save this model instance to the backend. Note that this
+requires the model class to specify a <code>__meta.filename</code>
+field, which must indicate which key path to use as
+"primary key" equivalent, or be a function that, given a
+model, yields a string to be used as record key.
 </div>
 
 
@@ -1213,7 +1326,7 @@ and all models are saved as json, using the .json extension.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line120">line 120</a>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line116">line 116</a>
     </li></ul></dd>
     
 
@@ -1402,7 +1515,7 @@ and all models are saved as json, using the .json extension.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line170">line 170</a>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line175">line 175</a>
     </li></ul></dd>
     
 
@@ -1542,7 +1655,7 @@ being used for submission handling.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line287">line 287</a>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line292">line 292</a>
     </li></ul></dd>
     
 
@@ -1701,7 +1814,7 @@ being used for submission handling.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line249">line 249</a>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line254">line 254</a>
     </li></ul></dd>
     
 
@@ -1860,7 +1973,7 @@ being used for submission handling.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line260">line 260</a>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line265">line 265</a>
     </li></ul></dd>
     
 
@@ -2019,7 +2132,7 @@ being used for submission handling.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line271">line 271</a>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line276">line 276</a>
     </li></ul></dd>
     
 
@@ -2130,7 +2243,7 @@ with all defaults omitted (as they are not enumerable).
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line347">line 347</a>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line352">line 352</a>
     </li></ul></dd>
     
 
@@ -2292,7 +2405,7 @@ component render.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line301">line 301</a>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line306">line 306</a>
     </li></ul></dd>
     
 
@@ -2454,7 +2567,7 @@ for templating into a component render.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line315">line 315</a>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line320">line 320</a>
     </li></ul></dd>
     
 
@@ -2633,7 +2746,7 @@ as this flat object:
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line200">line 200</a>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line205">line 205</a>
     </li></ul></dd>
     
 
@@ -2750,7 +2863,7 @@ as this flat object:
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line325">line 325</a>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line330">line 330</a>
     </li></ul></dd>
     
 
@@ -2824,7 +2937,7 @@ as this flat object:
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Sun Oct 17 2021 14:28:50 GMT-0700 (Pacific Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Mon Oct 18 2021 08:17:08 GMT-0700 (Pacific Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>

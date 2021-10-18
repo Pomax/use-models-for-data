@@ -83,10 +83,20 @@ describe(`Testing User model with store backing`, () => {
     expect(dirs).toStrictEqual([`config`, `users`]);
   });
 
-  test(`Can create and save user TestUser`, () => {
+  test(`Can create, save, and delete user TestUser`, () => {
     expect(async () => {
       const user = User.from(testData);
+      const recordPath = `${storePath}/users/TestUser.json`;
+
       await user.save();
+      if (!fs.existsSync(recordPath)) {
+        throw new Error(`${recordPath} was not saved`);
+      }
+
+      await user.delete();
+      if (fs.existsSync(recordPath)) {
+        throw new Error(`${recordPath} was not deleted`);
+      }
     }).not.toThrow();
   });
 

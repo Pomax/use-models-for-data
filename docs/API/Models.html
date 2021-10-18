@@ -139,7 +139,7 @@
     
 
     
-    <h4 class="name" id=".create"><span class="type-signature">(static) </span>create<span class="signature">(Model, data, allowIncomplete)</span><span class="type-signature"> &rarr; {<a href="Model.html">Model</a>}</span></h4>
+    <h4 class="name" id=".create"><span class="type-signature">(static) </span>create<span class="signature">(Model, data, allowIncomplete<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="Model.html">Model</a>}</span></h4>
     
 
     
@@ -171,7 +171,11 @@
         <th>Type</th>
 
         
+        <th>Attributes</th>
+        
 
+        
+        <th>Default</th>
         
 
         <th class="last">Description</th>
@@ -189,17 +193,29 @@
             <td class="type">
             
                 
-<span class="param-type">*</span>
+<span class="param-type">class</span>
 
 
             
             </td>
 
             
+                <td class="attributes">
+                
 
+                
+
+                
+                </td>
             
 
-            <td class="description last"></td>
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last">The model class to instantiate.</td>
         </tr>
 
     
@@ -212,17 +228,29 @@
             <td class="type">
             
                 
-<span class="param-type">*</span>
+<span class="param-type">object</span>
 
 
             
             </td>
 
             
+                <td class="attributes">
+                
 
+                
+
+                
+                </td>
             
 
-            <td class="description last"></td>
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last">the data with which to bootstrap the new model instantiation.</td>
         </tr>
 
     
@@ -235,17 +263,33 @@
             <td class="type">
             
                 
-<span class="param-type">*</span>
+<span class="param-type">boolean</span>
 
 
             
             </td>
 
             
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
 
+                
+
+                
+                </td>
             
 
-            <td class="description last"></td>
+            
+                <td class="default">
+                
+                    false
+                
+                </td>
+            
+
+            <td class="description last">True if missing required fields should be allowed, false if not.</td>
         </tr>
 
     
@@ -344,6 +388,143 @@
     
 
     
+    <h4 class="name" id=".deleteModel"><span class="type-signature">(async, static) </span>deleteModel<span class="signature">(instance)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Delete a model from the back end.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>instance</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Model.html">Model</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">A model instance.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_models.js.html">models/models.js</a>, <a href="models_models.js.html#line159">line 159</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
     <h4 class="name" id=".loadModel"><span class="type-signature">(async, static) </span>loadModel<span class="signature">(Model, recordName)</span><span class="type-signature"> &rarr; {<a href="Model.html">Model</a>}</span></h4>
     
 
@@ -395,7 +576,7 @@ stored data. We do it in this order to ensure data validation runs)
             <td class="type">
             
                 
-<span class="param-type">*</span>
+<span class="param-type">class</span>
 
 
             
@@ -405,7 +586,7 @@ stored data. We do it in this order to ensure data validation runs)
 
             
 
-            <td class="description last"></td>
+            <td class="description last">The model class to instantiate.</td>
         </tr>
 
     
@@ -418,7 +599,7 @@ stored data. We do it in this order to ensure data validation runs)
             <td class="type">
             
                 
-<span class="param-type">*</span>
+<span class="param-type">String</span>
 
 
             
@@ -428,7 +609,7 @@ stored data. We do it in this order to ensure data validation runs)
 
             
 
-            <td class="description last"></td>
+            <td class="description last">The recordName associated with the required instance.</td>
         </tr>
 
     
@@ -775,8 +956,9 @@ your model-related code will run without errors.
 
 
 <div class="description">
-    Save a model to file, but skip any default values because models are
-bootstrapped with the model's default values before data gets loaded in.
+    Save a model to the back end, but skip any default values
+because models are bootstrapped with the model's default
+values before data gets loaded in.
 </div>
 
 
@@ -818,7 +1000,7 @@ bootstrapped with the model's default values before data gets loaded in.
             <td class="type">
             
                 
-<span class="param-type">*</span>
+<span class="param-type"><a href="Model.html">Model</a></span>
 
 
             
@@ -828,7 +1010,7 @@ bootstrapped with the model's default values before data gets loaded in.
 
             
 
-            <td class="description last"></td>
+            <td class="description last">A model instance.</td>
         </tr>
 
     
@@ -869,7 +1051,7 @@ bootstrapped with the model's default values before data gets loaded in.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_models.js.html">models/models.js</a>, <a href="models_models.js.html#line146">line 146</a>
+        <a href="models_models.js.html">models/models.js</a>, <a href="models_models.js.html#line147">line 147</a>
     </li></ul></dd>
     
 
@@ -1206,7 +1388,7 @@ file storage during a client-bundling operation.
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Sun Oct 17 2021 14:28:50 GMT-0700 (Pacific Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Mon Oct 18 2021 08:17:08 GMT-0700 (Pacific Daylight Time)
 </footer>
 
 <script> prettyPrint(); </script>
