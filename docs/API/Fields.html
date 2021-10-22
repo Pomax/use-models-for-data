@@ -1,23 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    
     <meta charset="utf-8">
-    <title>JSDoc: Class: Fields</title>
-
-    <script src="scripts/prettify/prettify.js"> </script>
-    <script src="scripts/prettify/lang-css.js"> </script>
+    <title>Fields - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
-    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-
 <body>
 
-<div id="main">
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
 
-    <h1 class="page-title">Class: Fields</h1>
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Fields.html">Fields</a><ul class='methods'><li data-type='method'><a href="Fields.html#.boolean">boolean</a></li><li data-type='method'><a href="Fields.html#.choice">choice</a></li><li data-type='method'><a href="Fields.html#.model">model</a></li><li data-type='method'><a href="Fields.html#.number">number</a></li><li data-type='method'><a href="Fields.html#.string">string</a></li></ul></li><li><a href="FileSystemStore.html">FileSystemStore</a><ul class='methods'><li data-type='method'><a href="FileSystemStore.html#deleteRecord">deleteRecord</a></li><li data-type='method'><a href="FileSystemStore.html#loadRecord">loadRecord</a></li><li data-type='method'><a href="FileSystemStore.html#loadSchema">loadSchema</a></li><li data-type='method'><a href="FileSystemStore.html#ready">ready</a></li><li data-type='method'><a href="FileSystemStore.html#saveMigration">saveMigration</a></li><li data-type='method'><a href="FileSystemStore.html#saveRecord">saveRecord</a></li><li data-type='method'><a href="FileSystemStore.html#saveSchema">saveSchema</a></li></ul></li><li><a href="Model.html">Model</a><ul class='methods'><li data-type='method'><a href="Model.html#.create">create</a></li><li data-type='method'><a href="Model.html#.from">from</a></li><li data-type='method'><a href="Model.html#.load">load</a></li><li data-type='method'><a href="Model.html#delete">delete</a></li><li data-type='method'><a href="Model.html#get">get</a></li><li data-type='method'><a href="Model.html#reset">reset</a></li><li data-type='method'><a href="Model.html#save">save</a></li><li data-type='method'><a href="Model.html#set">set</a></li><li data-type='method'><a href="Model.html#toForm">toForm</a></li><li data-type='method'><a href="Model.html#toHTMLForm">toHTMLForm</a></li><li data-type='method'><a href="Model.html#toHTMLTable">toHTMLTable</a></li><li data-type='method'><a href="Model.html#toHTMLTableRows">toHTMLTableRows</a></li><li data-type='method'><a href="Model.html#toString">toString</a></li><li data-type='method'><a href="Model.html#toTable">toTable</a></li><li data-type='method'><a href="Model.html#toTableRows">toTableRows</a></li><li data-type='method'><a href="Model.html#updateFromSubmission">updateFromSubmission</a></li><li data-type='method'><a href="Model.html#valueOf">valueOf</a></li></ul></li><li><a href="Models.html">Models</a><ul class='methods'><li data-type='method'><a href="Models.html#.create">create</a></li><li data-type='method'><a href="Models.html#.deleteModel">deleteModel</a></li><li data-type='method'><a href="Models.html#.loadModel">loadModel</a></li><li data-type='method'><a href="Models.html#.register">register</a></li><li data-type='method'><a href="Models.html#.resetRegistrations">resetRegistrations</a></li><li data-type='method'><a href="Models.html#.saveModel">saveModel</a></li><li data-type='method'><a href="Models.html#.setStore">setStore</a></li><li data-type='method'><a href="Models.html#.useDefaultStore">useDefaultStore</a></li></ul></li><li><a href="ModelStore.html">ModelStore</a><ul class='methods'><li data-type='method'><a href="ModelStore.html#deleteRecord">deleteRecord</a></li><li data-type='method'><a href="ModelStore.html#loadRecord">loadRecord</a></li><li data-type='method'><a href="ModelStore.html#loadSchema">loadSchema</a></li><li data-type='method'><a href="ModelStore.html#ready">ready</a></li><li data-type='method'><a href="ModelStore.html#saveMigration">saveMigration</a></li><li data-type='method'><a href="ModelStore.html#saveRecord">saveRecord</a></li><li data-type='method'><a href="ModelStore.html#saveSchema">saveSchema</a></li></ul></li></ul><h3>Namespaces</h3><ul><li><a href="conforms.html">conforms</a><ul class='methods'><li data-type='method'><a href="conforms.html#.conforms">conforms</a></li></ul></li><li><a href="diff.html">diff</a><ul class='methods'><li data-type='method'><a href="diff.html#.apply">apply</a></li><li data-type='method'><a href="diff.html#.applyDiff">applyDiff</a></li><li data-type='method'><a href="diff.html#.create">create</a></li><li data-type='method'><a href="diff.html#.createDiff">createDiff</a></li><li data-type='method'><a href="diff.html#.makeChangeHandler">makeChangeHandler</a></li><li data-type='method'><a href="diff.html#.reverse">reverse</a></li><li data-type='method'><a href="diff.html#.reverseDiff">reverseDiff</a></li></ul></li><li><a href="equals.html">equals</a><ul class='methods'><li data-type='method'><a href="equals.html#.equals">equals</a></li></ul></li><li><a href="Errors.html">Errors</a></li><li><a href="html.html">html</a></li><li><a href="schema.html">schema</a><ul class='methods'><li data-type='method'><a href="schema.html#.createDefault">createDefault</a></li><li data-type='method'><a href="schema.html#.createValidator">createValidator</a></li><li data-type='method'><a href="schema.html#.getModelSet">getModelSet</a></li><li data-type='method'><a href="schema.html#.getRecordNameFor">getRecordNameFor</a></li><li data-type='method'><a href="schema.html#.linkSchema">linkSchema</a></li><li data-type='method'><a href="schema.html#.migrate">migrate</a></li><li data-type='method'><a href="schema.html#.migrate%255E2">migrate^2</a></li><li data-type='method'><a href="schema.html#.unlinkSchema">unlinkSchema</a></li><li data-type='method'><a href="schema.html#.validate">validate</a></li></ul></li><li><a href="tree.html">tree</a></li><li><a href="utils.html">utils</a><ul class='methods'><li data-type='method'><a href="utils.html#.sortedObjectKeys">sortedObjectKeys</a></li></ul></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">Fields</h1>
+    
 
     
 
@@ -28,9 +44,11 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>Fields</h2>
+        <h2>
+        Fields
+        </h2>
         
-            <div class="class-description">Static model field builder.
+            <div class="class-description usertext">Static model field builder.
 
 <p><strong>note</strong>: "one-or-more" is handled as `array: true` in the options, rather than being its own type of model field. (On the schema side this is the __meta.array:true property)</p>
 
@@ -50,26 +68,6 @@
 </header>
 
 <article>
-    <div class="container-overview">
-    
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
     
 
     
@@ -77,68 +75,10 @@
     
 
     
-
+    
     
 
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_fields.js.html">models/fields.js</a>, <a href="models_fields.js.html#line66">line 66</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
+     
 
     
 
@@ -152,17 +92,62 @@
 
     
 
-    
     <h4 class="name" id=".boolean"><span class="type-signature">(static) </span>boolean<span class="signature">(options)</span><span class="type-signature"> &rarr; {ModelField}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_fields.js.html">models/fields.js</a>, <a href="models_fields.js.html#line73">line 73</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     Model field definition for boolean values.
 </div>
+
+
 
 
 
@@ -225,50 +210,6 @@
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_fields.js.html">models/fields.js</a>, <a href="models_fields.js.html#line73">line 73</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -284,7 +225,7 @@
         
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -300,18 +241,61 @@
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id=".choice"><span class="type-signature">(static) </span>choice<span class="signature">(choices, options)</span><span class="type-signature"> &rarr; {ModelField}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_fields.js.html">models/fields.js</a>, <a href="models_fields.js.html#line105">line 105</a>
+    </li></ul></dd>
     
 
     
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
 
 
 
@@ -399,50 +383,6 @@
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_fields.js.html">models/fields.js</a>, <a href="models_fields.js.html#line105">line 105</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -458,7 +398,7 @@
         
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -474,18 +414,61 @@
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id=".model"><span class="type-signature">(static) </span>model<span class="signature">(model, options)</span><span class="type-signature"> &rarr; {ModelField}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_fields.js.html">models/fields.js</a>, <a href="models_fields.js.html#line118">line 118</a>
+    </li></ul></dd>
     
 
     
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
 
 
 
@@ -573,50 +556,6 @@
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_fields.js.html">models/fields.js</a>, <a href="models_fields.js.html#line118">line 118</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -632,7 +571,7 @@
         
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -648,107 +587,19 @@
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id=".number"><span class="type-signature">(static) </span>number<span class="signature">(options)</span><span class="type-signature"> &rarr; {ModelField}</span></h4>
-    
 
     
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>options</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">an options object, see above.</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
 
 
 
 
 <dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
 
     
     <dt class="tag-source">Source:</dt>
@@ -762,55 +613,35 @@
     
 
     
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
 </dl>
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">ModelField</span>
-
-
-    </dd>
-</dl>
-
-    
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id=".string"><span class="type-signature">(static) </span>string<span class="signature">(options)</span><span class="type-signature"> &rarr; {ModelField}</span></h4>
-    
-
-    
 
 
 
@@ -875,31 +706,50 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">ModelField</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id=".string"><span class="type-signature">(static) </span>string<span class="signature">(options)</span><span class="type-signature"> &rarr; {ModelField}</span></h4>
+
+    
+
+
+
+
 <dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
 
     
     <dt class="tag-source">Source:</dt>
@@ -913,7 +763,94 @@
     
 
     
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
 </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">an options object, see above.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
 
 
 
@@ -934,7 +871,7 @@
         
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -947,8 +884,6 @@
 </dl>
 
     
-
-
 
 
 
@@ -965,19 +900,21 @@
 
 
 
+    
+    
 </div>
-
-<nav>
-    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="conforms.html">conforms</a></li><li><a href="diff.html">diff</a></li><li><a href="equals.html">equals</a></li><li><a href="Errors.html">Errors</a></li><li><a href="html.html">html</a></li><li><a href="schema.html">schema</a></li><li><a href="tree.html">tree</a></li><li><a href="utils.html">utils</a></li></ul><h3>Classes</h3><ul><li><a href="Fields.html">Fields</a></li><li><a href="FileSystemStore.html">FileSystemStore</a></li><li><a href="Model.html">Model</a></li><li><a href="Models.html">Models</a></li><li><a href="ModelStore.html">ModelStore</a></li></ul>
-</nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Mon Oct 18 2021 08:17:08 GMT-0700 (Pacific Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.7</a> on Wed Oct 20 2021 08:58:51 GMT-0700 (Pacific Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
-<script> prettyPrint(); </script>
-<script src="scripts/linenumber.js"> </script>
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
 </body>
 </html>

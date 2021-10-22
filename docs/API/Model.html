@@ -1,23 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    
     <meta charset="utf-8">
-    <title>JSDoc: Class: Model</title>
-
-    <script src="scripts/prettify/prettify.js"> </script>
-    <script src="scripts/prettify/lang-css.js"> </script>
+    <title>Model - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
-    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-
 <body>
 
-<div id="main">
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
 
-    <h1 class="page-title">Class: Model</h1>
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Fields.html">Fields</a><ul class='methods'><li data-type='method'><a href="Fields.html#.boolean">boolean</a></li><li data-type='method'><a href="Fields.html#.choice">choice</a></li><li data-type='method'><a href="Fields.html#.model">model</a></li><li data-type='method'><a href="Fields.html#.number">number</a></li><li data-type='method'><a href="Fields.html#.string">string</a></li></ul></li><li><a href="FileSystemStore.html">FileSystemStore</a><ul class='methods'><li data-type='method'><a href="FileSystemStore.html#deleteRecord">deleteRecord</a></li><li data-type='method'><a href="FileSystemStore.html#loadRecord">loadRecord</a></li><li data-type='method'><a href="FileSystemStore.html#loadSchema">loadSchema</a></li><li data-type='method'><a href="FileSystemStore.html#ready">ready</a></li><li data-type='method'><a href="FileSystemStore.html#saveMigration">saveMigration</a></li><li data-type='method'><a href="FileSystemStore.html#saveRecord">saveRecord</a></li><li data-type='method'><a href="FileSystemStore.html#saveSchema">saveSchema</a></li></ul></li><li><a href="Model.html">Model</a><ul class='methods'><li data-type='method'><a href="Model.html#.create">create</a></li><li data-type='method'><a href="Model.html#.from">from</a></li><li data-type='method'><a href="Model.html#.load">load</a></li><li data-type='method'><a href="Model.html#delete">delete</a></li><li data-type='method'><a href="Model.html#get">get</a></li><li data-type='method'><a href="Model.html#reset">reset</a></li><li data-type='method'><a href="Model.html#save">save</a></li><li data-type='method'><a href="Model.html#set">set</a></li><li data-type='method'><a href="Model.html#toForm">toForm</a></li><li data-type='method'><a href="Model.html#toHTMLForm">toHTMLForm</a></li><li data-type='method'><a href="Model.html#toHTMLTable">toHTMLTable</a></li><li data-type='method'><a href="Model.html#toHTMLTableRows">toHTMLTableRows</a></li><li data-type='method'><a href="Model.html#toString">toString</a></li><li data-type='method'><a href="Model.html#toTable">toTable</a></li><li data-type='method'><a href="Model.html#toTableRows">toTableRows</a></li><li data-type='method'><a href="Model.html#updateFromSubmission">updateFromSubmission</a></li><li data-type='method'><a href="Model.html#valueOf">valueOf</a></li></ul></li><li><a href="Models.html">Models</a><ul class='methods'><li data-type='method'><a href="Models.html#.create">create</a></li><li data-type='method'><a href="Models.html#.deleteModel">deleteModel</a></li><li data-type='method'><a href="Models.html#.loadModel">loadModel</a></li><li data-type='method'><a href="Models.html#.register">register</a></li><li data-type='method'><a href="Models.html#.resetRegistrations">resetRegistrations</a></li><li data-type='method'><a href="Models.html#.saveModel">saveModel</a></li><li data-type='method'><a href="Models.html#.setStore">setStore</a></li><li data-type='method'><a href="Models.html#.useDefaultStore">useDefaultStore</a></li></ul></li><li><a href="ModelStore.html">ModelStore</a><ul class='methods'><li data-type='method'><a href="ModelStore.html#deleteRecord">deleteRecord</a></li><li data-type='method'><a href="ModelStore.html#loadRecord">loadRecord</a></li><li data-type='method'><a href="ModelStore.html#loadSchema">loadSchema</a></li><li data-type='method'><a href="ModelStore.html#ready">ready</a></li><li data-type='method'><a href="ModelStore.html#saveMigration">saveMigration</a></li><li data-type='method'><a href="ModelStore.html#saveRecord">saveRecord</a></li><li data-type='method'><a href="ModelStore.html#saveSchema">saveSchema</a></li></ul></li></ul><h3>Namespaces</h3><ul><li><a href="conforms.html">conforms</a><ul class='methods'><li data-type='method'><a href="conforms.html#.conforms">conforms</a></li></ul></li><li><a href="diff.html">diff</a><ul class='methods'><li data-type='method'><a href="diff.html#.apply">apply</a></li><li data-type='method'><a href="diff.html#.applyDiff">applyDiff</a></li><li data-type='method'><a href="diff.html#.create">create</a></li><li data-type='method'><a href="diff.html#.createDiff">createDiff</a></li><li data-type='method'><a href="diff.html#.makeChangeHandler">makeChangeHandler</a></li><li data-type='method'><a href="diff.html#.reverse">reverse</a></li><li data-type='method'><a href="diff.html#.reverseDiff">reverseDiff</a></li></ul></li><li><a href="equals.html">equals</a><ul class='methods'><li data-type='method'><a href="equals.html#.equals">equals</a></li></ul></li><li><a href="Errors.html">Errors</a></li><li><a href="html.html">html</a></li><li><a href="schema.html">schema</a><ul class='methods'><li data-type='method'><a href="schema.html#.createDefault">createDefault</a></li><li data-type='method'><a href="schema.html#.createValidator">createValidator</a></li><li data-type='method'><a href="schema.html#.getModelSet">getModelSet</a></li><li data-type='method'><a href="schema.html#.getRecordNameFor">getRecordNameFor</a></li><li data-type='method'><a href="schema.html#.linkSchema">linkSchema</a></li><li data-type='method'><a href="schema.html#.migrate">migrate</a></li><li data-type='method'><a href="schema.html#.migrate%255E2">migrate^2</a></li><li data-type='method'><a href="schema.html#.unlinkSchema">unlinkSchema</a></li><li data-type='method'><a href="schema.html#.validate">validate</a></li></ul></li><li><a href="tree.html">tree</a></li><li><a href="utils.html">utils</a><ul class='methods'><li data-type='method'><a href="utils.html#.sortedObjectKeys">sortedObjectKeys</a></li></ul></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">Model</h1>
+    
 
     
 
@@ -28,32 +44,35 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>Model</h2>
+        <h2>
+        Model
+        </h2>
+        
+            <div class="class-description usertext"><p>
+For the most part this is initially a js-schema object,
+which gets transformed into a validation-controlled
+data object.
+</p>
+
+<p>
+This conversion has to happen after the constructor
+finishes, which means we can't do this as part of the
+Model class's constructor, because that finishes before
+the full class hierarchy instantiation has finished.
+</p>
+
+<p>
+As such, you never want to instantiate a model manually,
+and always want to use either Model.create(), or
+Model.load(), both of which fall through to the Models
+class, which is essentially a factory class with
+additional functionality bolted on.
+</p></div>
         
     
 </header>
 
 <article>
-    <div class="container-overview">
-    
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
     
 
     
@@ -61,68 +80,17 @@
     
 
     
+        <h3 class="subsection-title">Classes</h3>
 
+        <dl>
+            <dt><a href="Model.html">Model</a></dt>
+            <dd></dd>
+        </dl>
+    
+    
     
 
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line14">line 14</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
+     
 
     
 
@@ -136,7 +104,52 @@
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line53">line 53</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     This symbol can be used to create models with missing
 "required" fields. Note that this value is inherited,
 and so can be referenced from your own model's name
@@ -159,37 +172,56 @@ E.g.
 
 
 
+
+        
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id=".create"><span class="type-signature">(static) </span>create<span class="signature">(data<span class="signature-attributes">opt</span>, allowIncomplete<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="Model.html">Model</a>}</span></h4>
+
+    
+
+
+
+
 <dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line50">line 50</a>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line67">line 67</a>
     </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
     
 
     
@@ -203,33 +235,15 @@ E.g.
 
 
 
-
-        
-    
-
-    
-        <h3 class="subsection-title">Methods</h3>
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id=".create"><span class="type-signature">(static) </span>create<span class="signature">(data<span class="signature-attributes">opt</span>, allowIncomplete<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="Model.html">Model</a>}</span></h4>
-    
-
-    
-
-
-
-<div class="description">
+<div class="description usertext">
     Create an instance of this model, with an optional data
 object that will be used to bootstrap the model's fields.
 
 Note that this data must be schema-conformant or the
 create function will throw.
 </div>
+
+
 
 
 
@@ -337,50 +351,6 @@ create function will throw.
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line64">line 64</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -393,7 +363,7 @@ create function will throw.
 
         
 
-    <div class="param-desc">
+    <div class="param-desc usertext">
     
         See <a href="Models.html#.create">Models.create</a> for pass-through throws.
     
@@ -412,7 +382,7 @@ create function will throw.
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -428,26 +398,69 @@ create function will throw.
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id=".from"><span class="type-signature">(static) </span>from<span class="signature">(data, allowIncomplete<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="Model.html">Model</a>}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line86">line 86</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     Similar to create(), except that a data object is <em>required</em>.
 
 If no data is provided, this method will throw.
 </div>
+
+
 
 
 
@@ -553,50 +566,6 @@ If no data is provided, this method will throw.
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line83">line 83</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -609,7 +578,7 @@ If no data is provided, this method will throw.
 <ul>
         <li>
 
-    <div class="param-desc">
+    <div class="param-desc usertext">
     
         <a href="Errors.html#.ModelFromMissingData">Errors.ModelFromMissingData</a>
     
@@ -619,7 +588,7 @@ If no data is provided, this method will throw.
     
         <li>
 
-    <div class="param-desc">
+    <div class="param-desc usertext">
     
         See <a href="Models.html#.create">Models.create</a> for pass-through throws.
     
@@ -638,7 +607,7 @@ If no data is provided, this method will throw.
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -654,22 +623,63 @@ If no data is provided, this method will throw.
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id=".load"><span class="type-signature">(async, static) </span>load<span class="signature">(recordName)</span><span class="type-signature"> &rarr; {*}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line106">line 106</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     Load a stored record that uses this model from the back end.
 
 Note that this will throw if:
@@ -678,6 +688,8 @@ Note that this will throw if:
  - the stored record is not valid JSON
  - the stored record is not schema-conformant
 </div>
+
+
 
 
 
@@ -740,50 +752,6 @@ Note that this will throw if:
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line103">line 103</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -798,13 +766,13 @@ Note that this will throw if:
 
 <dl>
     <dt>
-        <div class="param-desc">
+        <div class="param-desc usertext">
         one of several errors
         </div>
     </dt>
     <dd></dd>
     <dt>
-        <dl>
+        <dl class="param-type">
             <dt>
                 Type
             </dt>
@@ -832,7 +800,7 @@ Note that this will throw if:
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -848,22 +816,63 @@ Note that this will throw if:
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="delete"><span class="type-signature">(async) </span>delete<span class="signature">()</span><span class="type-signature"></span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line143">line 143</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     Delete this model from the backend.
 </div>
 
@@ -876,48 +885,6 @@ Note that this will throw if:
 
 
 
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line140">line 140</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
 
 
 
@@ -937,13 +904,13 @@ Note that this will throw if:
 
 <dl>
     <dt>
-        <div class="param-desc">
+        <div class="param-desc usertext">
         one of several errors
         </div>
     </dt>
     <dd></dd>
     <dt>
-        <dl>
+        <dl class="param-type">
             <dt>
                 Type
             </dt>
@@ -965,24 +932,67 @@ Note that this will throw if:
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="get"><span class="type-signature"></span>get<span class="signature">(pathkey)</span><span class="type-signature"> &rarr; {*}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line168">line 168</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     get a value by pathkey, rather than direct assignment
 </div>
+
+
 
 
 
@@ -1045,50 +1055,6 @@ Note that this will throw if:
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line165">line 165</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -1108,7 +1074,7 @@ Note that this will throw if:
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -1124,25 +1090,68 @@ Note that this will throw if:
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="reset"><span class="type-signature"></span>reset<span class="signature">(postResetPayload)</span><span class="type-signature"></span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line225">line 225</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     Recursively reset this model to default values, for any
 value that has a default set in its associated schema.
 </div>
+
+
 
 
 
@@ -1205,52 +1214,6 @@ value that has a default set in its associated schema.
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line222">line 222</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
 
 
 
@@ -1269,15 +1232,58 @@ value that has a default set in its associated schema.
 
     
 
-    
     <h4 class="name" id="save"><span class="type-signature">(async) </span>save<span class="signature">()</span><span class="type-signature"></span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line119">line 119</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     Save this model instance to the backend. Note that this
 requires the model class to specify a <code>__meta.filename</code>
 field, which must indicate which key path to use as
@@ -1297,48 +1303,6 @@ model, yields a string to be used as record key.
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line116">line 116</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
 
 
 
@@ -1355,13 +1319,13 @@ model, yields a string to be used as record key.
 
 <dl>
     <dt>
-        <div class="param-desc">
+        <div class="param-desc usertext">
         one of several errors
         </div>
     </dt>
     <dd></dd>
     <dt>
-        <dl>
+        <dl class="param-type">
             <dt>
                 Type
             </dt>
@@ -1383,24 +1347,67 @@ model, yields a string to be used as record key.
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="set"><span class="type-signature"></span>set<span class="signature">(pathkey, value)</span><span class="type-signature"></span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line178">line 178</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     set a value by pathkey, rather than direct assignment
 </div>
+
+
 
 
 
@@ -1486,52 +1493,6 @@ model, yields a string to be used as record key.
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line175">line 175</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
 
 
 
@@ -1550,20 +1511,79 @@ model, yields a string to be used as record key.
 
     
 
-    
     <h4 class="name" id="toForm"><span class="type-signature"></span>toForm<span class="signature">(options)</span><span class="type-signature"> &rarr; {*}</span></h4>
-    
 
     
 
 
 
-<div class="description">
-    Generate a node tree for working with this model's data
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line312">line 312</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="tree.html#.createFormTree">tree.createFormTree</a></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>
+Generate a node tree for working with this model's data
 in some non-HTML context. By default, this yields the
 (P)React equivalent of a <form>, with options.onSubmit
 being used for submission handling.
+</p>
+
+<p>
+See <a href="tree.html#.createFormTree">tree.createFormTree</a> for details on what the
+available <code>options</code> are.
+</p>
 </div>
+
+
 
 
 
@@ -1604,7 +1624,7 @@ being used for submission handling.
             <td class="type">
             
                 
-<span class="param-type">*</span>
+<span class="param-type">object</span>
 
 
             
@@ -1614,57 +1634,13 @@ being used for submission handling.
 
             
 
-            <td class="description last"></td>
+            <td class="description last">a configuration object</td>
         </tr>
 
     
     </tbody>
 </table>
 
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line292">line 292</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
 
 
 
@@ -1689,7 +1665,7 @@ being used for submission handling.
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -1705,24 +1681,76 @@ being used for submission handling.
 
 
 
-
-
         
             
 
     
 
-    
-    <h4 class="name" id="toHTMLForm"><span class="type-signature"></span>toHTMLForm<span class="signature">(options)</span><span class="type-signature"> &rarr; {*}</span></h4>
-    
+    <h4 class="name" id="toHTMLForm"><span class="type-signature"></span>toHTMLForm<span class="signature">(options)</span><span class="type-signature"> &rarr; {String}</span></h4>
 
     
 
 
 
-<div class="description">
-    Generate a <form> element for viewing/updating this model
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line260">line 260</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="html.html#.createFormHTML">html.createFormHTML</a></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    Generate a <form> element for viewing/updating this model.
+See <a href="html.html#.createFormHTML">html.createFormHTML</a> for details on what the
+available <code>options</code> are.
 </div>
+
+
 
 
 
@@ -1763,7 +1791,7 @@ being used for submission handling.
             <td class="type">
             
                 
-<span class="param-type">*</span>
+<span class="param-type">object</span>
 
 
             
@@ -1773,57 +1801,13 @@ being used for submission handling.
 
             
 
-            <td class="description last"></td>
+            <td class="description last">a configuration object</td>
         </tr>
 
     
     </tbody>
 </table>
 
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line254">line 254</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
 
 
 
@@ -1848,13 +1832,13 @@ being used for submission handling.
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
     <dd>
         
-<span class="param-type">*</span>
+<span class="param-type">String</span>
 
 
     </dd>
@@ -1864,24 +1848,76 @@ being used for submission handling.
 
 
 
-
-
         
             
 
     
 
-    
-    <h4 class="name" id="toHTMLTable"><span class="type-signature"></span>toHTMLTable<span class="signature">(options)</span><span class="type-signature"> &rarr; {*}</span></h4>
-    
+    <h4 class="name" id="toHTMLTable"><span class="type-signature"></span>toHTMLTable<span class="signature">(options)</span><span class="type-signature"> &rarr; {String}</span></h4>
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line274">line 274</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="html.html#.createTableHTML">html.createTableHTML</a></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     Generate a <table> with form fields for this model.
+See <a href="html.html#.createTableHTML">html.createTableHTML</a> for details on what the
+available <code>options</code> are.
 </div>
+
+
 
 
 
@@ -1922,7 +1958,7 @@ being used for submission handling.
             <td class="type">
             
                 
-<span class="param-type">*</span>
+<span class="param-type">object</span>
 
 
             
@@ -1932,57 +1968,13 @@ being used for submission handling.
 
             
 
-            <td class="description last"></td>
+            <td class="description last">a configuration object</td>
         </tr>
 
     
     </tbody>
 </table>
 
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line265">line 265</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
 
 
 
@@ -2007,13 +1999,13 @@ being used for submission handling.
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
     <dd>
         
-<span class="param-type">*</span>
+<span class="param-type">String</span>
 
 
     </dd>
@@ -2023,24 +2015,76 @@ being used for submission handling.
 
 
 
-
-
         
             
 
     
 
-    
-    <h4 class="name" id="toHTMLTableRows"><span class="type-signature"></span>toHTMLTableRows<span class="signature">(options)</span><span class="type-signature"> &rarr; {*}</span></h4>
-    
+    <h4 class="name" id="toHTMLTableRows"><span class="type-signature"></span>toHTMLTableRows<span class="signature">(options)</span><span class="type-signature"> &rarr; {String}</span></h4>
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line288">line 288</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="html.html#.createTableRowHTML">html.createTableRowHTML</a></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     Generate an array of <tr> elements with form fields for this model.
+See <a href="html.html#.createTableRowHTML">html.createTableRowHTML</a> for details on what the
+available <code>options</code> are.
 </div>
+
+
 
 
 
@@ -2081,7 +2125,7 @@ being used for submission handling.
             <td class="type">
             
                 
-<span class="param-type">*</span>
+<span class="param-type">object</span>
 
 
             
@@ -2091,57 +2135,13 @@ being used for submission handling.
 
             
 
-            <td class="description last"></td>
+            <td class="description last">a configuration object</td>
         </tr>
 
     
     </tbody>
 </table>
 
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line276">line 276</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
 
 
 
@@ -2166,13 +2166,13 @@ being used for submission handling.
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
     <dd>
         
-<span class="param-type">*</span>
+<span class="param-type">String</span>
 
 
     </dd>
@@ -2182,22 +2182,63 @@ being used for submission handling.
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="toString"><span class="type-signature"></span>toString<span class="signature">()</span><span class="type-signature"> &rarr; {*}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line388">line 388</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     Yield formatted JSON, with alphabetically sorted keys,
 with all defaults omitted (as they are not enumerable).
 </div>
@@ -2211,48 +2252,6 @@ with all defaults omitted (as they are not enumerable).
 
 
 
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line352">line 352</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
 
 
 
@@ -2277,7 +2276,7 @@ with all defaults omitted (as they are not enumerable).
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -2293,27 +2292,84 @@ with all defaults omitted (as they are not enumerable).
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="toTable"><span class="type-signature"></span>toTable<span class="signature">(options)</span><span class="type-signature"> &rarr; {*}</span></h4>
-    
 
     
 
 
 
-<div class="description">
-    Generate a node tree for working with this model's data
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line334">line 334</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li>tree.createTableTree</li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>
+Generate a node tree for working with this model's data
 in some non-HTML context. By default, this yields the
 (P)React equivalent of a <table> for templating into a
 component render.
+</p>
+
+<p>
+See tree.createTableTree for details on what the
+available <code>options</code> are.
+</p>
 </div>
+
+
 
 
 
@@ -2354,7 +2410,7 @@ component render.
             <td class="type">
             
                 
-<span class="param-type">*</span>
+<span class="param-type">object</span>
 
 
             
@@ -2364,57 +2420,13 @@ component render.
 
             
 
-            <td class="description last"></td>
+            <td class="description last">a configuration object</td>
         </tr>
 
     
     </tbody>
 </table>
 
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line306">line 306</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
 
 
 
@@ -2439,7 +2451,7 @@ component render.
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -2455,27 +2467,84 @@ component render.
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="toTableRows"><span class="type-signature"></span>toTableRows<span class="signature">(options)</span><span class="type-signature"> &rarr; {*}</span></h4>
-    
 
     
 
 
 
-<div class="description">
-    Generate an array of table rows for working with this
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line356">line 356</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-see">See:</dt>
+    <dd class="tag-see">
+        <ul>
+            <li><a href="tree.html#.createTableTreeRows">tree.createTableTreeRows</a></li>
+        </ul>
+    </dd>
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
+    <p>
+Generate an array of table rows for working with this
 model's data in some non-HTML context. By default, this
 yields an array of the (P)React equivalent of <tr>,
 for templating into a component render.
+</p>
+
+<p>
+See tree.createTableTree for details on what the
+available <code>options</code> are.
+</p>
 </div>
+
+
 
 
 
@@ -2516,7 +2585,7 @@ for templating into a component render.
             <td class="type">
             
                 
-<span class="param-type">*</span>
+<span class="param-type">object</span>
 
 
             
@@ -2526,57 +2595,13 @@ for templating into a component render.
 
             
 
-            <td class="description last"></td>
+            <td class="description last">a configuration object</td>
         </tr>
 
     
     </tbody>
 </table>
 
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line320">line 320</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
 
 
 
@@ -2601,7 +2626,7 @@ for templating into a component render.
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -2617,22 +2642,63 @@ for templating into a component render.
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="updateFromSubmission"><span class="type-signature"></span>updateFromSubmission<span class="signature">(data)</span><span class="type-signature"></span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line208">line 208</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     Update this model from a form submission, or any data payload
 that encodes the model data using a flat <keypath>:<string>
 format, e.g. a format which encodes this object:
@@ -2655,6 +2721,8 @@ as this flat object:
     "prop2.prop4.prop5": "val3",
   }
 </div>
+
+
 
 
 
@@ -2717,50 +2785,6 @@ as this flat object:
 
 
 
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line205">line 205</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
 
 
 
@@ -2775,13 +2799,13 @@ as this flat object:
 
 <dl>
     <dt>
-        <div class="param-desc">
+        <div class="param-desc usertext">
         one of several errors
         </div>
     </dt>
     <dd></dd>
     <dt>
-        <dl>
+        <dl class="param-type">
             <dt>
                 Type
             </dt>
@@ -2803,22 +2827,63 @@ as this flat object:
 
 
 
-
-
         
             
 
     
 
-    
     <h4 class="name" id="valueOf"><span class="type-signature"></span>valueOf<span class="signature">()</span><span class="type-signature"> &rarr; {*}</span></h4>
-    
 
     
 
 
 
-<div class="description">
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line366">line 366</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description usertext">
     Yield a fully qualified plain object, with default values included.
 </div>
 
@@ -2831,48 +2896,6 @@ as this flat object:
 
 
 
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line330">line 330</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
 
 
 
@@ -2897,7 +2920,7 @@ as this flat object:
 
 
 
-<dl>
+<dl class="param-type">
     <dt>
         Type
     </dt>
@@ -2910,8 +2933,6 @@ as this flat object:
 </dl>
 
     
-
-
 
 
 
@@ -2928,19 +2949,21 @@ as this flat object:
 
 
 
+    
+    
 </div>
-
-<nav>
-    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="conforms.html">conforms</a></li><li><a href="diff.html">diff</a></li><li><a href="equals.html">equals</a></li><li><a href="Errors.html">Errors</a></li><li><a href="html.html">html</a></li><li><a href="schema.html">schema</a></li><li><a href="tree.html">tree</a></li><li><a href="utils.html">utils</a></li></ul><h3>Classes</h3><ul><li><a href="Fields.html">Fields</a></li><li><a href="FileSystemStore.html">FileSystemStore</a></li><li><a href="Model.html">Model</a></li><li><a href="Models.html">Models</a></li><li><a href="ModelStore.html">ModelStore</a></li></ul>
-</nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.7</a> on Mon Oct 18 2021 08:17:08 GMT-0700 (Pacific Daylight Time)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.7</a> on Wed Oct 20 2021 08:58:51 GMT-0700 (Pacific Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
-<script> prettyPrint(); </script>
-<script src="scripts/linenumber.js"> </script>
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
 </body>
 </html>

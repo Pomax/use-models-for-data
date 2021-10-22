@@ -1,4 +1,7 @@
-# Model
+Use models for data, by using a {@link Model} to wrap your data.
+
+
+# {@link Model}
 
 - static create(data?, Model.ALLOW_INCOMPLETE?)
 - static from(data)
@@ -21,7 +24,7 @@
 - valueOf()
 - toString()
 
-# Fields
+# {@link Fields }
 
 - boolean(options?)
 - string(options?)
@@ -31,7 +34,7 @@
 
 "array of" is done using the `array:true` flag in `options`
 
-# Models
+# {@link Models}
 
 properties:
 
@@ -54,7 +57,7 @@ exports
 
 - fromSchemaToData
 
-# basic js schema
+# Basic JS {@link schema}
 
 You're almost certainly never going to need to work with this as a user, but as a developer you probably do.
 
@@ -68,7 +71,7 @@ You're almost certainly never going to need to work with this as a user, but as 
 - migrate(object, migrationOperations)
 - migrate(object, schema1, schema2))
 
-# JS differ
+# JS {@link diff}
 
 This should *probably* be its own library in the future.
 
@@ -78,7 +81,7 @@ This should *probably* be its own library in the future.
 
 - makeChangeHandler(ignoreKey?, filterKeyString?, transformValue?)
 
-# equals
+# {@link equals}
 
 This should have been part of the `Object` prototype from day one, but it wasn't, so here's an deep equality implementation that can do a bit more than usual:
 
