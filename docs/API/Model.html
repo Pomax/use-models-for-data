@@ -196,7 +196,7 @@ rather than using Model.ALLOW_INCOMPLETE.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line82">line 82</a>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line88">line 88</a>
     </li></ul></dd>
     
 
@@ -241,6 +241,12 @@ object that will be used to bootstrap the model's fields.</p>
 
 <p>Note that this data must be schema-conformant or the
 create function will throw.</p>
+
+<p>If a backend store is used, this function will run <code>async</code>,
+returning a <code>Promise</code> that can be <code>await</code>ed,
+or handled with <code>.then()</code></p>
+
+<p>When no backend is used, this function will run synchronously.</p>
 </div>
 
 
@@ -415,7 +421,7 @@ create function will throw.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line101">line 101</a>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line113">line 113</a>
     </li></ul></dd>
     
 
@@ -458,6 +464,12 @@ create function will throw.</p>
     <p>Similar to create(), except that a data object is <em>required</em>.</p>
 
 <p>If no data is provided, this method will throw.</p>
+
+<p>If a backend store is used, this function will run <code>async</code>,
+returning a <code>Promise</code> that can be <code>await</code>ed,
+or handled with <code>.then()</code></p>
+
+<p>When no backend is used, this function will run synchronously.</p>
 </div>
 
 
@@ -640,7 +652,7 @@ create function will throw.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line123">line 123</a>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line135">line 135</a>
     </li></ul></dd>
     
 
@@ -835,7 +847,7 @@ create function will throw.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line160">line 160</a>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line172">line 172</a>
     </li></ul></dd>
     
 
@@ -951,7 +963,7 @@ create function will throw.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line170">line 170</a>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line182">line 182</a>
     </li></ul></dd>
     
 
@@ -1109,7 +1121,7 @@ create function will throw.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line231">line 231</a>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line243">line 243</a>
     </li></ul></dd>
     
 
@@ -1246,7 +1258,7 @@ value that has a default set in its associated schema.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line136">line 136</a>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line148">line 148</a>
     </li></ul></dd>
     
 
@@ -1366,7 +1378,7 @@ model, yields a string to be used as record key.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line180">line 180</a>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line192">line 192</a>
     </li></ul></dd>
     
 
@@ -1525,7 +1537,7 @@ model, yields a string to be used as record key.</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line318">line 318</a>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line330">line 330</a>
     </li></ul></dd>
     
 
@@ -1700,7 +1712,7 @@ available <code>options</code> are.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line266">line 266</a>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line278">line 278</a>
     </li></ul></dd>
     
 
@@ -1867,7 +1879,7 @@ available <code>options</code> are.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line280">line 280</a>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line292">line 292</a>
     </li></ul></dd>
     
 
@@ -2034,7 +2046,7 @@ available <code>options</code> are.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line294">line 294</a>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line306">line 306</a>
     </li></ul></dd>
     
 
@@ -2201,7 +2213,7 @@ available <code>options</code> are.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line394">line 394</a>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line406">line 406</a>
     </li></ul></dd>
     
 
@@ -2311,7 +2323,7 @@ with all defaults omitted (as they are not enumerable).
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line340">line 340</a>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line352">line 352</a>
     </li></ul></dd>
     
 
@@ -2486,7 +2498,7 @@ available <code>options</code> are.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line362">line 362</a>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line374">line 374</a>
     </li></ul></dd>
     
 
@@ -2661,7 +2673,7 @@ available <code>options</code> are.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line214">line 214</a>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line226">line 226</a>
     </li></ul></dd>
     
 
@@ -2850,7 +2862,7 @@ format, e.g. a format which encodes this object:</p>
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line372">line 372</a>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line384">line 384</a>
     </li></ul></dd>
     
 
@@ -2962,7 +2974,7 @@ format, e.g. a format which encodes this object:</p>
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.7</a> on Fri Oct 22 2021 18:08:29 GMT-0700 (Pacific Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.7</a> on Sat Oct 23 2021 11:10:16 GMT-0700 (Pacific Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>

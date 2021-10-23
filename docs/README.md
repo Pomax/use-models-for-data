@@ -1,7 +1,5 @@
 # Documentation for this library
 
-(Jump to [the API documentation](./API) if you just want to look up class names and function signatures.)
-
 - defining models
 
   - class definitions
@@ -13,8 +11,9 @@
 - constructing models
 
   - create default
-  - create default even though that means missing required fields (allowIncomplete)
-  - create from data (optionally even if it's missing required fields)
+    - create default with required fields missing (`Model.ALLOW_INCOMPLETE`)
+  - create from data
+    - create from data with required fields missing
 
 - using models
 
@@ -32,8 +31,15 @@
 
 - using a data store
 
-  - loading models from the store
+  - `await`ing all Model.create() / Model.from() calls
   - saving models to the store
-  - redefining models
+  - loading models from the store
+  - deleting models from the store
+  - updating your model definitions
     - schema change detection
     - data migrations
+
+- utilities
+
+  - (coercing) deep `equals()`
+  - JS object diffing

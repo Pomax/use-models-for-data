@@ -90,7 +90,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_models.js.html">models/models.js</a>, <a href="models_models.js.html#line77">line 77</a>
+        <a href="models_models.js.html">models/models.js</a>, <a href="models_models.js.html#line111">line 111</a>
     </li></ul></dd>
     
 
@@ -130,7 +130,13 @@
 
 
 <div class="description usertext">
-    Create a model instance, making sure its schema is known.
+    <p>Create a model instance, making sure its schema is known.</p>
+
+<p>If a backend store is used, this function will run <code>async</code>,
+returning a <code>Promise</code> that can be <code>await</code>ed,
+or handled with <code>.then()</code></p>
+
+<p>When no backend is used, this function will run synchronously.</p>
 </div>
 
 
@@ -338,7 +344,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_models.js.html">models/models.js</a>, <a href="models_models.js.html#line159">line 159</a>
+        <a href="models_models.js.html">models/models.js</a>, <a href="models_models.js.html#line209">line 209</a>
     </li></ul></dd>
     
 
@@ -474,7 +480,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_models.js.html">models/models.js</a>, <a href="models_models.js.html#line118">line 118</a>
+        <a href="models_models.js.html">models/models.js</a>, <a href="models_models.js.html#line168">line 168</a>
     </li></ul></dd>
     
 
@@ -644,7 +650,7 @@ stored data. We do it in this order to ensure data validation runs)
 
     
 
-    <h4 class="name" id=".register"><span class="type-signature">(static) </span>register<span class="signature">(&hellip;models)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id=".register"><span class="type-signature">(static) </span>register<span class="signature">(&hellip;models)</span><span class="type-signature"> &rarr; {Array.&lt;<a href="schema.html">schema</a>>}</span></h4>
 
     
 
@@ -656,7 +662,7 @@ stored data. We do it in this order to ensure data validation runs)
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_models.js.html">models/models.js</a>, <a href="models_models.js.html#line59">line 59</a>
+        <a href="models_models.js.html">models/models.js</a>, <a href="models_models.js.html#line71">line 71</a>
     </li></ul></dd>
     
 
@@ -696,10 +702,16 @@ stored data. We do it in this order to ensure data validation runs)
 
 
 <div class="description usertext">
-    register all model classes so that we know whether or not
+    <p>register all model classes so that we know whether or not
 they still match their previously stored schema. If not,
 this will throw and you should run a schema migration before
-your model-related code will run without errors.
+your model-related code will run without errors.</p>
+
+<p>If a backend store is used, this function will run <code>async</code>,
+returning a <code>Promise</code> that can be <code>await</code>ed,
+or handled with <code>.then()</code></p>
+
+<p>When no backend is used, this function will run synchronously.</p>
 </div>
 
 
@@ -745,7 +757,7 @@ your model-related code will run without errors.
             <td class="type">
             
                 
-<span class="param-type"><a href="Model.html">Model</a></span>
+<span class="param-type">Array.&lt;<a href="Model.html">Model</a>></span>
 
 
             
@@ -765,7 +777,7 @@ your model-related code will run without errors.
 
             
 
-            <td class="description last"></td>
+            <td class="description last">one or more Model class instances</td>
         </tr>
 
     
@@ -787,6 +799,28 @@ your model-related code will run without errors.
 
 
 
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    A list of model-associated schemas, mapped per input model
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Array.&lt;<a href="schema.html">schema</a>></span>
+
+
+    </dd>
+</dl>
+
+    
 
 
 
@@ -807,7 +841,7 @@ your model-related code will run without errors.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_models.js.html">models/models.js</a>, <a href="models_models.js.html#line66">line 66</a>
+        <a href="models_models.js.html">models/models.js</a>, <a href="models_models.js.html#line93">line 93</a>
     </li></ul></dd>
     
 
@@ -894,7 +928,7 @@ your model-related code will run without errors.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_models.js.html">models/models.js</a>, <a href="models_models.js.html#line147">line 147</a>
+        <a href="models_models.js.html">models/models.js</a>, <a href="models_models.js.html#line197">line 197</a>
     </li></ul></dd>
     
 
@@ -1032,7 +1066,7 @@ values before data gets loaded in.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_models.js.html">models/models.js</a>, <a href="models_models.js.html#line25">line 25</a>
+        <a href="models_models.js.html">models/models.js</a>, <a href="models_models.js.html#line26">line 26</a>
     </li></ul></dd>
     
 
@@ -1178,7 +1212,7 @@ values before data gets loaded in.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_models.js.html">models/models.js</a>, <a href="models_models.js.html#line36">line 36</a>
+        <a href="models_models.js.html">models/models.js</a>, <a href="models_models.js.html#line37">line 37</a>
     </li></ul></dd>
     
 
@@ -1318,7 +1352,7 @@ file storage during a client-bundling operation.
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.7</a> on Fri Oct 22 2021 18:08:29 GMT-0700 (Pacific Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.7</a> on Sat Oct 23 2021 11:10:16 GMT-0700 (Pacific Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>

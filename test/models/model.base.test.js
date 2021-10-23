@@ -18,12 +18,11 @@ class Secondary extends Model {
   label = fields.string();
 }
 
-describe(`Testing User model with store backing`, () => {
+describe(`Testing base model functionality`, () => {
   let user;
 
   beforeAll(() => {
     Models.register(TestModel);
-    // console.log(TestModel.schema);
   });
 
   beforeEach(() => {
@@ -40,7 +39,7 @@ describe(`Testing User model with store backing`, () => {
     );
   });
 
-  test(`Cannot create without initial data if there are required fields`, () => {
+  test(`Cannot create without initial data if there are required fields`, async () => {
     try {
       User.create();
     } catch (e) {
@@ -51,7 +50,7 @@ describe(`Testing User model with store backing`, () => {
     }
   });
 
-  test(`Cannot create with initial data that is missing required fields`, () => {
+  test(`Cannot create with initial data that is missing required fields`, async () => {
     try {
       User.create({
         profile: {
@@ -64,11 +63,10 @@ describe(`Testing User model with store backing`, () => {
   });
 
   test(`User.create without a payload but allowIncomplete is not an error`, () => {
-    const allowIncomplete = true;
     expect(() => User.create(undefined, User.ALLOW_INCOMPLETE)).not.toThrow();
   });
 
-  test(`User.from without a payload is an error`, () => {
+  test(`User.from without a payload is an error`, async () => {
     expect(() => User.from()).toThrow(
       `User.from() must be called with a data object.`
     );
@@ -198,10 +196,10 @@ describe(`Testing User model with store backing`, () => {
     }
   });
 
-  test(`One-or-more test (__meta.array: true)`, () => {
+  test(`One-or-more test (__meta.array: true)`, async () => {
     let instance;
     try {
-      instance = TestModel.create();
+      instance = await TestModel.create();
     } catch (err) {
       console.log(err);
     }

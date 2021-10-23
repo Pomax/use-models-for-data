@@ -7,7 +7,7 @@
   "scripts": {
     "clean": "prettier ./{lib,test}/**/*.js --write",
     "test": "run-s clean test:jest:*",
-    "test:jest": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --verbose=false",
+    "test:jest": "cross-env NODE_OPTIONS=\"--experimental-vm-modules\" jest --verbose=false",
     "test:jest:models": "run-s test:jest:models:*",
     "test:jest:models:base": "npm run test:jest -- test/models/model.base.test.js",
     "test:jest:models:stored": "npm run test:jest -- test/models/model.stored.test.js",
@@ -18,7 +18,7 @@
     "test:jest:schema": "run-s test:jest:schema:*",
     "test:jest:schema:conforms": "npm run test:jest -- test/schema/conforms.test.js",
     "docs": "run-s docs:*",
-    "docs:build": "jsdoc -R ./docs/api.md -r lib -d ./docs/API -t ./node_modules/docdash",
+    "docs:build": "jsdoc -R ./docs/README.md -r lib -d ./docs/API -t ./node_modules/docdash",
     "docs:open": "open-cli ./docs/API/index.html"
   },
   "keywords": [

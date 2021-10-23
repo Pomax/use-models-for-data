@@ -28,12 +28,6 @@ describe(`Testing User model without store backing`, () => {
     expect(() => User.create(undefined, User.ALLOW_INCOMPLETE)).not.toThrow();
   });
 
-  test(`User.from without a payload is an error`, () => {
-    expect(() => User.from()).toThrow(
-      `User.from() must be called with a data object.`
-    );
-  });
-
   test(`Can create User model without a store backing`, () => {
     expect(user.profile.name).toBe(testData.profile.name);
     expect(user.profile.password).toBe(testData.profile.password);

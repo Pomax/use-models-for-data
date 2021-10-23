@@ -1,8 +1,10 @@
 import fs from "fs";
 import path from "path";
-import { Models } from "../../index.js";
+import { Errors, Models } from "../../index.js";
 import { User } from "./user.model.js";
 import { registry } from "../../lib/models/model-registry.js";
+
+const { RecordAccessError } = Errors;
 
 const moduleURL = new URL(import.meta.url);
 const moduleDir = path.dirname(
@@ -41,7 +43,7 @@ describe(`Testing User model with store backing`, () => {
   beforeAll(async () => {
     await Models.useDefaultStore(storePath);
     Models.resetRegistrations();
-    Models.register(User);
+    await Models.register(User);
   });
 
   /**
@@ -51,7 +53,12 @@ describe(`Testing User model with store backing`, () => {
     try {
       user = await User.load(`TestUser`);
     } catch (e) {
-      // this will fail for the first test, which then builds this record.
+      if (e instanceof RecordAccessError) {
+        // This will fail for the first test, as it will not
+        // be built and saved to disk until the second test.
+      } else {
+        throw e;
+      }
     }
   });
 
@@ -85,7 +92,7 @@ describe(`Testing User model with store backing`, () => {
 
   test(`Can create, save, and delete user TestUser`, () => {
     expect(async () => {
-      const user = User.from(testData);
+      const user = await User.from(testData);
       const recordPath = `${storePath}/users/TestUser.json`;
 
       await user.save();
@@ -162,13 +169,10 @@ describe(`Testing User model with store backing`, () => {
   });
 
   test(`Incomplete models can be created but not saved`, async () => {
-    let incomplete;
-    expect(() => {
-      incomplete = User.create(
-        { "profile.name": `Just a name` },
-        User.ALLOW_INCOMPLETE
-      );
-    }).not.toThrow();
+    let incomplete = await User.create(
+      { "profile.name": `Just a name` },
+      User.ALLOW_INCOMPLETE
+    );
 
     try {
       await incomplete.save();
