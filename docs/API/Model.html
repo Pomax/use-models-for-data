@@ -110,7 +110,7 @@ additional functionality bolted on.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line53">line 53</a>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line68">line 68</a>
     </li></ul></dd>
     
 
@@ -150,12 +150,12 @@ additional functionality bolted on.
 
 
 <div class="description usertext">
-    This symbol can be used to create models with missing
+    <p>This symbol can be used to create models with missing
 "required" fields. Note that this value is inherited,
 and so can be referenced from your own model's name
-rather than using Model.ALLOW_INCOMPLETE.
+rather than using Model.ALLOW_INCOMPLETE.</p>
 
-E.g.
+<p>E.g.</p>
 
 <pre><code>
   class Something extends Model {
@@ -196,7 +196,7 @@ E.g.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line67">line 67</a>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line82">line 82</a>
     </li></ul></dd>
     
 
@@ -236,11 +236,11 @@ E.g.
 
 
 <div class="description usertext">
-    Create an instance of this model, with an optional data
-object that will be used to bootstrap the model's fields.
+    <p>Create an instance of this model, with an optional data
+object that will be used to bootstrap the model's fields.</p>
 
-Note that this data must be schema-conformant or the
-create function will throw.
+<p>Note that this data must be schema-conformant or the
+create function will throw.</p>
 </div>
 
 
@@ -415,7 +415,7 @@ create function will throw.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line86">line 86</a>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line101">line 101</a>
     </li></ul></dd>
     
 
@@ -455,9 +455,9 @@ create function will throw.
 
 
 <div class="description usertext">
-    Similar to create(), except that a data object is <em>required</em>.
+    <p>Similar to create(), except that a data object is <em>required</em>.</p>
 
-If no data is provided, this method will throw.
+<p>If no data is provided, this method will throw.</p>
 </div>
 
 
@@ -640,7 +640,7 @@ If no data is provided, this method will throw.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line106">line 106</a>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line123">line 123</a>
     </li></ul></dd>
     
 
@@ -680,13 +680,15 @@ If no data is provided, this method will throw.
 
 
 <div class="description usertext">
-    Load a stored record that uses this model from the back end.
+    <p>Load a stored record that uses this model from the back end.</p>
 
-Note that this will throw if:
+<p>Note that this will throw if:</p>
 
- - there is no stored record to load
- - the stored record is not valid JSON
- - the stored record is not schema-conformant
+<ul>
+ <li>there is no stored record to load</li>
+ <li>the stored record is not valid JSON</li>
+ <li>the stored record is not schema-conformant</li>
+</ul>
 </div>
 
 
@@ -833,7 +835,7 @@ Note that this will throw if:
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line143">line 143</a>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line160">line 160</a>
     </li></ul></dd>
     
 
@@ -873,7 +875,7 @@ Note that this will throw if:
 
 
 <div class="description usertext">
-    Delete this model from the backend.
+    <p>Delete this model from the backend.</p>
 </div>
 
 
@@ -949,7 +951,7 @@ Note that this will throw if:
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line168">line 168</a>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line170">line 170</a>
     </li></ul></dd>
     
 
@@ -1107,7 +1109,7 @@ Note that this will throw if:
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line225">line 225</a>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line231">line 231</a>
     </li></ul></dd>
     
 
@@ -1244,7 +1246,7 @@ value that has a default set in its associated schema.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line119">line 119</a>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line136">line 136</a>
     </li></ul></dd>
     
 
@@ -1284,11 +1286,11 @@ value that has a default set in its associated schema.
 
 
 <div class="description usertext">
-    Save this model instance to the backend. Note that this
+    <p>Save this model instance to the backend. Note that this
 requires the model class to specify a <code>__meta.filename</code>
 field, which must indicate which key path to use as
 "primary key" equivalent, or be a function that, given a
-model, yields a string to be used as record key.
+model, yields a string to be used as record key.</p>
 </div>
 
 
@@ -1364,7 +1366,7 @@ model, yields a string to be used as record key.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line178">line 178</a>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line180">line 180</a>
     </li></ul></dd>
     
 
@@ -1523,7 +1525,7 @@ model, yields a string to be used as record key.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line312">line 312</a>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line318">line 318</a>
     </li></ul></dd>
     
 
@@ -1573,7 +1575,7 @@ model, yields a string to be used as record key.
     <p>
 Generate a node tree for working with this model's data
 in some non-HTML context. By default, this yields the
-(P)React equivalent of a <form>, with options.onSubmit
+(P)React equivalent of a &lt;form&gt;, with options.onSubmit
 being used for submission handling.
 </p>
 
@@ -1698,7 +1700,7 @@ available <code>options</code> are.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line260">line 260</a>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line266">line 266</a>
     </li></ul></dd>
     
 
@@ -1745,7 +1747,7 @@ available <code>options</code> are.
 
 
 <div class="description usertext">
-    Generate a <form> element for viewing/updating this model.
+    Generate a &lt;form&gt; element for viewing/updating this model.
 See <a href="html.html#.createFormHTML">html.createFormHTML</a> for details on what the
 available <code>options</code> are.
 </div>
@@ -1865,7 +1867,7 @@ available <code>options</code> are.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line274">line 274</a>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line280">line 280</a>
     </li></ul></dd>
     
 
@@ -1912,7 +1914,7 @@ available <code>options</code> are.
 
 
 <div class="description usertext">
-    Generate a <table> with form fields for this model.
+    Generate a &lt;table&gt; with form fields for this model.
 See <a href="html.html#.createTableHTML">html.createTableHTML</a> for details on what the
 available <code>options</code> are.
 </div>
@@ -2032,7 +2034,7 @@ available <code>options</code> are.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line288">line 288</a>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line294">line 294</a>
     </li></ul></dd>
     
 
@@ -2079,7 +2081,7 @@ available <code>options</code> are.
 
 
 <div class="description usertext">
-    Generate an array of <tr> elements with form fields for this model.
+    Generate an array of &lt;tr&gt; elements with form fields for this model.
 See <a href="html.html#.createTableRowHTML">html.createTableRowHTML</a> for details on what the
 available <code>options</code> are.
 </div>
@@ -2199,7 +2201,7 @@ available <code>options</code> are.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line388">line 388</a>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line394">line 394</a>
     </li></ul></dd>
     
 
@@ -2309,7 +2311,7 @@ with all defaults omitted (as they are not enumerable).
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line334">line 334</a>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line340">line 340</a>
     </li></ul></dd>
     
 
@@ -2359,7 +2361,7 @@ with all defaults omitted (as they are not enumerable).
     <p>
 Generate a node tree for working with this model's data
 in some non-HTML context. By default, this yields the
-(P)React equivalent of a <table> for templating into a
+(P)React equivalent of a &lt;table&gt; for templating into a
 component render.
 </p>
 
@@ -2484,7 +2486,7 @@ available <code>options</code> are.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line356">line 356</a>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line362">line 362</a>
     </li></ul></dd>
     
 
@@ -2534,7 +2536,7 @@ available <code>options</code> are.
     <p>
 Generate an array of table rows for working with this
 model's data in some non-HTML context. By default, this
-yields an array of the (P)React equivalent of <tr>,
+yields an array of the (P)React equivalent of &lt;tr&gt;,
 for templating into a component render.
 </p>
 
@@ -2659,7 +2661,7 @@ available <code>options</code> are.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line208">line 208</a>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line214">line 214</a>
     </li></ul></dd>
     
 
@@ -2699,27 +2701,31 @@ available <code>options</code> are.
 
 
 <div class="description usertext">
-    Update this model from a form submission, or any data payload
+    <p>Update this model from a form submission, or any data payload
 that encodes the model data using a flat <keypath>:<string>
-format, e.g. a format which encodes this object:
+format, e.g. a format which encodes this object:</p>
 
-   {
-     prop1: val1,
-     prop2: {
-       prop3: val2,
-       prop4: {
-         prop5: val3
-       }
-     }
-   }
-
-as this flat object:
-
-  {
-    "prop1": "val1",
-    "prop2.prop3": "val2",
-    "prop2.prop4.prop5": "val3",
+<pre><code>
+{
+  prop1: val1,
+  prop2: {
+    prop3: val2,
+    prop4: {
+      prop5: val3
+    }
   }
+}
+</code></pre>
+
+<p>as this flat object:</p>
+
+<pre><code>
+{
+  "prop1": "val1",
+  "prop2.prop3": "val2",
+  "prop2.prop4.prop5": "val3",
+}
+</code></pre>
 </div>
 
 
@@ -2844,7 +2850,7 @@ as this flat object:
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line366">line 366</a>
+        <a href="models_model.js.html">models/model.js</a>, <a href="models_model.js.html#line372">line 372</a>
     </li></ul></dd>
     
 
@@ -2956,7 +2962,7 @@ as this flat object:
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.7</a> on Wed Oct 20 2021 08:58:51 GMT-0700 (Pacific Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.7</a> on Fri Oct 22 2021 18:08:29 GMT-0700 (Pacific Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>

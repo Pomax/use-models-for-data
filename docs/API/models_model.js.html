@@ -76,15 +76,30 @@ import { Models, setupReferenceHandler } from "./models.js";
  * class, which is essentially a factory class with
  * additional functionality bolted on.
  * &lt;/p>
+ *
+ * @hideconstructor
  */
 export class Model {
   /**
-   * This symbol can be used to create models with missing
+   * We don't want folks to call new Model(), so we make sure that
+   * there's a few required arguments that library code uses,
+   * but folks won't know to use themselves, giving them a nice
+   * error that tells them to use Model.create or Model.from instead.
+   */
+  constructor(caller, when) {
+    if (!caller || typeof when !== "number") {
+      const { name } = this.__proto__.constructor;
+      throw new DoNotUseModelConstructor(name);
+    }
+  }
+
+  /**
+   * &lt;p>This symbol can be used to create models with missing
    * "required" fields. Note that this value is inherited,
    * and so can be referenced from your own model's name
-   * rather than using Model.ALLOW_INCOMPLETE.
+   * rather than using Model.ALLOW_INCOMPLETE.&lt;/p>
    *
-   * E.g.
+   * &lt;p>E.g.&lt;/p>
    *
    * &lt;pre>&lt;code>
    *   class Something extends Model {
@@ -97,11 +112,11 @@ export class Model {
   static ALLOW_INCOMPLETE = Symbol();
 
   /**
-   * Create an instance of this model, with an optional data
-   * object that will be used to bootstrap the model's fields.
+   * &lt;p>Create an instance of this model, with an optional data
+   * object that will be used to bootstrap the model's fields.&lt;/p>
    *
-   * Note that this data must be schema-conformant or the
-   * create function will throw.
+   * &lt;p>Note that this data must be schema-conformant or the
+   * create function will throw.&lt;/p>
    *
    * @param {Object} [data] - an optional data object to bootstrap the model instance with.
    * @param {Symbol} [allowIncomplete] - allows models to be created without specifying all required data, if set to {@link Model.ALLOW_INCOMPLETE}.
@@ -117,9 +132,9 @@ export class Model {
   }
 
   /**
-   * Similar to {@link create()}, except that a data object is &lt;em>required&lt;/em>.
+   * &lt;p>Similar to {@link create()}, except that a data object is &lt;em>required&lt;/em>.&lt;/p>
    *
-   * If no data is provided, this method will throw.
+   * &lt;p>If no data is provided, this method will throw.&lt;/p>
    *
    * @param {Object} data - a data object to bootstrap the model instance with.
    * @param {Symbol} [allowIncomplete] - allows models to be created without specifying all required data, if set to {@link Model.ALLOW_INCOMPLETE}.
@@ -135,13 +150,15 @@ export class Model {
   }
 
   /**
-   * Load a stored record that uses this model from the back end.
+   * &lt;p>Load a stored record that uses this model from the back end.&lt;/p>
    *
-   * Note that this will throw if:
+   * &lt;p>Note that this will throw if:&lt;/p>
    *
-   *  - there is no stored record to load
-   *  - the stored record is not valid JSON
-   *  - the stored record is not schema-conformant
+   * &lt;ul>
+   *  &lt;li>there is no stored record to load&lt;/li>
+   *  &lt;li>the stored record is not valid JSON&lt;/li>
+   *  &lt;li>the stored record is not schema-conformant&lt;/li>
+   * &lt;/ul>
    *
    * @param {*} recordName
    * @returns {*} a stored model instance
@@ -152,11 +169,11 @@ export class Model {
   }
 
   /**
-   * Save this model instance to the backend. Note that this
+   * &lt;p>Save this model instance to the backend. Note that this
    * requires the model class to specify a &lt;code>__meta.filename&lt;/code>
    * field, which must indicate which key path to use as
    * "primary key" equivalent, or be a function that, given a
-   * model, yields a string to be used as record key.
+   * model, yields a string to be used as record key.&lt;/p>
    *
    * @throws {*} one of several errors
    */
@@ -172,7 +189,7 @@ export class Model {
       }
     }
     if (!this.__incomplete) {
-      await Models.saveModel(this);
+      return Models.saveModel(this);
     } else {
       const { name } = this.__proto__.constructor;
       throw new IncompleteModelSave(name, errors);
@@ -180,27 +197,12 @@ export class Model {
   }
 
   /**
-   * Delete this model from the backend.
+   * &lt;p>Delete this model from the backend.&lt;/p>
    *
    * @throws {*} one of several errors
    */
   async delete() {
-    await Models.deleteModel(this);
-  }
-
-  /**
-   * We don't want folks to call new Model(), so we make sure that
-   * there's a few required arguments that library code uses,
-   * but folks won't know to use themselves, giving them a nice
-   * error that tells them to use Model.create or Model.from instead.
-   *
-   * @hideconstructor
-   */
-  constructor(caller, when) {
-    if (!caller || typeof when !== "number") {
-      const { name } = this.__proto__.constructor;
-      throw new DoNotUseModelConstructor(name);
-    }
+    return Models.deleteModel(this);
   }
 
   /**
@@ -224,27 +226,31 @@ export class Model {
   }
 
   /**
-   * Update this model from a form submission, or any data payload
+   * &lt;p>Update this model from a form submission, or any data payload
    * that encodes the model data using a flat &lt;keypath>:&lt;string>
-   * format, e.g. a format which encodes this object:
+   * format, e.g. a format which encodes this object:&lt;/p>
    *
-   *    {
-   *      prop1: val1,
-   *      prop2: {
-   *        prop3: val2,
-   *        prop4: {
-   *          prop5: val3
-   *        }
-   *      }
-   *    }
-   *
-   * as this flat object:
-   *
-   *   {
-   *     "prop1": "val1",
-   *     "prop2.prop3": "val2",
-   *     "prop2.prop4.prop5": "val3",
+   * &lt;pre>&lt;code>
+   * {
+   *   prop1: val1,
+   *   prop2: {
+   *     prop3: val2,
+   *     prop4: {
+   *       prop5: val3
+   *     }
    *   }
+   * }
+   * &lt;/code>&lt;/pre>
+   *
+   * &lt;p>as this flat object:&lt;/p>
+   *
+   * &lt;pre>&lt;code>
+   * {
+   *   "prop1": "val1",
+   *   "prop2.prop3": "val2",
+   *   "prop2.prop4.prop5": "val3",
+   * }
+   * &lt;/code>&lt;/pre>
    *
    * @param {*} data
    * @throws {*} one of several errors
@@ -293,7 +299,7 @@ export class Model {
   // Form builders: plain HTML
 
   /**
-   * Generate a &lt;form> element for viewing/updating this model.
+   * Generate a &amp;lt;form&amp;gt; element for viewing/updating this model.
    * See {@link html.createFormHTML} for details on what the
    * available &lt;code>options&lt;/code> are.
    *
@@ -307,7 +313,7 @@ export class Model {
   }
 
   /**
-   * Generate a &lt;table> with form fields for this model.
+   * Generate a &amp;lt;table&amp;gt; with form fields for this model.
    * See {@link html.createTableHTML} for details on what the
    * available &lt;code>options&lt;/code> are.
    *
@@ -321,7 +327,7 @@ export class Model {
   }
 
   /**
-   * Generate an array of &lt;tr> elements with form fields for this model.
+   * Generate an array of &amp;lt;tr&amp;gt; elements with form fields for this model.
    * See {@link html.createTableRowHTML} for details on what the
    * available &lt;code>options&lt;/code> are.
    *
@@ -340,7 +346,7 @@ export class Model {
    * &lt;p>
    * Generate a node tree for working with this model's data
    * in some non-HTML context. By default, this yields the
-   * (P)React equivalent of a &lt;form>, with options.onSubmit
+   * (P)React equivalent of a &amp;lt;form&amp;gt;, with options.onSubmit
    * being used for submission handling.
    * &lt;/p>
    *
@@ -362,7 +368,7 @@ export class Model {
    * &lt;p>
    * Generate a node tree for working with this model's data
    * in some non-HTML context. By default, this yields the
-   * (P)React equivalent of a &lt;table> for templating into a
+   * (P)React equivalent of a &amp;lt;table&amp;gt; for templating into a
    * component render.
    * &lt;/p>
    *
@@ -384,7 +390,7 @@ export class Model {
    * &lt;p>
    * Generate an array of table rows for working with this
    * model's data in some non-HTML context. By default, this
-   * yields an array of the (P)React equivalent of &lt;tr>,
+   * yields an array of the (P)React equivalent of &amp;lt;tr&amp;gt;,
    * for templating into a component render.
    * &lt;/p>
    *
@@ -474,7 +480,7 @@ function getSetLevel(model, pathkey, value) {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.7</a> on Wed Oct 20 2021 08:58:51 GMT-0700 (Pacific Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.7</a> on Fri Oct 22 2021 18:08:29 GMT-0700 (Pacific Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>
