@@ -26,7 +26,7 @@ describe(`Testing base model functionality`, () => {
   });
 
   beforeEach(() => {
-    user = User.create({ profile: { name: `test`, password: `test` } });
+    user = User.from({ profile: { name: `test`, password: `test` } });
   });
 
   // ╔══════════════════════╗
@@ -52,7 +52,7 @@ describe(`Testing base model functionality`, () => {
 
   test(`Cannot create with initial data that is missing required fields`, async () => {
     try {
-      User.create({
+      User.from({
         profile: {
           password: `hake`,
         },
@@ -62,8 +62,8 @@ describe(`Testing base model functionality`, () => {
     }
   });
 
-  test(`User.create without a payload but allowIncomplete is not an error`, () => {
-    expect(() => User.create(undefined, User.ALLOW_INCOMPLETE)).not.toThrow();
+  test(`User.create with allowIncomplete is not an error`, () => {
+    expect(() => User.create(User.ALLOW_INCOMPLETE)).not.toThrow();
   });
 
   test(`User.from without a payload is an error`, async () => {

@@ -169,7 +169,7 @@ describe(`Testing User model with store backing`, () => {
   });
 
   test(`Incomplete models can be created but not saved`, async () => {
-    let incomplete = await User.create(
+    let incomplete = await User.from(
       { "profile.name": `Just a name` },
       User.ALLOW_INCOMPLETE
     );

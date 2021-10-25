@@ -21,11 +21,11 @@ describe(`Testing User model without store backing`, () => {
   let user;
 
   beforeEach(() => {
-    user = User.create(testData);
+    user = User.from(testData);
   });
 
-  test(`User.create without a payload is not an error`, () => {
-    expect(() => User.create(undefined, User.ALLOW_INCOMPLETE)).not.toThrow();
+  test(`User.create with allow_complete is not an error`, () => {
+    expect(() => User.create(User.ALLOW_INCOMPLETE)).not.toThrow();
   });
 
   test(`Can create User model without a store backing`, () => {

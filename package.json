@@ -18,7 +18,7 @@
     "test:jest:schema": "run-s test:jest:schema:*",
     "test:jest:schema:conforms": "npm run test:jest -- test/schema/conforms.test.js",
     "docs": "run-s docs:*",
-    "docs:build": "jsdoc -R ./docs/README.md -r lib -d ./docs/API -t ./node_modules/docdash",
+    "docs:build": "jsdoc -R ./docs/README.md -r lib -d ./docs/API -t ./docs/template/docdash",
     "docs:open": "open-cli ./docs/API/index.html"
   },
   "keywords": [
@@ -36,10 +36,7 @@
     "jsdoc": "^3.6.7",
     "jsdom": "^17.0.0",
     "npm-run-all": "^4.1.5",
+    "open-cli": "^7.0.1",
     "prettier": "^2.4.1"
-  },
-  "dependencies": {
-    "docdash": "^1.2.0",
-    "open-cli": "^7.0.1"
   }
 }

@@ -58,76 +58,300 @@
 
     <section class="readme usertext">
         <article><h1>Documentation for this library</h1>
+<h2>Defining models</h2>
+<p>In order to use models for data, the library needs you to define classes that extend <a href="Model.html">Model</a>, which can then be used to wrap data.</p>
+<h3>Model class definitions</h3>
+<p>The simplest, valid Model extension is one that declares all its fields, and nothing else:</p>
+<pre class="prettyprint source lang-javascript"><code>class YourModel extends Model {
+  fieldname1 = Fields.fieldType(...);
+  fieldname2 = Fields.fieldType(...);
+  ...
+}
+</code></pre>
+<p>However, it's generally a better idea to also specify a <code>__meta</code> property.</p>
+<pre class="prettyprint source lang-javascript"><code>class YourModel extends Model {
+  __meta = {
+    ...
+  }
+
+  fieldname1 = Fields.fieldType(...);
+  fieldname2 = Fields.fieldType(...);
+  ...
+}
+</code></pre>
+<h3>Field types and options</h3>
+<p>The <a href="Fields.html">Fields</a> class defines several field types that you can use to build out your models.</p>
+<ul>
+<li><code>boolean(options?)</code>, for true/false values</li>
+<li><code>number(options?)</code>, for numerical values</li>
+<li><code>string(options?)</code>, for string data</li>
+<li><code>choice(values[], options)</code>, for values that can only be one of a predefined list of values.</li>
+<li><code>model(modelClass, options)</code>, for submodels (e.g. if it's an object in plain data, it's just another model).</li>
+</ul>
+<p>Also note that arrays of values (e.g. a field called <code>photos</code> being an array of <code>Photo</code> submodels) are not a separate field type, instead these simply rely on you passing in the <code>array: true</code> property as part of the field options.</p>
+<pre class="prettyprint source lang-javascript"><code>class User extends Model {
+  photos = Fields.model(Photo, { array: true });
+}
+
+class Photo extends Model {
+  filename = Fields.string({ validate: ... });
+  width = Fields.number(...);
+  height = Fields.number(...);
+  ...
+}
+</code></pre>
+<p>The full list of options is:</p>
+<ul>
+<li><code>required</code>: a boolean value that determines whether the field must always have a value</li>
+<li><code>default</code>: a default value to use when the field has not been explicitly assigned</li>
+<li><code>choices</code>: an array of possible values that this field may take</li>
+<li><code>configurable</code>: a boolean value that determines whether this field may be user-updated (i.e. through form submission handling rather than in code)</li>
+<li><code>debug</code>: a boolean value that regulates debug behaviour as defined in the library code.</li>
+<li><code>validate</code>: a function for performing more elaborate validation than basic type validation can offer.</li>
+</ul>
+<h3>Custom validation</h3>
+<p>The <code>validate</code> property takes a function that takes the to-validate value as input argument, and must fail in one of two ways if the value is invalid:</p>
+<ul>
+<li>return <code>false</code>, or</li>
+<li>throw an <code>Error</code> object.</li>
+</ul>
+<p>The first is for &quot;simple failure&quot;, where the validation simply fails without any details:</p>
+<pre class="prettyprint source lang-javascript"><code>legalAge = Fields.number({
+  validate: (value) => value >= 18,
+});
+</code></pre>
+<p>The second is for when more elaborate details are required.</p>
+<pre class="prettyprint source lang-javascript"><code>avatar = Fields.string({
+  validate: function (value) {
+    const errCode = checkBase64Image(value);
+    if (errCode !== undefined) {
+      throw new Error(
+        `avatar was not a valid base64-encoded image (error code: ${errCode}).`
+      );
+    }
+  },
+});
+</code></pre>
+<h2>Constructing models</h2>
+<p>There are two ways to create model instances (three, if we include loading from a data store):</p>
+<ul>
+<li><code>Model.create(Model.ALLOW_INCOMPLETE?)</code>, where <code>Model</code> is your model class</li>
+<li><code>Model.from(data, Model.ALLOW_INCOMPLETE?)</code>, where <code>Model</code> is your model class</li>
+</ul>
+<p>The <code>create</code> function builds a new model instance, whereas the <code>from</code> function builds a new model from preexisting data. Both functions can take the <code>ALLOW_INCOMPLETE</code> static symbol that is used by the library to determine whether or not incompletely model creation is allowed. If omitted, trying to create a model without specifying required fields will throw a <a href="Errors.html#.RequiredFieldsMissing">Errors.RequiredFieldsMissing</a> error.</p>
+<h3>Permissive <code>create</code></h3>
+<pre class="prettyprint source lang-javascript"><code>const config = Config.create(Config.ALLOW_INCOMPLETE);
+</code></pre>
+<h3>Strict <code>create</code></h3>
+<pre class="prettyprint source lang-javascript"><code>import { Errors } from &quot;use-models-for-data&quot;;
+const { RequiredFieldsMissing } = Errors;
+
+try {
+  const user = User.create();
+} catch (e) {
+  if (e instanceof RequiredFieldsMissing) {
+    // this is unexpected, but a known possible failure state.
+    console.error(e);
+  } else if (...) {
+    ...
+  }
+}
+</code></pre>
+<h3>Permissive <code>from</code></h3>
+<pre class="prettyprint source lang-javascript"><code>const user = User.from(
+  {
+    name: `Tester McTesting`,
+  },
+  User.ALLOW_INCOMPLETE
+);
+</code></pre>
+<h3>Strict <code>from</code></h3>
+<pre class="prettyprint source lang-javascript"><code>try {
+  const user = User.from({
+    name: `Tester McTesting`,
+  });
+} else {
+  // see &quot;strict create&quot;, above.
+}
+</code></pre>
+<h2>Using models</h2>
+<p>With your data encoded as a model instance, you can now treat it like any other plain JS object, referencing and assigning values as usual. However, assignments may throw, as <em>all assignments</em> are locked behind validation, including entire subtree assignments.</p>
+<h3>Set/get values with automatic validation</h3>
+<p>Everything should work exactly the same as if your model was a plain object:</p>
+<pre class="prettyprint source lang-javascript"><code>import Errors from &quot;use-models-for-data&quot;;
+const { InvalidAssignment } = Errors;
+
+class User extends Model {
+  name = Fields.string({ required: true });
+  password = Fields.string({ required: true, validate: ... });
+}
+
+const user = User.from({ name: ..., password: ... });
+
+try {
+  user.name = `A new name`;
+  user.password = `A new password`;
+} catch (e) {
+  if (e instanceof InvalidAssignment) {
+    console.error(e);
+  } else if (...) {
+    ...
+  }
+}
+</code></pre>
+<h3>Set/get subtrees with automatic validation</h3>
+<p>Even when setting entire subtrees, things should still work as expected:</p>
+<pre class="prettyprint source lang-javascript"><code>import Errors from &quot;use-models-for-data&quot;;
+const { InvalidAssignment } = Errors;
+
+class ComplexModel extends Model {
+  /*
+   Some class that models {
+     key1: {
+       subkey: {
+         fieldname: value
+       },
+       keyfield: value
+     },
+     key2: {
+       something: value
+     }
+   }
+  */
+}
+
+const instance = ComplexModel.create();
+
+try {
+  instance.key1 = {
+    subkey: {
+      fieldname: &quot;test&quot;,
+    },
+    keyfield: 1234,
+  };
+} catch (e) {
+  if (e instanceof InvalidAssignment) {
+    console.error(e);
+  } else if (...) {
+    ...
+  }
+}
+</code></pre>
+<h3>Converting to formatted JSON (with defaults omitted) - <code>.toString()</code></h3>
+<p>Any model instance can be turned into JSON (with sorted keys at all depths) by using its <code>.toString()</code> function. However, because model instances are backed by models, this JSON will not include any default values, only encoding real values. As such, the following model:</p>
+<pre class="prettyprint source lang-javascript"><code>class User extends Model {
+  name = Fields.string({ required: true });
+  password = Fields.string({ required: true, validate: ... });
+  postCount = Fields.number({ default: 0 })
+  rewards = Fields.number({ default: 0 })
+  level = Fields.number({ default: 1 })
+}
+</code></pre>
+<p>Will turn into a JSON object with only a name and password using <code>.toString()</code>:</p>
+<pre class="prettyprint source lang-javascript"><code>const user = User.create({ name: &quot;Tester McTesting&quot;, password: &quot;abcdef&quot; });
+user.level = 2;
+
+console.log(user.toString());
+/*
+  {
+    &quot;level&quot;: 2,
+    &quot;name&quot;: &quot;Tester McTesting&quot;,
+    &quot;password&quot;: &quot;abcdef&quot;
+  }
+*/
+</code></pre>
+<h3>Converting to fully qualified, plain JS object - <code>.valueOf()</code></h3>
+<p>To generate a fully qualified object (e.g. when needing to send the model off to something that does <em>not</em> use models for data) the <code>.valueOf()</code> function can be used to turn any model instance into a plain JS object. If you've written your code right, you should never need to use this function. But if you <em>do</em> need it, it's there.</p>
+<p>Using the above <code>User</code> model:</p>
+<pre class="prettyprint source lang-javascript"><code>const user = User.create({ name: &quot;Tester McTesting&quot;, password: &quot;abcdef&quot; });
+const unsafe = user.valueOf();
+console.log(JSON.stringify(unsafe));
+/*
+  {
+    &quot;name&quot;: &quot;Tester McTesting&quot;,
+    &quot;password&quot;: &quot;abcdef&quot;,
+    &quot;postCount&quot;: 0,
+    &quot;rewards&quot;: 0,
+    &quot;level&quot;: 2
+  }
+*/
+</code></pre>
+<h3>(Partially) resetting model instances</h3>
+<p>Sometimes it's necessary to not just &quot;set some values&quot; but also &quot;unset previously set values&quot;. Rather than having to write the following code:</p>
+<pre class="prettyprint source lang-javascript"><code>const user1 = User.from({ ... });
+
+// ...
+
+const { name, password, level } = user1;
+const user2 = User.from({ name, password, level});
+</code></pre>
+<p>You can use the <code>.reset()</code> function, with an optional object for reassigning some (or all) fields some new data, without having to declare new variables:</p>
+<pre class="prettyprint source lang-javascript"><code>const user = User.from({ ... });
+
+// ...
+
+const { name, password, level } = user;
+user.reset({ name, password, level});
+</code></pre>
+<h2>Using models for/in the browser</h2>
+<p>...</p>
+<h3>Import/bundling your model definition</h3>
+<p>...</p>
+<h3>Forms for editing</h3>
+<p>...</p>
+<h4>HTML form/table</h4>
+<p>...</p>
+<h4>(P)React form/table</h4>
+<p>...</p>
+<h4>Custom trees</h4>
+<p>...</p>
+<h2>Using a data store</h2>
+<p>Using models to ensure your data is always valid also requires knowing that your models themselves are synced between the various parts of your code, as well as between your storage backend(s) and your code. As such, this library lets you basically use any backend you like, as long as you can write a <a href="ModelStore.html">ModelStore</a> for it.</p>
+<p>The library comes with a single ModelStore implementation predefined, the <a href="FileSystemStore.html">FileSystemStore</a>, which uses your local filesystem as a storage backend.</p>
+<h3>Using a <a href="ModelStore.html">ModelStore</a></h3>
 <ul>
 <li>
-<p>defining models</p>
-<ul>
-<li>class definitions</li>
-<li>field types and options</li>
-<li>custom validation
-<ul>
-<li>false for simple validation failure</li>
-<li>throw an error for detailed validation failure</li>
-</ul>
-</li>
-</ul>
+<p>ready()</p>
 </li>
 <li>
-<p>constructing models</p>
-<ul>
-<li>create default
-<ul>
-<li>create default with required fields missing (<code>Model.ALLOW_INCOMPLETE</code>)</li>
-</ul>
-</li>
-<li>create from data
-<ul>
-<li>create from data with required fields missing</li>
-</ul>
-</li>
-</ul>
+<p>async loadRecord(schema, recordName)</p>
 </li>
 <li>
-<p>using models</p>
-<ul>
-<li>set/get values with automatic validation</li>
-<li>set/get subtrees with automatic validation</li>
-<li>toString (formatted JSON without defaults)</li>
-<li>valueOf (fully qualified plain object)</li>
-<li>reset([data])</li>
-</ul>
+<p>async saveRecord(schema, instance, recordName)</p>
 </li>
 <li>
-<p>using models in the browser</p>
-<ul>
-<li>HTML form/table</li>
-<li>(P)React form/table</li>
-<li>Custom trees</li>
-</ul>
+<p>async deleteRecord(schema, recordName)</p>
 </li>
 <li>
-<p>using a data store</p>
-<ul>
-<li><code>await</code>ing all Model.create() / Model.from() calls</li>
-<li>saving models to the store</li>
-<li>loading models from the store</li>
-<li>deleting models from the store</li>
-<li>updating your model definitions
-<ul>
-<li>schema change detection</li>
-<li>data migrations</li>
-</ul>
-</li>
-</ul>
+<p>async loadSchema(schema)</p>
 </li>
 <li>
-<p>utilities</p>
-<ul>
-<li>(coercing) deep <code>equals()</code></li>
-<li>JS object diffing</li>
-</ul>
+<p>async saveSchema(Model) // <strong>THIS SHOULD TAKE A SCHEMA ARGUMENT, NOT A MODEL</strong></p>
 </li>
-</ul></article>
+<li>
+<p>async saveMigration(schema1, schema2, migration)</p>
+</li>
+</ul>
+<h3><code>await</code>ing all <code>Model.create()</code> / <code>Model.from()</code> calls</h3>
+<p>When using a model store, all schema and record operations are necessarily asynchronous, and so one thing that changes is that <code>Model.create</code> and <code>Model.from</code> will no longer work synchronously, requiring you either <code>await</code> them, or use <code>.then(instance =&gt; ...)</code> chaining.</p>
+<h3>saving models to the store</h3>
+<p>...</p>
+<h3>loading models from the store</h3>
+<p>...</p>
+<h3>deleting models from the store</h3>
+<p>...</p>
+<h3>updating your model definitions</h3>
+<p>...</p>
+<h4>schema change detection</h4>
+<p>...</p>
+<h4>data migrations</h4>
+<p>...</p>
+<h2>utilities</h2>
+<p>...</p>
+<h3>(coercing) deep <code>equals()</code></h3>
+<p>...</p>
+<h3>JS object diffing</h3>
+<p>...</p></article>
     </section>
 
 
@@ -142,7 +366,7 @@
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.7</a> on Sat Oct 23 2021 11:10:16 GMT-0700 (Pacific Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.7</a> on Sun Oct 24 2021 23:10:53 GMT-0700 (Pacific Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>
