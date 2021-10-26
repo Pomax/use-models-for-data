@@ -99,9 +99,37 @@ avatar = Fields.string({
 There are two ways to create model instances (three, if we include loading from a data store):
 
 - `Model.create(Model.ALLOW_INCOMPLETE?)`, where `Model` is your model class
-- `Model.from(data, Model.ALLOW_INCOMPLETE?)`, where `Model` is your model class
+- `Model.from(data, Model.ALLOW_INCOMPLETE?)`, where `Model` is your model class, and `data` is a required object with one or more values to be used to bootstrap the model instance.
 
 The `create` function builds a new model instance, whereas the `from` function builds a new model from preexisting data. Both functions can take the `ALLOW_INCOMPLETE` static symbol that is used by the library to determine whether or not incompletely model creation is allowed. If omitted, trying to create a model without specifying required fields will throw a {@link Errors.RequiredFieldsMissing} error.
+
+Also note that in addition to plain JS objects, the `.from()` function also allows for key-pathed objects. That is, while it accepts standard objects like this:
+
+```javascript
+{
+  key1: {
+    subkey: {
+      fieldname: value
+    },
+    keyfield: value
+  },
+  key2: {
+    something: value
+  },
+}
+```
+
+It also allows data to be specified using a "flat" object with value paths encoded as dot-separated key paths:
+
+```javascript
+{
+  "key1.subkey.fieldname": value,
+  "key1.keyfield": value,
+  "key2.something": value,
+}
+```
+
+This is especially useful when dealing with flat data delivery mechanisms such as form submissions or flat-record storage back ends.
 
 ### Permissive `create`
 
@@ -223,6 +251,17 @@ try {
 }
 ```
 
+### Set/get with keypath names
+
+In addition to getting and setting properties like you would for any JS object, models also support `.get(key)` and `.set(key, value)`, for getting/setting nested properties using keys with `.` delimiters:
+
+```javascript
+const complexInstance = ComplexModel.from(...);
+let fieldValue = complexInstance.get(`key1.subkey.fieldname`);
+fieldValue = `${fieldValue}-plus`;
+complexInstance.set(`key1.subkey.fieldname`, fieldValue);
+```
+
 ### Converting to formatted JSON (with defaults omitted) - `.toString()`
 
 Any model instance can be turned into JSON (with sorted keys at all depths) by using its `.toString()` function. However, because model instances are backed by models, this JSON will not include any default values, only encoding real values. As such, the following model:
@@ -300,27 +339,110 @@ user.reset({ name, password, level});
 
 ## Using models for/in the browser
 
-...
+Models wouldn't be very useful if you could only use them server side: you can use models for data anywhere that you can use (modern) Javascript.
 
 ### Import/bundling your model definition
 
-...
+When writing client-side JS, all you need to do is import your classes as usually, and let your bundler (for modern JS) take care of the rest. This way your client and server will be "speaking the same models" no matter how much you update them.
+
+### Tree mapping your model
 
 ### Forms for editing
 
-...
+While updating models using code makes a ton of sense server-side, when we're using a browser you probably want to offer users a way to work with models too, for instance, in order to update their preferences, edit a post, etc. You can of course roll your own code for the just the bits that you need, but if you just want "automatic full-model editing forms" then you're in luck because that's something this library also offers.
+
+All element-building is based on walking your model as a data tree, turning leaves and non-leaves into meaningful data, with an options object to control things like pre/post code, value update handling, etc. See the [custom trees](#custom-trees) section below for the full description of this process.
 
 #### HTML form/table
 
-...
+Since the browser mostly cares about HTML code, models have code in place to automatically generate `<form>` and `<table>` elements for working with model data using standard HTML form fields, in addition to being able to generate a "bare" set of `<tr>` table rows for slotting into your own HTML template.
+
+- `toHTMLForm(options?)`: generates a `<form>` element with nested data wrapped as `<fieldset>` elements.
+- `toHTMLTable(options?)`: generates a `<table>` element as a flat representation of your model data.
+- `toHTMLTableRows(options?)`: only generates the set of `<tr>`, with each row corresponding to one leaf of your model's data tree.
+
+Using these is about as close to no work as possible:
+
+```javascript
+import { User } from "../src/models/user.js";
+
+// ...
+
+function generateUserForm(user) {
+  document.querySelector(`#modal .form-panel`)?.innerHTML = user.toHTMLForm();
+}
+
+// ...
+
+editButton.addEventListener(`click`, evt => generateUserForm(evt));
+```
+
+Of course, while models can perform data validation, they don't automatically test whether data is web-safe, so as always: when working with user data, `innerHTML` is rarely safe, and you may want to use a sanitizer to verify on that HTML.
+
+For a more secure version, generating the content using the generic [custom tree](#custom-trees) approach will generally be a better idea.
 
 #### (P)React form/table
 
-...
+```jsx
+import { Component, createElement } from "(p)react";
+import { User as UserModel } from "./src/models/user.js";
+
+class UserProfile extends Component {
+  constructor(props) {
+    super(props);
+    this.user = UserModel.from(this.props.userData);
+  }
+
+  render() {
+    return (
+      <>
+        <h2>Edit profile</h2>
+        {this.buildProfileForm()}
+      </>
+    );
+  }
+
+  buildProfileForm() {
+    const tableOptions = {
+      create: createElement,
+      inputHandler: {
+        onInput: (evt) => {
+          const { name, type, checked, value } = evt.target;
+          const newValue = type === `checkbox` ? checked : value;
+          try {
+            // As form elements use keypaths for input names,
+            // we use the .set() function to assign the updated
+            // value to our model.
+            this.user.set(name, newValue);
+          } catch (e) {
+            // Warn the user about invalid data, either
+            // via an effect, a state update, a modal,
+            // etc.
+          }
+        },
+      },
+    };
+
+    return (
+      <table ref={(e) => (this.profileTable = e)}>
+        {this.user.toTableTree(tableOptions)}
+      </table>
+    );
+  }
+}
+```
 
 #### Custom trees
 
-...
+If you're using a tech stack that isn't explicitly covered by this library, you can relatively easily write your own "tree serializer" using the same approach as used when using (P)React, where you specify the key elements required for the tree conversion, and the code does the rest. This is done by passing in an options object to the `.toForm()`, `.toTable()`, or `.toTableRows()` function, which can be giving the following properties:
+
+- `create: function(tag, options)`: a function that turns a tag-and-options tuple into whatever nestable data structure is required for your tech stack to work.
+- `footer`: any kind of content that you need added to the end (only applies to `form` and `table` generation),
+- `label: function(key)`: a function that turns a field value's key path into something useful (like turning `key1.fieldvalue` into `Key1 fieldvalue`).
+- `skipDebug`: boolean, omits all model fields marked as `debug` from the resulting data structure.
+- `inputHandler`: an object that gets dereferenced when processing all child nodes, adding its content as child property for input handling. For example, for (P)React this would be `{ onInput: evt => { ... }}`, so that elements end up being some `<InputElement onInput={evt => ... }/>`.
+
+In addition to this, you can tack any additional properties you need for your data structures. For example, (P)React triggers an `onSubmit` when a form is submitted, and so adding an `onSubmit` property to the options object with a handling function will automatically cause that to kick in.
 
 ## Using a data store
 
