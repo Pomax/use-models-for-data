@@ -1,1 +1,3 @@
 - add Model.toFlatString()?
+- publish deep equals?
+- publish JS differ?
