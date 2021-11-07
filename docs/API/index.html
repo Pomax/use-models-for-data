@@ -134,12 +134,12 @@ class Photo extends Model {
 });
 </code></pre>
 <h2>Constructing models</h2>
-<p>There are two ways to create model instances (three, if we include loading from a data store):</p>
+<p>There are two ways to create <a href="Model.html">Model</a> instances (three, if we include loading from a data store):</p>
 <ul>
-<li><code>Model.create(Model.ALLOW_INCOMPLETE?)</code>, where <code>Model</code> is your model class</li>
+<li><code>Model.create(Model.ALLOW_INCOMPLETE?)</code>, where <code>Model</code> is your model class.</li>
 <li><code>Model.from(data, Model.ALLOW_INCOMPLETE?)</code>, where <code>Model</code> is your model class, and <code>data</code> is a required object with one or more values to be used to bootstrap the model instance.</li>
 </ul>
-<p>The <code>create</code> function builds a new model instance, whereas the <code>from</code> function builds a new model from preexisting data. Both functions can take the <code>ALLOW_INCOMPLETE</code> static symbol that is used by the library to determine whether or not incompletely model creation is allowed. If omitted, trying to create a model without specifying required fields will throw a <a href="Errors.html#.RequiredFieldsMissing">Errors.RequiredFieldsMissing</a> error.</p>
+<p>The <code>create</code> function builds a new model instance, whereas the <code>from</code> function builds a new model from pre-existing data. Both functions can take the <code>ALLOW_INCOMPLETE</code> static symbol that is used by the library to determine whether or not incompletely model creation is allowed. If omitted, trying to create a model without specifying required fields will throw a <a href="Errors.html#.RequiredFieldsMissing">Errors.RequiredFieldsMissing</a> error.</p>
 <p>Also note that in addition to plain JS objects, the <code>.from()</code> function also allows for key-pathed objects. That is, while it accepts standard objects like this:</p>
 <pre class="prettyprint source lang-javascript"><code>{
   key1: {
@@ -153,7 +153,7 @@ class Photo extends Model {
   },
 }
 </code></pre>
-<p>It also allows data to be specified using a &quot;flat&quot; object with value paths encoded as dot-separated key paths:</p>
+<p>It also allows data to be specified using a &quot;flat&quot; object with value paths encoded as dot-separated path keys:</p>
 <pre class="prettyprint source lang-javascript"><code>{
   &quot;key1.subkey.fieldname&quot;: value,
   &quot;key1.keyfield&quot;: value,
@@ -259,15 +259,17 @@ try {
   }
 }
 </code></pre>
-<h3>Set/get with keypath names</h3>
-<p>In addition to getting and setting properties like you would for any JS object, models also support <code>.get(key)</code> and <code>.set(key, value)</code>, for getting/setting nested properties using keys with <code>.</code> delimiters:</p>
+<h3>Set/get with path keys</h3>
+<p>In addition to getting and setting properties like you would for any JS object, models also support <code>.get(pathkey)</code> and <code>.set(pathkey, value)</code>, for getting/setting nested properties using keys with <code>.</code> delimiters:</p>
 <pre class="prettyprint source lang-javascript"><code>const complexInstance = ComplexModel.from(...);
-let fieldValue = complexInstance.get(`key1.subkey.fieldname`);
+const fieldKey = `key1.subkey.fieldname`;
+
+let fieldValue = complexInstance.get(fieldKey);
 fieldValue = `${fieldValue}-plus`;
-complexInstance.set(`key1.subkey.fieldname`, fieldValue);
+complexInstance.set(fieldKey, fieldValue);
 </code></pre>
 <h3>Converting to formatted JSON (with defaults omitted) - <code>.toString()</code></h3>
-<p>Any model instance can be turned into JSON (with sorted keys at all depths) by using its <code>.toString()</code> function. However, because model instances are backed by models, this JSON will not include any default values, only encoding real values. As such, the following model:</p>
+<p>Any model instance can be turned into JSON (with sorted keys at all depths) by using its <code>.toString()</code> function. However, because model instances are backed by a model definition that may contain default values for anything that isn't explicit set, this JSON will not include any of those default values, only encoding real values. As such, the following model:</p>
 <pre class="prettyprint source lang-javascript"><code>class User extends Model {
   name = Fields.string({ required: true });
   password = Fields.string({ required: true, validate: ... });
@@ -276,7 +278,7 @@ complexInstance.set(`key1.subkey.fieldname`, fieldValue);
   level = Fields.number({ default: 1 })
 }
 </code></pre>
-<p>Will turn into a JSON object with only a name and password using <code>.toString()</code>:</p>
+<p>Will turn into a JSON object with only a name and password using <code>.toString()</code> unless any of the fields with default values were set to a non-default value prior to <code>.toString()</code>:</p>
 <pre class="prettyprint source lang-javascript"><code>const user = User.create({ name: &quot;Tester McTesting&quot;, password: &quot;abcdef&quot; });
 user.level = 2;
 
@@ -290,7 +292,7 @@ console.log(user.toString());
 */
 </code></pre>
 <h3>Converting to fully qualified, plain JS object - <code>.valueOf()</code></h3>
-<p>To generate a fully qualified object (e.g. when needing to send the model off to something that does <em>not</em> use models for data) the <code>.valueOf()</code> function can be used to turn any model instance into a plain JS object. If you've written your code right, you should never need to use this function. But if you <em>do</em> need it, it's there.</p>
+<p>To generate a fully qualified object (e.g. when needing to send the model off to something that does <em>not</em> use models for data) the <code>.valueOf()</code> function can be used to turn any model instance into a plain JS object. If you've written your code right, you should never need to use this function. But if you absolutely <em>do</em> need it, it's there.</p>
 <p>Using the above <code>User</code> model:</p>
 <pre class="prettyprint source lang-javascript"><code>const user = User.create({ name: &quot;Tester McTesting&quot;, password: &quot;abcdef&quot; });
 const unsafe = user.valueOf();
@@ -306,29 +308,44 @@ console.log(JSON.stringify(unsafe));
 */
 </code></pre>
 <h3>(Partially) resetting model instances</h3>
-<p>Sometimes it's necessary to not just &quot;set some values&quot; but also &quot;unset previously set values&quot;. Rather than having to write the following code:</p>
-<pre class="prettyprint source lang-javascript"><code>const user1 = User.from({ ... });
-
-// ...
-
+<p>Sometimes it's necessary to not just &quot;set some values&quot; but also &quot;unset previously set values&quot;. Rather than having to write the following code, in which we can reassign our user variable, leading to the possibility of all kinds of fun bugs:</p>
+<pre class="prettyprint source lang-javascript"><code>let user1 = User.from({ ... });
 const { name, password, level } = user1;
-const user2 = User.from({ name, password, level});
+user1 = User.from({ name, password, level});
 </code></pre>
-<p>You can use the <code>.reset()</code> function, with an optional object for reassigning some (or all) fields some new data, without having to declare new variables:</p>
+<p>You can use the <code>.reset()</code> function, with an optional object for reassigning some (or all) fields some new data, without having to declare new variables, and without allowing redefining <code>user</code>, thus making sure that it will always be a validating model instance.</p>
 <pre class="prettyprint source lang-javascript"><code>const user = User.from({ ... });
-
-// ...
-
 const { name, password, level } = user;
 user.reset({ name, password, level});
 </code></pre>
+<p>Although of course, if you want immutable code, you will almost certainly not want to use <code>reset()</code>. You'll want to just make new model instances using <code>.from()</code>:</p>
+<pre class="prettyprint source lang-javascript"><code>function furtherProcess(user) {
+  // ...
+}
+
+const user1 = User.from({ ... });
+const { name, password, level } = user1;
+furtherProcess(User.from({ name, password, level}));
+</code></pre>
 <h2>Using models for/in the browser</h2>
-<p>Models wouldn't be very useful if you could only use them server side: you can use models for data anywhere that you can use (modern) Javascript.</p>
+<p>Models wouldn't be very useful if you could only use them server-side: you can use models for data anywhere that you can use (modern) Javascript.</p>
 <h3>Import/bundling your model definition</h3>
 <p>When writing client-side JS, all you need to do is import your classes as usually, and let your bundler (for modern JS) take care of the rest. This way your client and server will be &quot;speaking the same models&quot; no matter how much you update them.</p>
+<p>In fact, even if you don't even have &quot;a server&quot; and you just write client-side code that works ith API responses from other places on the web, you will be able to just bundle up your client with model functionality included.</p>
+<h4>ignoring the default file store for clientside work</h4>
+<p>The one thing to take note of is that <code>use-models-for-data</code> ships with a default filesystem store to make &quot;just writing something that works&quot; much easier. However, as this store relies on <code>path</code> and <code>fs</code>, and your client side code can't use Node's <code>path</code> and <code>fs</code>, you'll need to tell your bundler to ignore this store file.</p>
+<p>For example, if you're using an npm script that uses <code>esbuild</code> for bundling, you'd want:</p>
+<pre class="prettyprint source lang-json"><code>{
+  &quot;scripts&quot;: {
+    ...
+    &quot;bundle:client&quot;: &quot;esbuild ... --external:./node_modules/use-models-for-data/lib/models/store/filesystem-store.js&quot;,
+    ...
+  }
+}
+</code></pre>
 <h3>Tree mapping your model</h3>
-<h3>Forms for editing</h3>
-<p>While updating models using code makes a ton of sense server-side, when we're using a browser you probably want to offer users a way to work with models too, for instance, in order to update their preferences, edit a post, etc. You can of course roll your own code for the just the bits that you need, but if you just want &quot;automatic full-model editing forms&quot; then you're in luck because that's something this library also offers.</p>
+<p>While updating models using code makes a ton of sense server-side, if your code also has a client-side component, you probably want to offer users a way to work with (some) models, too.</p>
+<p>For instance, you might have a <code>Profile</code> model, parts of which your users should be able to update client-side. You can, of course, roll your own code for turning a model into something editable (after all, model instances behave like any other plain JS object, so that's really not that much work) but if you just want something that will automatically generate you full-model forms then you're in luck because that's something this library also offers.</p>
 <p>All element-building is based on walking your model as a data tree, turning leaves and non-leaves into meaningful data, with an options object to control things like pre/post code, value update handling, etc. See the <a href="#custom-trees">custom trees</a> section below for the full description of this process.</p>
 <h4>HTML form/table</h4>
 <p>Since the browser mostly cares about HTML code, models have code in place to automatically generate <code>&lt;form&gt;</code> and <code>&lt;table&gt;</code> elements for working with model data using standard HTML form fields, in addition to being able to generate a &quot;bare&quot; set of <code>&lt;tr&gt;</code> table rows for slotting into your own HTML template.</p>
@@ -379,7 +396,7 @@ class UserProfile extends Component {
           const { name, type, checked, value } = evt.target;
           const newValue = type === `checkbox` ? checked : value;
           try {
-            // As form elements use keypaths for input names,
+            // As form elements use path-keys for input names,
             // we use the .set() function to assign the updated
             // value to our model.
             this.user.set(name, newValue);
@@ -405,7 +422,7 @@ class UserProfile extends Component {
 <ul>
 <li><code>create: function(tag, options)</code>: a function that turns a tag-and-options tuple into whatever nestable data structure is required for your tech stack to work.</li>
 <li><code>footer</code>: any kind of content that you need added to the end (only applies to <code>form</code> and <code>table</code> generation),</li>
-<li><code>label: function(key)</code>: a function that turns a field value's key path into something useful (like turning <code>key1.fieldvalue</code> into <code>Key1 fieldvalue</code>).</li>
+<li><code>label: function(key)</code>: a function that turns a field value's path key into something useful (like turning <code>key1.fieldvalue</code> into <code>Key1 fieldvalue</code>).</li>
 <li><code>skipDebug</code>: boolean, omits all model fields marked as <code>debug</code> from the resulting data structure.</li>
 <li><code>inputHandler</code>: an object that gets dereferenced when processing all child nodes, adding its content as child property for input handling. For example, for (P)React this would be <code>{ onInput: evt =&gt; { ... }}</code>, so that elements end up being some <code>&lt;InputElement onInput={evt =&gt; ... }/&gt;</code>.</li>
 </ul>
@@ -444,11 +461,11 @@ Models.useDefaultStore(`./data-store`)
   __meta = {
     name: `...`,
     distinct: true,
-    recordname: keypath or function
+    recordName: pathkey string, or function
   }
 }
 </code></pre>
-<p>The <code>name</code> property is used to name the autogenerated schema that is associated with your model, the <code>distinct</code> property must be set to <code>true</code>, which tells the library that instances of this model can be saved as distinct records in whatever backend is involved, and the <code>recordname</code> property lets the library determine the &quot;key&quot; with which to save your model instances. This is explained in more detail in the <a href="#saving-models-to-the-store">&quot;saving models to the store&quot;</a> section.</p>
+<p>The <code>name</code> property is used to name the autogenerated schema that is associated with your model, the <code>distinct</code> property must be set to <code>true</code>, which tells the library that instances of this model can be saved as distinct records in whatever backend is involved, and the <code>recordName</code> property lets the library determine the &quot;key&quot; with which to save your model instances. This is explained in more detail in the <a href="#saving-models-to-the-store">&quot;saving models to the store&quot;</a> section.</p>
 <h3><code>await</code>ing all <code>Model.create()</code> / <code>Model.from()</code> calls</h3>
 <p>When using a model store, all schema and record operations are necessarily asynchronous, and so one thing that changes is that <code>Model.create</code> and <code>Model.from</code> will no longer work synchronously, requiring that you either <code>await</code> them, or use <code>.then(instance =&gt; ...)</code> chaining.</p>
 <pre class="prettyprint source lang-javascript"><code>// await inside an async code path:
@@ -477,11 +494,11 @@ Config.from(...)
 
 await user.save();
 </code></pre>
-<p>This will save the user based on their schema (inherent to your model class) and your model-indicated <code>__meta.recordname</code> property. This can either be a key path to resolve on the instance, such as:</p>
+<p>This will save the user based on their schema (inherent to your model class) and your model-indicated <code>__meta.recordName</code> property. This can either be a path key to resolve on the instance, such as:</p>
 <pre class="prettyprint source lang-javascript"><code>class User extends Model {
   __meta = {
     name: `users`,
-    recordname: `profile.name`
+    recordName: `profile.name`
   };
   profile = Fields.model(Profile);
 }
@@ -493,12 +510,12 @@ class Profile extends Model {
 const user = await User.from({ profile: { name: &quot;Tester McTesting&quot; }});
 await user.save();
 </code></pre>
-<p>In this example, the user will get saved keyed on both its schema name (&quot;users&quot;) and its recordname, which is the <code>user.profile.name</code> value (in this case, &quot;Tester McTesting&quot;).</p>
-<p>Alternatively, you can declare a function for the recordname, which takes the model instance as argument and returns a string:</p>
+<p>In this example, the user will get saved keyed on both its schema name (&quot;users&quot;) and its recordName, which is the <code>user.profile.name</code> value (in this case, &quot;Tester McTesting&quot;).</p>
+<p>Alternatively, you can declare a function for the recordName, which takes the model instance as argument and returns a string:</p>
 <pre class="prettyprint source lang-javascript"><code>class User extends Model {
   __meta = {
     name: `users`,
-    recordname: function(instance) {
+    recordName: function(instance) {
       return instance.profile.name;
     }
   };
@@ -512,7 +529,7 @@ await user.save();
 </code></pre>
 <p>This has the same effect as above, but with more control over what exact identifier to generate.</p>
 <h3>Loading models from the store</h3>
-<p>Loading models is about as easy as saving: once you've saved a model, you can load it by using its associated recordname as argument to the load function:</p>
+<p>Loading models is about as easy as saving: once you've saved a model, you can load it by using its associated recordName as argument to the load function:</p>
 <pre class="prettyprint source lang-javascript"><code>const user = await User.load(`Tester McTesting`);
 </code></pre>
 <h3>Deleting models from the store</h3>
@@ -527,7 +544,7 @@ await user.delete();
   __meta = {
     name: `users`,
     distinct: true,
-    recordname: `name`,
+    recordName: `name`,
   };
   name = Fields.string({ required: true });
   password = Fields.string({ required: true, validate: ... });
@@ -538,7 +555,7 @@ await user.delete();
   __meta = {
     name: `users`,
     distinct: true,
-    recordname: `profile.name`,
+    recordName: `profile.name`,
   };
   admin = Fields.boolean({ default: false });
   profile = Fields.model(Profile);
@@ -554,28 +571,33 @@ class Profile extends Model {
 }
 </code></pre>
 <p>And even if you only have a handful of users, having to update all of them manually quickly starts to take up a prohibitive amount of work. To the point where if the changes are big enough, you may be tempted to just not update your models, and that would be terrible, because your tooling should help make this step easy.</p>
+<h4>Schema change detection</h4>
 <p>With a data store in place, the library will see that the model you're trying to load doesn't actually match the schema that was saved previously, and will halt your code run:</p>
-<pre class="prettyprint source"><code>file:///.../.../node_modules/use-models-for-data/lib/models/model-registry.js:164
-      throw new SchemaMismatchForModel(BaseModel.name);
-            ^
-
-SchemaMismatchForModel [Error]: Schema mismatch for User model, please migrate your data first.
-    at ModelRegistry.recordModelClassWithStoreBacking (file:///Users/pomax/Documents/git/use-models-for-data/lib/models/model-registry.js:164:13)
-    at async ModelRegistry.recordModelClassAsync (file:///Users/pomax/Documents/git/use-models-for-data/lib/models/model-registry.js:60:5)
-    at async Function.__registerAsync (file:///Users/pomax/Documents/git/use-models-for-data/lib/models/models.js:80:7)
-    at async file:///Users/pomax/Documents/git/use-models-for-data/test.js:36:3 {
+<pre class="prettyprint source"><code>SchemaMismatchForModel [Error]: Schema mismatch for User model, please migrate your data first.
+    at ModelRegistry.recordModelClassWithStoreBacking (file:///.../node_modules/use-models-for-data/lib/models/model-registry.js:164:13)
+    at async ModelRegistry.recordModelClassAsync (file:///.../node_modules/use-models-for-data/lib/models/model-registry.js:60:5)
+    at async Function.__registerAsync (file:///.../node_modules/use-models-for-data/lib/models/models.js:80:7)
+    at somewhere in our file
   modelName: 'User'
 }
 </code></pre>
-<p>Depending on the store you're using this may do different things, but with the default <a href="FileSystemStore.html">FileSystemStore</a> this will automatically create a file called <code>User.v1.to.v2.js</code> in <code>./your-data-store-path/users/</code>, which you can run to automatically uplift your data to the new model.</p>
-<pre class="prettyprint source"><code>$ node ./your-data-store-path/users/User.v1.to.v2.js 
+<p>Depending on the store you're using this may do different things, but with the default <a href="FileSystemStore.html">FileSystemStore</a> this error will be preceded by a migration runner notice:</p>
+<pre class="prettyprint source"><code>╔═════════════════════════════════════════════════════════════════════════════╗
+║ Migration saved, run using &quot;node data-store-testing/users/User.v1.to.v2.js&quot; ║
+╚═════════════════════════════════════════════════════════════════════════════╝
+</code></pre>
+<p>The <a href="FileSystemStore.html">FileSystemStore</a> will automatically create a (node) executable that you can run to automatically uplift your data to the new model, either uplifting specific files as part of your own scripts, or uplifting your entire model directory in a single go.</p>
+<p>To help you out, it comes with a nicely detailed help text when you run it without any target:</p>
+<pre class="prettyprint source"><code>$ node ./your-data-store-path/users/User.v1.to.v2.js
 
 Autogenerated executable runner for migrating data based on the
 &quot;users&quot; schema from version 1 to version 2.
 
-A number of change handler functions have been included, which are called
-during the migration process, and can be implemented to perform data
-processing outside of the migration itself.
+╔═══════════════════════════════════════════════════════════════════════════╗
+║ A number of change handler functions have been included, which are called ║
+║ during the migration process, and can be implemented to perform data      ║
+║ processing outside of the migration itself.                               ║
+╚═══════════════════════════════════════════════════════════════════════════╝
 
 Usage:
 
@@ -601,10 +623,42 @@ All three modes can be made to roll back a migration by using the
 &quot;--rollback&quot; flag, which will rollback each step in the list of diff
 operations, running them last-to-first.
 </code></pre>
-<h4>Schema change detection</h4>
-<p>...</p>
 <h4>Data migrations</h4>
-<p>...</p></article>
+<ul>
+<li>Editing the migration runner
+<ul>
+<li>object, operation, options
+<ul>
+<li>options.level</li>
+<li>options.propName</li>
+</ul>
+</li>
+<li>using cache.set() and cache.get()</li>
+</ul>
+</li>
+<li>Dry-running a migration</li>
+<li>Migrating a file</li>
+<li>Migrating the entire dir</li>
+<li>YOU USE GIT, REMEMBER TO USE IT</li>
+<li></li>
+</ul>
+<pre class="prettyprint source lang-javascript"><code>changeHandler.removeName = function (object, op, options) {
+  cache.set(`name`, object.name);
+};
+
+changeHandler.removePassword = function (object, op, options) {
+  cache.set(`password`, object.password);
+};
+
+changeHandler.addAdmin = function (object, op, options) {
+  //...
+};
+
+changeHandler.addProfile = function (object, op, options) {
+  object.profile.name = cache.get(`name`);
+  object.profile.password = cache.get(`password`);
+};
+</code></pre></article>
     </section>
 
 
@@ -619,7 +673,7 @@ operations, running them last-to-first.
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.7</a> on Wed Nov 03 2021 16:01:34 GMT-0700 (Pacific Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.7</a> on Sat Nov 06 2021 23:02:10 GMT-0700 (Pacific Daylight Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>
