@@ -53,6 +53,7 @@ describe(`Testing User model with store backing`, () => {
     try {
       user = await User.load(`TestUser`);
     } catch (e) {
+      console.error;
       if (e instanceof RecordAccessError) {
         // This will fail for the first test, as it will not
         // be built and saved to disk until the second test.
@@ -90,7 +91,7 @@ describe(`Testing User model with store backing`, () => {
     expect(dirs).toStrictEqual([`config`, `users`]);
   });
 
-  test(`Can create, save, and delete user TestUser`, () => {
+  test(`Can create and save user TestUser`, () => {
     expect(async () => {
       const user = await User.from(testData);
       const recordPath = `${storePath}/users/TestUser.json`;
@@ -98,11 +99,6 @@ describe(`Testing User model with store backing`, () => {
       await user.save();
       if (!fs.existsSync(recordPath)) {
         throw new Error(`${recordPath} was not saved`);
-      }
-
-      await user.delete();
-      if (fs.existsSync(recordPath)) {
-        throw new Error(`${recordPath} was not deleted`);
       }
     }).not.toThrow();
   });
@@ -189,5 +185,18 @@ describe(`Testing User model with store backing`, () => {
         "profile.password: required field missing.",
       ]);
     }
+  });
+
+  // NOTE: this must be the last test
+  test(`Can delete user TestUser`, () => {
+    expect(async () => {
+      const recordPath = `${storePath}/users/TestUser.json`;
+
+      await user.delete();
+
+      if (fs.existsSync(recordPath)) {
+        throw new Error(`${recordPath} was not deleted`);
+      }
+    }).not.toThrow();
   });
 });

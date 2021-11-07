@@ -48,13 +48,7 @@ class Config extends Model {
     `self_drawn_clean_pair_as_east`,
   ];
 
-  allow_cat = fields.boolean({
-    description: `Determines whether or not to allow cats during a game.`,
-    icon: `🐈`,
-    default: true,
-  });
-
-  allow_chat = fields.boolean({
+  allow_chats = fields.boolean({
     description: `Determines whether or not to allow players to use the chat function during a game.`,
     icon: `💬`,
     default: true,

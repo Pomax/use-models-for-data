@@ -212,7 +212,8 @@ describe(`Testing base model functionality`, () => {
     instance.oneOrMore = [1];
     expect(instance.oneOrMore).toStrictEqual(["1"]);
 
-    const secondary = Secondary.create({ label: `test` });
+    const secondary = Secondary.from({ label: `test` });
+
     expect(() => {
       instance.secondary = secondary;
     }).toThrow(`Assignment for [secondary] must be an array.`);

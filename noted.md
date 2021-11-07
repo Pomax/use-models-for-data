@@ -1,3 +1,4 @@
-- add Model.toFlatString()?
 - publish deep equals?
 - publish JS differ?
+- extend the migration runner so that it can verify that a data uplift is new-schema-conformant?
+- update migration tests to actually run a migration on some test data.
