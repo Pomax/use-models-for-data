@@ -10,7 +10,7 @@ class User extends Model {
     name: `users`,
     description: `Mahjong user data`,
     distinct: true,
-    recordname: `profile.name`,
+    recordName: `profile.name`,
   };
   admin = fields.boolean({ default: false, configurable: false });
   profile = fields.model(Profile);
