@@ -19,7 +19,7 @@ describe(`Testing form generation from models`, () => {
   };
 
   beforeAll(async () => {
-    user = await User.from({
+    user = await User.create({
       profile: {
         name: `username`,
         password: `password`,

@@ -33,7 +33,7 @@ describe(`Testing User model`, () => {
   test(`Simple -> Complex User model uplift leads to migration`, async () => {
     await Models.register(SimpleUser);
 
-    const user = await SimpleUser.from({
+    const user = await SimpleUser.create({
       name: `bob`,
       password: `bob`,
     });

@@ -2,6 +2,44 @@
 
 For the pure API docs, see the class navigation on the left. For a general discussion for this library with examples on how to do the things you'd typically want to do, read on.
 
+## Table of contents
+
+- [Defining models](#defining-models)
+  - [Model class definitions](#model-class-definitions)
+  - [Field types and options](#field-types-and-options)
+  - [Custom validation](#custom-validation)
+- [Constructing model instances](#constructing-model-instances)
+  - [Examples](#examples-of-create)
+- [Using models](#using-models)
+  - [set/get values with automatic validation](#set%2Fget-values-with-automatic-validation)
+  - [set/get subtreees with automatic validation](#set%2Fget-subtrees-with-automatic-validation)
+  - [set/get with path kes](#set%2Fget-with-path-keys)
+  - [converting to JSON](#converting-to-formatted-json-(with-defaults-omitted)---.tostring())
+  - [converting to fully qualified plain object](#converting-to-fully-qualified%2C-plain-js-object---.valueof())
+  - [(partially) resetting model instances)](#(partially)-resetting-model-instances)
+- [Using models for/in the browser](#using-models-for%2Fin-the-browser)
+  - [import/bundling your model definitions](#import/bundling-your-model-definition)
+    - [excluding the default file store for browser bundles](#ignoring-the-default-file-store-for-clientside-work)
+  - [Tree-mapping your data](#tree-mapping-your-model)
+    - [HTML form/table](#html-form%2Ftable)
+    - [(P)React form/table)](#(p)react-form%2Ftable)
+    - [Custom trees](#custom-trees)
+- [Using a data store](#using-a-data-store)
+  - [binding a data store for model use](#binding-a-data-store)
+  - [Setting store-related model metadata](#setting-store-related-metadata-on-your-model-classes)
+  - [awaiting all model `create` calls](#awaiting-all-model.create()-calls)
+  - [saving model instances](#saving-models-to-the-store)
+  - [loading model instances](#loading-models-from-the-store)
+  - [deleting stored model instances](#deleting-models-from-the-store)
+  - [updating your model definitions](#updating-your-model-definitions)
+  - [schema change detection](#schema-change-detection)
+- [data migrations using the filesystem store](#data-migrations-using-the-%7B%40link-filesystemstore%7D)
+  - [editing the migration hooks](#editing-the-migration-runner-hooks)
+    - [caching values during a migration](#caching-values-during-a-migration)
+  - [dry-running a migration](#dry-running-a-migration)
+  - [remember to use version control](#remember-to-run-version-control-on-your-data-directory)
+
+
 ## Defining models
 
 In order to use models for data, the library needs you to define classes that extend {@link Model}, which can then be used to wrap data.
@@ -18,7 +56,7 @@ class YourModel extends Model {
 }
 ```
 
-However, it's generally a better idea to also specify a `__meta` property.
+However, it's generally a better idea to also specify metadata, using the `__meta` property.
 
 ```javascript
 class YourModel extends Model {
@@ -31,6 +69,14 @@ class YourModel extends Model {
   ...
 }
 ```
+
+This metadata may contain:
+
+- `name` - the model's name
+- `description` - a description of what this class models
+- `distinct` - if `true`, this model counts as "a thing that can be stored" when using a data store.
+- `recordName` - if `distinct` is `true`, this property is used to determine the storage key for model instances, either as a path key (indicating which single field somewhere in the mode counts as identifier) or as a mapping function `(instance) => string`.
+
 
 ### Field types and options
 
@@ -57,55 +103,70 @@ class Photo extends Model {
 }
 ```
 
-The full list of options is:
+The full list of properties that can be passed in `options` is:
 
 - `required`: a boolean value that determines whether the field must always have a value
 - `default`: a default value to use when the field has not been explicitly assigned
-- `choices`: an array of possible values that this field may take
-- `configurable`: a boolean value that determines whether this field may be user-updated (i.e. through form submission handling rather than in code)
-- `debug`: a boolean value that regulates debug behaviour as defined in the library code.
+- `choices`: an array of possible values that this field may take (note that `Fields.choice(...)` is typically preferred for this)
+- `configurable`: a boolean value that determines whether this field may be presented to the user as editable (i.e. when showing the data in an edit form)
+- `debug`: a boolean value that regulates whether fields are included in the model when the library is running in debug mode.
 - `validate`: a function for performing more elaborate validation than basic type validation can offer.
 
 ### Custom validation
 
-The `validate` property takes a function that takes the to-validate value as input argument, and must fail in one of two ways if the value is invalid:
+The `validate` property takes a function that takes the to-validate value as input argument, and must fail in one of two ways if the value is invalid. The function must:
 
 - return `false`, or
 - throw an `Error` object.
 
-The first is for "simple failure", where the validation simply fails without any details:
+The first is for "simple failures", where the validation fails without any details:
 
 ```javascript
-legalAge = Fields.number({
-  validate: (value) => value >= 18,
-});
+class Something extends Model {
+  //...
+  legalAge = Fields.number({
+    validate: (value) => value >= 18,
+  });
+}
 ```
 
 The second is for when more elaborate details are required.
 
 ```javascript
-avatar = Fields.string({
-  validate: function (value) {
-    const errCode = checkBase64Image(value);
-    if (errCode !== undefined) {
-      throw new Error(
-        `avatar was not a valid base64-encoded image (error code: ${errCode}).`
-      );
-    }
-  },
-});
+import imagelib from "some-image-lib";
+
+class Something extends Model {
+  //...
+  avatar = Fields.string({
+    validate: value => checkBase64Image(value, `avatar`),
+  });
+}
+
+function checkBase64Image(data, fieldName) {
+  const details = imagelib.verify(data);
+  if (!details.ok) {
+    throw new ImageVerificationError(fieldName, details);
+  }
+}
+
+class ImageVerificationError extends Error {
+  constructor(fieldName, errorDetails) {
+    const { errorCode } = errorDetails;
+    this.message =  `${fieldName} was not a valid base64-encoded image (error code: ${errCode}).`;
+    this.details = errorDetails;
+  }
+}
 ```
 
-## Constructing models
+## Constructing model instances
 
-There are two ways to create {@link Model} instances (three, if we include loading from a data store):
+{@link Model} instances are created using the `create` function:
 
-- `Model.create(Model.ALLOW_INCOMPLETE?)`, where `Model` is your model class.
-- `Model.from(data, Model.ALLOW_INCOMPLETE?)`, where `Model` is your model class, and `data` is a required object with one or more values to be used to bootstrap the model instance.
+- `Model.create(data?, Model.ALLOW_INCOMPLETE?)` where `Model` is your model class, and `data` is a required object with one or more values to be used to bootstrap the model instance.
 
-The `create` function builds a new model instance, whereas the `from` function builds a new model from pre-existing data. Both functions can take the `ALLOW_INCOMPLETE` static symbol that is used by the library to determine whether or not incompletely model creation is allowed. If omitted, trying to create a model without specifying required fields will throw a {@link Errors.RequiredFieldsMissing} error.
+The `ALLOW_INCOMPLETE` static symbol is used by the library to determine whether or not incompletely model creation is allowed. That is, if not specified, trying to create a model without provided values for required fields will throw a {@link Errors.RequiredFieldsMissing} error.
 
-Also note that in addition to plain JS objects, the `.from()` function also allows for key-pathed objects. That is, while it accepts standard objects like this:
+Also note that in addition to normal JS objects, you may also provide key-pathed objects. That is, while `create` accepts standard objects like this:
 
 ```javascript
 {
@@ -121,7 +182,7 @@ Also note that in addition to plain JS objects, the `.from()` function also allo
 }
 ```
 
-It also allows data to be specified using a "flat" object with value paths encoded as dot-separated path keys:
+It also allows you to specify data using a "flat" objects, with dot-separated path keys instead of nesting:
 
 ```javascript
 {
@@ -133,20 +194,24 @@ It also allows data to be specified using a "flat" object with value paths encod
 
 This is especially useful when dealing with flat data delivery mechanisms such as form submissions or flat-record storage back ends.
 
-### Permissive `create`
-
-```javascript
-const config = Config.create(Config.ALLOW_INCOMPLETE);
-```
-
-### Strict `create`
+### Examples of `create`
 
 ```javascript
 import { Errors } from "use-models-for-data";
+import { User } from "./my-models.js";
 const { RequiredFieldsMissing } = Errors;
 
+// missing username or password:
+const user1 = User.create(User.ALLOW_INCOMPLETE);
+
+// missing password:
+const user2 = User.create({
+  name: `Tester McTesting`,
+}, User.ALLOW_INCOMPLETE);
+
 try {
-  const user = User.create();
+  // This will throw
+  const user2 = User.create();
 } catch (e) {
   if (e instanceof RequiredFieldsMissing) {
     // this is unexpected, but a known possible failure state.
@@ -155,24 +220,10 @@ try {
     ...
   }
 }
-```
 
-### Permissive `from`
-
-```javascript
-const user = User.from(
-  {
-    name: `Tester McTesting`,
-  },
-  User.ALLOW_INCOMPLETE
-);
-```
-
-### Strict `from`
-
-```javascript
 try {
-  const user = User.from({
+  // This will also throw
+  const user3 = User.create({
     name: `Tester McTesting`,
   });
 } else {
@@ -197,7 +248,7 @@ class User extends Model {
   password = Fields.string({ required: true, validate: ... });
 }
 
-const user = User.from({ name: ..., password: ... });
+const user = User.create({ name: ..., password: ... });
 
 try {
   user.name = `A new name`;
@@ -258,7 +309,7 @@ try {
 In addition to getting and setting properties like you would for any JS object, models also support `.get(pathkey)` and `.set(pathkey, value)`, for getting/setting nested properties using keys with `.` delimiters:
 
 ```javascript
-const complexInstance = ComplexModel.from(...);
+const complexInstance = ComplexModel.create(...);
 const fieldKey = `key1.subkey.fieldname`;
 
 let fieldValue = complexInstance.get(fieldKey);
@@ -322,29 +373,29 @@ console.log(JSON.stringify(unsafe));
 Sometimes it's necessary to not just "set some values" but also "unset previously set values". Rather than having to write the following code, in which we can reassign our user variable, leading to the possibility of all kinds of fun bugs:
 
 ```javascript
-let user1 = User.from({ ... });
+let user1 = User.create({ ... });
 const { name, password, level } = user1;
-user1 = User.from({ name, password, level});
+user1 = User.create({ name, password, level});
 ```
 
 You can use the `.reset()` function, with an optional object for reassigning some (or all) fields some new data, without having to declare new variables, and without allowing redefining `user`, thus making sure that it will always be a validating model instance.
 
 ```javascript
-const user = User.from({ ... });
+const user = User.create({ ... });
 const { name, password, level } = user;
 user.reset({ name, password, level});
 ```
 
-Although of course, if you want immutable code, you will almost certainly not want to use `reset()`. You'll want to just make new model instances using `.from()`:
+Although of course, if you want immutable code, you will almost certainly not want to use `reset()`, instead just making explicit, new model instances:
 
 ```javascript
 function furtherProcess(user) {
   // ...
 }
 
-const user1 = User.from({ ... });
+const user1 = User.create({ ... });
 const { name, password, level } = user1;
-furtherProcess(User.from({ name, password, level}));
+furtherProcess(User.create({ name, password, level}));
 ```
 
 ## Using models for/in the browser
@@ -418,7 +469,7 @@ import { User as UserModel } from "./src/models/user.js";
 class UserProfile extends Component {
   constructor(props) {
     super(props);
-    this.user = UserModel.from(this.props.userData);
+    this.user = UserModel.create(this.props.userData);
   }
 
   render() {
@@ -526,22 +577,22 @@ class MyModel extends Model {
 The `name` property is used to name the auto-generated schema that is associated with your model, the `distinct` property must be set to `true`, which tells the library that instances of this model can be saved as distinct records in whatever backend is involved, and the `recordName` property lets the library determine the "key" with which to save your model instances. This is explained in more detail in the ["saving models to the store"](#saving-models-to-the-store) section.
 
 
-### `await`ing all `Model.create()` / `Model.from()` calls
+### `await`ing all `Model.create()` calls
 
-When using a model store, all schema and record operations are necessarily asynchronous, and so one thing that changes is that `Model.create` and `Model.from` will no longer work synchronously, requiring that you either `await` them, or use `.then(instance => ...)` chaining.
+When using a model store, all schema and record operations are necessarily asynchronous, and so one thing that changes is that `Model.create` will no longer work synchronously, instead returning a promise that you will either need to `await`, or resolve with `.then(instance => ...).catch(err => ...)` chaining.
 
 ```javascript
 // await inside an async code path:
 async function() {
   try {
-    const user = await User.from(...)
+    const user = await User.create(...)
   } catch(err) {
     // ...
   }
 }
 
 // using Promise syntax:
-Config.from(...)
+Config.create(...)
 .then(config => {
   // ...
 })
@@ -555,7 +606,7 @@ Config.from(...)
 With a store set up, saving a model is literally just a matter of calling `save`:
 
 ```javascript
-const user = await User.from(...);
+const user = await User.create(...);
 
 //...
 
@@ -577,7 +628,7 @@ class Profile extends Model {
   name = Fields.string();
 }
 
-const user = await User.from({ profile: { name: "Tester McTesting" }});
+const user = await User.create({ profile: { name: "Tester McTesting" }});
 await user.save();
 ```
 
@@ -598,7 +649,7 @@ class User extends Model {
 
 //...
 
-const user = await User.from({ profile: { name: "Tester McTesting" }});
+const user = await User.create({ profile: { name: "Tester McTesting" }});
 await user.save();
 ```
 
@@ -793,7 +844,7 @@ This will apply a migration but write the result to `stdout` rather than back to
 
 Do note, of course, that default values are not saved to file, which also means that any subtrees consisting purely of default value leaves (or further subtrees) will not show up during a data migration, unless you made sure to copy data over using migration hooks.
 
-### Remember to run version control on your data directory.
+### Remember to run version control on your data directory
 
 And on a final note, while you should of course never (well okay, _almost_ never) include your data directory in your project's version-control-managed set of paths, you _should_ make sure to initialise your data directory for local-only version control, because being able to say "wow that migration went all kinds of wrong, let me just reset the dir to what it was before I ran the migration" is the kind of peace of mind you owe to yourself.
 

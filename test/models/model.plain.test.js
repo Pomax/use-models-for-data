@@ -21,7 +21,7 @@ describe(`Testing User model without store backing`, () => {
   let user;
 
   beforeEach(() => {
-    user = User.from(testData);
+    user = User.create(testData);
   });
 
   test(`User.create with allow_complete is not an error`, () => {

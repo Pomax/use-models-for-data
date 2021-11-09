@@ -93,7 +93,7 @@ describe(`Testing User model with store backing`, () => {
 
   test(`Can create and save user TestUser`, () => {
     expect(async () => {
-      const user = await User.from(testData);
+      const user = await User.create(testData);
       const recordPath = `${storePath}/users/TestUser.json`;
 
       await user.save();
@@ -165,7 +165,7 @@ describe(`Testing User model with store backing`, () => {
   });
 
   test(`Incomplete models can be created but not saved`, async () => {
-    let incomplete = await User.from(
+    let incomplete = await User.create(
       { "profile.name": `Just a name` },
       User.ALLOW_INCOMPLETE
     );

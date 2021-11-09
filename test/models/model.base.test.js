@@ -26,7 +26,7 @@ describe(`Testing base model functionality`, () => {
   });
 
   beforeEach(() => {
-    user = User.from({ profile: { name: `test`, password: `test` } });
+    user = User.create({ profile: { name: `test`, password: `test` } });
   });
 
   // ╔══════════════════════╗
@@ -35,7 +35,7 @@ describe(`Testing base model functionality`, () => {
 
   test(`Cannot create instances using new Model()`, () => {
     expect(() => new User()).toThrow(
-      `Use User.create() or User.from(data) to build model instances.`
+      `Use User.create(data?) to build model instances.`
     );
   });
 
@@ -52,7 +52,7 @@ describe(`Testing base model functionality`, () => {
 
   test(`Cannot create with initial data that is missing required fields`, async () => {
     try {
-      User.from({
+      User.create({
         profile: {
           password: `hake`,
         },
@@ -64,12 +64,6 @@ describe(`Testing base model functionality`, () => {
 
   test(`User.create with allowIncomplete is not an error`, () => {
     expect(() => User.create(User.ALLOW_INCOMPLETE)).not.toThrow();
-  });
-
-  test(`User.from without a payload is an error`, async () => {
-    expect(() => User.from()).toThrow(
-      `User.from() must be called with a data object.`
-    );
   });
 
   test(`User .valueOf is a fully qualified plain object`, () => {
@@ -212,7 +206,7 @@ describe(`Testing base model functionality`, () => {
     instance.oneOrMore = [1];
     expect(instance.oneOrMore).toStrictEqual(["1"]);
 
-    const secondary = Secondary.from({ label: `test` });
+    const secondary = Secondary.create({ label: `test` });
 
     expect(() => {
       instance.secondary = secondary;
