@@ -79,7 +79,7 @@ describe(`Testing User model`, () => {
       `Schema mismatch for User model, please migrate your data first.`
     );
 
-    const migrationFile = `${storePath}/users/User.v1.to.v2.js`;
+    const migrationFile = `${storePath}/users/users.v1.to.v2.js`;
     expect(fs.existsSync(migrationFile)).toBe(true);
 
     const migration = await import(migrationFile);
@@ -163,10 +163,10 @@ describe(`Testing User model`, () => {
       expect(e).toBeDefined();
     }
 
-    const schemaPath = `${storePath}/config/.schema/Config.2.json`;
+    const schemaPath = `${storePath}/config/.schema/config.2.json`;
     expect(fs.existsSync(schemaPath)).toBe(true);
 
-    const migrationPath = `${storePath}/config/Config.v1.to.v2.js`;
+    const migrationPath = `${storePath}/config/config.v1.to.v2.js`;
     expect(fs.existsSync(migrationPath)).toBe(true);
 
     const { operations } = await import(migrationPath);
@@ -202,10 +202,10 @@ describe(`Testing User model`, () => {
       expect(e).toBeDefined();
     }
 
-    const schemaPath = `${storePath}/config/.schema/Config.2.json`;
+    const schemaPath = `${storePath}/config/.schema/config.2.json`;
     expect(fs.existsSync(schemaPath)).toBe(true);
 
-    const migrationPath = `${storePath}/config/Config.v1.to.v2.js`;
+    const migrationPath = `${storePath}/config/config.v1.to.v2.js`;
     expect(fs.existsSync(migrationPath)).toBe(true);
 
     // in order to not import the previously cached `v1.to.v2` file, we
@@ -238,10 +238,10 @@ describe(`Testing User model`, () => {
       expect(e).toBeDefined();
     }
 
-    const schemaPath1 = `${storePath}/config/.schema/Config.2.json`;
+    const schemaPath1 = `${storePath}/config/.schema/config.2.json`;
     expect(fs.existsSync(schemaPath1)).toBe(true);
 
-    const migrationPath1 = `${storePath}/config/Config.v1.to.v2.js`;
+    const migrationPath1 = `${storePath}/config/config.v1.to.v2.js`;
     expect(fs.existsSync(migrationPath1)).toBe(true);
 
     const { operations: operations1 } = await import(migrationPath1);
@@ -273,10 +273,10 @@ describe(`Testing User model`, () => {
       expect(e).toBeDefined();
     }
 
-    const schemaPath2 = `${storePath}/config/.schema/Config.3.json`;
+    const schemaPath2 = `${storePath}/config/.schema/config.3.json`;
     expect(fs.existsSync(schemaPath2)).toBe(true);
 
-    const migrationPath2 = `${storePath}/config/Config.v2.to.v3.js`;
+    const migrationPath2 = `${storePath}/config/config.v2.to.v3.js`;
     expect(fs.existsSync(migrationPath2)).toBe(true);
 
     const { operations: operations2 } = await import(migrationPath2);
