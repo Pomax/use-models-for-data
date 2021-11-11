@@ -2,3 +2,5 @@ node_modules
 test
 .gitignore
 README.md
+docs/
+
