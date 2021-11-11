@@ -1,13 +1,12 @@
 import { User } from "./user.model.js";
-import { Model, Models } from "use-models-for-data";
-const { fields } = Models;
+import { Fields, Model, Models } from "use-models-for-data";
 
 class TestModel extends Model {
   __meta = {
     name: `test`,
   };
-  oneOrMore = fields.string({ array: true });
-  secondary = fields.model(Secondary, { array: true });
+  oneOrMore = Fields.string({ array: true });
+  secondary = Fields.model(Secondary, { array: true });
 }
 
 class Secondary extends Model {
@@ -15,13 +14,14 @@ class Secondary extends Model {
     name: `nested`,
   };
 
-  label = fields.string();
+  label = Fields.string();
 }
 
 describe(`Testing base model functionality`, () => {
   let user;
 
   beforeAll(() => {
+    Models.register(User);
     Models.register(TestModel);
   });
 
@@ -193,7 +193,7 @@ describe(`Testing base model functionality`, () => {
   test(`One-or-more test (__meta.array: true)`, async () => {
     let instance;
     try {
-      instance = await TestModel.create();
+      instance = TestModel.create();
     } catch (err) {
       console.log(err);
     }

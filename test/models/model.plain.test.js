@@ -15,6 +15,7 @@ describe(`Testing User model without store backing`, () => {
 
   beforeAll(async () => {
     Models.resetRegistrations();
+    Models.register(User);
     Models.setStore(undefined);
   });
 

@@ -1,4 +1,5 @@
 import { JSDOM } from "jsdom";
+import { Models } from "use-models-for-data";
 import { User } from "../models/user.model.js";
 
 describe(`Testing form generation from models`, () => {
@@ -19,7 +20,8 @@ describe(`Testing form generation from models`, () => {
   };
 
   beforeAll(async () => {
-    user = await User.create({
+    Models.register(User);
+    user = User.create({
       profile: {
         name: `username`,
         password: `password`,

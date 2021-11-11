@@ -591,39 +591,14 @@ class MyModel extends Model {
   }
 }
 ```
-The `name` property is used to name the auto-generated schema that is associated with your model, the `distinct` property must be set to `true`, which tells the library that instances of this model can be saved as distinct records in whatever backend is involved, and the `recordName` property lets the library determine the "key" with which to save your model instances. This is explained in more detail in the ["saving models to the store"](#saving-models-to-the-store) section.
-
-
-### `await`ing all `Model.create()` calls
-
-When using a model store, all schema and record operations are necessarily asynchronous, and so one thing that changes is that `Model.create` will no longer work synchronously, instead returning a promise that you will either need to `await`, or resolve with `.then(instance => ...).catch(err => ...)` chaining.
-
-```javascript
-// await inside an async code path:
-async function() {
-  try {
-    const user = await User.create(...)
-  } catch(err) {
-    // ...
-  }
-}
-
-// using Promise syntax:
-Config.create(...)
-.then(config => {
-  // ...
-})
-.catch(err => {
-  // ...
-});
-```
+The `name` property is used to name the auto-generated schema that is associated with your model, the `distinct` property must be set to `true`, which tells the library that instances of this model can be saved as distinct records in whatever backend is involved, and the `recordName` property lets the library determine the "key" with which to save your model instances.
 
 ### Saving models to the store
 
 With a store set up, saving a model is literally just a matter of calling `save`:
 
 ```javascript
-const user = await User.create(...);
+const user = User.create(...);
 
 //...
 
@@ -645,7 +620,7 @@ class Profile extends Model {
   name = Fields.string();
 }
 
-const user = await User.create({ profile: { name: "Tester McTesting" }});
+const user = User.create({ profile: { name: "Tester McTesting" }});
 await user.save();
 ```
 
@@ -666,7 +641,7 @@ class User extends Model {
 
 //...
 
-const user = await User.create({ profile: { name: "Tester McTesting" }});
+const user = User.create({ profile: { name: "Tester McTesting" }});
 await user.save();
 ```
 
