@@ -7,12 +7,16 @@ $ cd use-models-for-data
 $ npm install
 ```
 
-The library code can be found in the `lib` directory, and the tests can be found in the `test` directory.
+The library code can be found in the `lib` directory, and the (jest-based) tests can be found in the `test` directory.
 
-To run the tests, either run all tests in one go using:
+To run the full test suite, use:
 
 ```
 $ npm test
 ```
 
-Or look at the "scripts" section of the `package.json` file for which specific npm script to run if you just want to run a specific test file.
+To regenerate the docs, run
+
+```
+$ npm run docs
+```
