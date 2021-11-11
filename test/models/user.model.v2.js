@@ -1,4 +1,4 @@
-import { Model, Models } from "../../index.js";
+import { Model, Models } from "use-models-for-data";
 import { Profile } from "./user.model.js";
 const { fields } = Models;
 

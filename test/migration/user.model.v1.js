@@ -1,4 +1,4 @@
-import { Fields, Model } from "../../index.js";
+import { Fields, Model } from "use-models-for-data";
 
 export class User extends Model {
   __meta = {

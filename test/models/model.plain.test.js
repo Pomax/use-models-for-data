@@ -1,4 +1,4 @@
-import { Models } from "../../index.js";
+import { Models } from "use-models-for-data";
 import { User } from "./user.model.js";
 
 /**

@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import { Errors, Models } from "../../index.js";
+import { Errors, Models } from "use-models-for-data";
 import { User } from "./user.model.js";
 import { registry } from "../../lib/models/model-registry.js";
 

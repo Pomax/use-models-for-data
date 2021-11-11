@@ -1,5 +1,5 @@
 import { User } from "./user.model.js";
-import { Model, Models } from "../../index.js";
+import { Model, Models } from "use-models-for-data";
 const { fields } = Models;
 
 class TestModel extends Model {

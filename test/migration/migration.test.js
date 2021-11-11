@@ -1,7 +1,6 @@
 import fs from "fs";
 import path from "path";
-import { Models } from "../../index.js";
-
+import { Models } from "use-models-for-data";
 import { User as SimpleUser } from "./user.model.v1.js";
 import { User as ComplexUser } from "./user.model.v2.js";
 
