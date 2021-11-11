@@ -1,5 +1,5 @@
 import { Config } from "./config.model.v2.js";
-import { Model, Models } from "../../index.js";
+import { Model, Models } from "use-models-for-data";
 const { fields } = Models;
 
 /**
@@ -10,7 +10,7 @@ class User extends Model {
     name: `users`,
     description: `Mahjong user data`,
     distinct: true,
-    recordname: `profile.name`,
+    recordName: `profile.name`,
   };
   admin = fields.boolean({ default: false, configurable: false });
   profile = fields.model(Profile);

@@ -1,4 +1,4 @@
-import { Model, Models } from "../../index.js";
+import { Model, Models } from "use-models-for-data";
 const { fields } = Models;
 
 class TestModel extends Model {
@@ -10,10 +10,9 @@ class Secondary extends Model {
   label = fields.string();
 }
 
-describe(`Testing User model with store backing`, () => {
+describe(`Testing models functionality for models without __meta`, () => {
   beforeAll(() => {
     Models.register(TestModel);
-    // console.log(TestModel.schema);
   });
 
   // ╔══════════════════════╗
@@ -22,7 +21,8 @@ describe(`Testing User model with store backing`, () => {
 
   test(`Models without __meta still work`, () => {
     let instance;
-    expect(() => {
+
+    expect(async () => {
       instance = TestModel.create();
     }).not.toThrow();
 

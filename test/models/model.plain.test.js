@@ -1,4 +1,4 @@
-import { Models } from "../../index.js";
+import { Models } from "use-models-for-data";
 import { User } from "./user.model.js";
 
 /**
@@ -24,14 +24,8 @@ describe(`Testing User model without store backing`, () => {
     user = User.create(testData);
   });
 
-  test(`User.create without a payload is not an error`, () => {
-    expect(() => User.create(undefined, User.ALLOW_INCOMPLETE)).not.toThrow();
-  });
-
-  test(`User.from without a payload is an error`, () => {
-    expect(() => User.from()).toThrow(
-      `User.from() must be called with a data object.`
-    );
+  test(`User.create with allow_complete is not an error`, () => {
+    expect(() => User.create(User.ALLOW_INCOMPLETE)).not.toThrow();
   });
 
   test(`Can create User model without a store backing`, () => {

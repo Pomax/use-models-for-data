@@ -1,0 +1,3 @@
+- publish deep equals separately?
+- publish JS differ separately?
+- update migration tests to actually run a migration on some test data.

@@ -1,8 +1,10 @@
 import fs from "fs";
 import path from "path";
-import { Models } from "../../index.js";
+import { Errors, Models } from "use-models-for-data";
 import { User } from "./user.model.js";
 import { registry } from "../../lib/models/model-registry.js";
+
+const { RecordAccessError } = Errors;
 
 const moduleURL = new URL(import.meta.url);
 const moduleDir = path.dirname(
@@ -41,7 +43,7 @@ describe(`Testing User model with store backing`, () => {
   beforeAll(async () => {
     await Models.useDefaultStore(storePath);
     Models.resetRegistrations();
-    Models.register(User);
+    await Models.register(User);
   });
 
   /**
@@ -51,7 +53,13 @@ describe(`Testing User model with store backing`, () => {
     try {
       user = await User.load(`TestUser`);
     } catch (e) {
-      // this will fail for the first test, which then builds this record.
+      console.error;
+      if (e instanceof RecordAccessError) {
+        // This will fail for the first test, as it will not
+        // be built and saved to disk until the second test.
+      } else {
+        throw e;
+      }
     }
   });
 
@@ -83,19 +91,14 @@ describe(`Testing User model with store backing`, () => {
     expect(dirs).toStrictEqual([`config`, `users`]);
   });
 
-  test(`Can create, save, and delete user TestUser`, () => {
+  test(`Can create and save user TestUser`, () => {
     expect(async () => {
-      const user = User.from(testData);
+      const user = await User.create(testData);
       const recordPath = `${storePath}/users/TestUser.json`;
 
       await user.save();
       if (!fs.existsSync(recordPath)) {
         throw new Error(`${recordPath} was not saved`);
-      }
-
-      await user.delete();
-      if (fs.existsSync(recordPath)) {
-        throw new Error(`${recordPath} was not deleted`);
       }
     }).not.toThrow();
   });
@@ -162,13 +165,10 @@ describe(`Testing User model with store backing`, () => {
   });
 
   test(`Incomplete models can be created but not saved`, async () => {
-    let incomplete;
-    expect(() => {
-      incomplete = User.create(
-        { "profile.name": `Just a name` },
-        User.ALLOW_INCOMPLETE
-      );
-    }).not.toThrow();
+    let incomplete = await User.create(
+      { "profile.name": `Just a name` },
+      User.ALLOW_INCOMPLETE
+    );
 
     try {
       await incomplete.save();
@@ -185,5 +185,18 @@ describe(`Testing User model with store backing`, () => {
         "profile.password: required field missing.",
       ]);
     }
+  });
+
+  // NOTE: this must be the last test
+  test(`Can delete user TestUser`, () => {
+    expect(async () => {
+      const recordPath = `${storePath}/users/TestUser.json`;
+
+      await user.delete();
+
+      if (fs.existsSync(recordPath)) {
+        throw new Error(`${recordPath} was not deleted`);
+      }
+    }).not.toThrow();
   });
 });

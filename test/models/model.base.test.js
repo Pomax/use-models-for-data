@@ -1,5 +1,5 @@
 import { User } from "./user.model.js";
-import { Model, Models } from "../../index.js";
+import { Model, Models } from "use-models-for-data";
 const { fields } = Models;
 
 class TestModel extends Model {
@@ -18,12 +18,11 @@ class Secondary extends Model {
   label = fields.string();
 }
 
-describe(`Testing User model with store backing`, () => {
+describe(`Testing base model functionality`, () => {
   let user;
 
   beforeAll(() => {
     Models.register(TestModel);
-    // console.log(TestModel.schema);
   });
 
   beforeEach(() => {
@@ -36,11 +35,11 @@ describe(`Testing User model with store backing`, () => {
 
   test(`Cannot create instances using new Model()`, () => {
     expect(() => new User()).toThrow(
-      `Use User.create() or User.from(data) to build model instances.`
+      `Use User.create(data?) to build model instances.`
     );
   });
 
-  test(`Cannot create without initial data if there are required fields`, () => {
+  test(`Cannot create without initial data if there are required fields`, async () => {
     try {
       User.create();
     } catch (e) {
@@ -51,7 +50,7 @@ describe(`Testing User model with store backing`, () => {
     }
   });
 
-  test(`Cannot create with initial data that is missing required fields`, () => {
+  test(`Cannot create with initial data that is missing required fields`, async () => {
     try {
       User.create({
         profile: {
@@ -63,15 +62,8 @@ describe(`Testing User model with store backing`, () => {
     }
   });
 
-  test(`User.create without a payload but allowIncomplete is not an error`, () => {
-    const allowIncomplete = true;
-    expect(() => User.create(undefined, User.ALLOW_INCOMPLETE)).not.toThrow();
-  });
-
-  test(`User.from without a payload is an error`, () => {
-    expect(() => User.from()).toThrow(
-      `User.from() must be called with a data object.`
-    );
+  test(`User.create with allowIncomplete is not an error`, () => {
+    expect(() => User.create(User.ALLOW_INCOMPLETE)).not.toThrow();
   });
 
   test(`User .valueOf is a fully qualified plain object`, () => {
@@ -198,10 +190,10 @@ describe(`Testing User model with store backing`, () => {
     }
   });
 
-  test(`One-or-more test (__meta.array: true)`, () => {
+  test(`One-or-more test (__meta.array: true)`, async () => {
     let instance;
     try {
-      instance = TestModel.create();
+      instance = await TestModel.create();
     } catch (err) {
       console.log(err);
     }
@@ -215,6 +207,7 @@ describe(`Testing User model with store backing`, () => {
     expect(instance.oneOrMore).toStrictEqual(["1"]);
 
     const secondary = Secondary.create({ label: `test` });
+
     expect(() => {
       instance.secondary = secondary;
     }).toThrow(`Assignment for [secondary] must be an array.`);
