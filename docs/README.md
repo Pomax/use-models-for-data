@@ -108,6 +108,7 @@ The full list of properties that can be passed in `options` is:
 - `required`: a boolean value that determines whether the field must always have a value
 - `default`: a default value to use when the field has not been explicitly assigned
 - `choices`: an array of possible values that this field may take (note that `Fields.choice(...)` is typically preferred for this)
+- `array`: a boolean value that tells the validator that this field will be an array (of unspecified length) of same-typed items
 - `configurable`: a boolean value that determines whether this field may be presented to the user as editable (i.e. when showing the data in an edit form)
 - `debug`: a boolean value that regulates whether fields are included in the model when the library is running in debug mode.
 - `validate`: a function for performing more elaborate validation than basic type validation can offer.
@@ -238,6 +239,24 @@ With your data encoded as a model instance, you can now treat it like any other 
 ### Set/get values with automatic validation
 
 Everything should work exactly the same as if your model was a plain object:
+
+```javascript
+class User extends Model {
+  name = Fields.string({ required: true });
+  password = Fields.string({ required: true, validate: ... });
+}
+
+// ...
+
+const user = User.create({ name: ..., password: ... });
+
+// ...
+
+user.name = `A new name`;
+user.password = `A new password`;
+```
+
+However, because we now have always-on validation, bad assignments can throw, and we can catch those:
 
 ```javascript
 import Errors from "use-models-for-data";
@@ -445,18 +464,16 @@ Using these is about as close to no work as possible:
 ```javascript
 import { User } from "../src/models/user.js";
 
-// ...
-
 function generateUserForm(user) {
   document.querySelector(`#modal .form-panel`)?.innerHTML = user.toHTMLForm();
 }
 
 // ...
-
-editButton.addEventListener(`click`, evt => generateUserForm(evt));
+const user = User.create({...});
+editButton.addEventListener(`click`, () => generateUserForm(user));
 ```
 
-Of course, while models can perform data validation, they don't automatically test whether data is web-safe, so as always: when working with user data, `innerHTML` is rarely safe, and you may want to use a sanitizer to verify on that HTML.
+Of course, while models can perform data validation, they don't automatically test whether data is web-safe, so as always: when working with user data, `innerHTML` is rarely safe, and you may want to use a sanitizer to verify that the HTML you're inserting can be trusted.
 
 For a more secure version, generating the content using the generic [custom tree](#custom-trees) approach will generally be a better idea.
 
@@ -691,7 +708,7 @@ class User extends Model {
 }
 ```
 
-And your model works well enough for a month or two, you have a bunch of users created, everything's been working out great but then you realise that maybe that name/passsword combination is better off inside a profile, with the user itself reserved for more of an "aggregator" role, so you change your model:
+This model may work well enough for a month or two, you just need to negotiate logins, you have a bunch of users created, and everything's been working out great but maybe that name/passsword combination is better off inside a `profile` with the `user` itself reserved for more of an "aggregator" role... so you change your model:
 
 ```javascript
 class User extends Model {
@@ -714,7 +731,7 @@ class Profile extends Model {
 }
 ```
 
-And even if you only have a handful of users, having to update all of them manually quickly starts to take up a prohibitive amount of work. To the point where if the changes are big enough, you may be tempted to just not update your models, and that would be terrible, because your tooling should help make this step easy.
+And even if you only have a handful of users, having to update all of them manually quickly starts to take up a prohibitive amount of time. Maybe even to the point where you may decide to just live with your previous model and figure out some hackier way to get profiles working. And that would be terrible, because your tooling should help make this step easy.
 
 ### Schema change detection
 
@@ -840,7 +857,7 @@ Before running your migrations in place, overwriting all data so that your code 
 $ node ./your/data/store/metaname/metaname.vN.to.vM.js ./your/data/store/metaname/some-object.json
 ```
 
-This will apply a migration but write the result to `stdout` rather than back to the same file, so you can verify that the result is indeed what it should be. If the migration does not yield a valid object (based on a schema validation check after uplifting) the script will let you know. For example, if we run the above migration running without updating the migration hooks, the dry run output will be:
+This will apply a migration but write the result to `stdout` rather than back to the same file, so you can verify that the result is indeed what it should be. If the migration does not yield a valid object (based on a schema validation check after uplifting) the script will let you know. For example, if we run the above migration without updating the migration hooks, the dry-run output will be:
 
 ```bash
 $ node ./your/data/store/users/users.v1.to.v2.js ./your/data/store/users/some-user.json
