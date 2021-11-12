@@ -3,7 +3,7 @@
 <head>
     
     <meta charset="utf-8">
-    <title>forms/create-html.js - Documentation</title>
+    <title>models/store/dummy-store.js - Documentation</title>
     
     
     <script src="scripts/prettify/prettify.js"></script>
@@ -32,7 +32,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">forms/create-html.js</h1>
+    <h1 class="page-title">models/store/dummy-store.js</h1>
     
 
     
@@ -42,88 +42,43 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>/**
- * @namespace html
+            <pre class="prettyprint source linenums"><code>import { ModelStore } from "./model-store.js";
+
+/**
+ * This is a dummy store that gets used as replacement for
+ * filesystem-store.js in browser context by all bundlers
+ * that respect the package.json "browsers" property when
+ * set to a mapping object rather than a single entry
+ * point string.
+ *
+ * See https://docs.npmjs.com/cli/v7/configuring-npm/package-json#browser
  */
-
-import {
-  createFormTree,
-  createTableTree,
-  createTableTreeRows,
-} from "./create-tree.js";
-
-import { document, htmlProps, boolProps } from "./fake-dom/document.js";
-
-function create(tag, props) {
-  const element = document.createElement(tag);
-  if (props.children) {
-    props.children.forEach((c) => element.appendChild(c));
+class DummyStore extends ModelStore {
+  constructor() {}
+  ready() {
+    return false;
   }
-  htmlProps.forEach((prop) => {
-    let val = props[prop];
-    if (val !== undefined) {
-      if (boolProps.includes(prop)) {
-        if (!val) return;
-        val = prop;
-      }
-      element[prop] = val;
-    }
-  });
-  return element;
+  async loadRecord(schema, recordName) {
+    return undefined;
+  }
+  async saveRecord(schema, instance, recordName) {
+    return false;
+  }
+  async deleteRecord(schema, recordName) {
+    return false;
+  }
+  async loadSchema(schema) {
+    return undefined;
+  }
+  async saveSchema(schema) {
+    return false;
+  }
+  async saveMigration(schema1, schema2, migration) {
+    return false;
+  }
 }
 
-/**
- * &lt;p>create the form code for updating a schema-conformant object&lt;/p>
- *
- * &lt;p>
- * The options object should take the form documented in {@link tree.createFormTree}.
- * &lt;/p>
- *
- * @name html.createFormHTML
- * @param {schema} schema - A schema definition
- * @param {object} object - A schema-conformant definition
- * @param {object} options - See {@link tree.createFormTree}.
- * @returns {String} an HTML form for working with this schema'd object.
- */
-export function createFormHTML(schema, object, options = {}) {
-  options.action ??= ".";
-  options.method ??= "POST";
-  return createFormTree(schema, object, { create, ...options }).outerHTML;
-}
-
-/**
- * &lt;p>
- * For when you need table content, not a form. Note that nesting
- * is not preserved using this call because you don't nest tables.
- * &lt;/p>
- *
- * @name html.createTableHTML
- * @param {schema} schema - A schema definition
- * @param {object} object - A schema-conformant definition
- * @param {object} options - See {@link tree.createFormTree}.
- * @returns {String} an HTML table for working with this schema'd object.
- */
-export function createTableHTML(schema, object, options = {}) {
-  return createTableTree(schema, object, { create, ...options }).outerHTML;
-}
-
-/**
- * &lt;p>
- * For when you need table content, not a form. Note that nesting
- * is not preserved using this call because you don't nest tables.
- * &lt;/p>
- *
- * @name html.createTableRowHTML
- * @param {schema} schema - A schema definition
- * @param {object} object - A schema-conformant definition
- * @param {object} options - See {@link tree.createFormTree}.
- * @returns {String} an HTML table for working with this schema'd object, but as table rows only.
- */
-export function createTableRowHTML(schema, object, options = {}) {
-  return createTableTreeRows(schema, object, { create, ...options })
-    .map((tr) => tr.outerHTML)
-    .join(`\n`);
-}
+export { DummyStore, DummyStore as FileSystemStore };
 </code></pre>
         </article>
     </section>

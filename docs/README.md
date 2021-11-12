@@ -19,7 +19,7 @@ For the pure API docs, see the class navigation on the left. For a general discu
   - [(partially) resetting model instances)](#(partially)-resetting-model-instances)
 - [Using models for/in the browser](#using-models-for%2Fin-the-browser)
   - [import/bundling your model definitions](#import/bundling-your-model-definition)
-    - [excluding the default file store for browser bundles](#ignoring-the-default-file-store-for-clientside-work)
+    - [Ignoring the default file store in the browser](#ignoring-the-default-file-store-in-the-browser)
   - [Tree-mapping your data](#tree-mapping-your-model)
     - [HTML form/table](#html-form%2Ftable)
     - [(P)React form/table)](#(p)react-form%2Ftable)
@@ -449,21 +449,14 @@ When writing client-side JS, all you need to do is import your classes as usuall
 
 In fact, even if you don't even have "a server" and you just write client-side code that works ith API responses from other places on the web, you will be able to just bundle up your client with model functionality included.
 
-#### ignoring the default file store for clientside work
+#### Ignoring the default file store in the browser
 
-The one thing to take note of is that `use-models-for-data` ships with a default filesystem store to make "just writing something that works" much easier. However, as this store relies on `path` and `fs`, and your client side code can't use Node's `path` and `fs`, you'll need to tell your bundler to ignore this store file.
+The one thing to take note of is that `use-models-for-data` ships with a default filesystem store to make "just writing some code  that works" much easier. However, as this store relies on the Node `fs` and `path` modules, you may need to instruct your client bundler to ignore the `./node_modules/use-models-for-data/lib/models/store/filesystem-store.js` file, or better yet: swap it out for `./node_modules/use-models-for-data/lib/models/store/dummy-store.js`.
 
-For example, if you're using an npm script that uses `esbuild` for bundling, you'd want:
+If you use Webpack, see https://webpack.js.org/plugins/normal-module-replacement-plugin for how to achieve this replacement.
 
-```json
-{
-  "scripts": {
-    ...
-    "bundle:client": "esbuild ... --external:./node_modules/use-models-for-data/lib/models/store/filesystem-store.js",
-    ...
-  }
-}
-```
+If your bundler respects the "matrix" version of the `"browser"` property in package.json, then you shouldn't have to do anything other than tell your bundler that you're targeting the browser. For example, if you use `esbuild`, you should not need to do anything special and things should just work (provided you've set `platform` to be the browser).
+
 
 ### Tree mapping your model
 
