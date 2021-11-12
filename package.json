@@ -4,6 +4,9 @@
   "description": "Instead of plain JS objects, work with your data through well-defined, always-consistent models, using this one simple trick",
   "main": "index.js",
   "type": "module",
+  "browser": {
+    "./lib/models/store/filesystem-store.js": "./lib/models/store/dummy-store.js"
+  },
   "scripts": {
     "clean": "prettier ./{lib,test}/**/*.js --write",
     "test": "run-s clean test:jest:*",
