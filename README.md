@@ -504,18 +504,10 @@ So this does.
 
 ---
 
-Whether you just want the API documentation, or some more examples, hit up the docs by heading over to [the `docs` directory](https://github.com/Pomax/use-models-for-data/tree/master/docs)!
+Whether you just want the API documentation, or a detailed explanation on how to use this library, hit up [the documentation](https://pomax.github.io/use-models-for-data/docs/API).
 
 ## Thoughts, comments, discussions
 
 To discuss this library, head on over to the [discussions]() for this project, or file a [new issue]() if you think you've found a bug that needs fixing.
 
 And if you just want to do a shout-out or engine in a short-term exchange, hit me up on [Twitter@TheRealPomax](https://twitter.com/TheRealPomax) or [Mastodon@TheRealPomax](https://mastodon.social/users/TheRealPomax).
-
-<!--
-
-# We still need a fun section that explains client side
-
-because sure, yeah, express, but let's be honest: 50% of the world uses React, let's make sure those folks get what they need here, too. Extend the express example to serve a React app that lets people log in and update their profile?
-
--->

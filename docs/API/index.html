@@ -78,7 +78,7 @@
 <li><a href="#set%2Fget-values-with-automatic-validation">set/get values with automatic validation</a></li>
 <li><a href="#set%2Fget-subtrees-with-automatic-validation">set/get subtreees with automatic validation</a></li>
 <li><a href="#set%2Fget-with-path-keys">set/get with path kes</a></li>
-<li><a href="#converting-to-formatted-json-(with-defaults-omitted)---.tostring()">converting to JSON</a></li>
+<li><a href="#converting-a-model-to-formatted-(sparse)-json">converting to JSON</a></li>
 <li><a href="#converting-to-fully-qualified%2C-plain-js-object---.valueof()">converting to fully qualified plain object</a></li>
 <li><a href="#(partially)-resetting-model-instances">(partially) resetting model instances)</a></li>
 </ul>
@@ -299,6 +299,10 @@ const user = User.create({ name: ..., password: ... });
 
 user.name = `A new name`;
 user.password = `A new password`;
+
+// ...
+
+const { name, password } = user;
 </code></pre>
 <p>However, because we now have always-on validation, bad assignments can throw, and we can catch those:</p>
 <pre class="prettyprint source lang-javascript"><code>import Errors from &quot;use-models-for-data&quot;;
@@ -324,10 +328,7 @@ try {
 </code></pre>
 <h3 id="set%2Fget-subtrees-with-automatic-validation">Set/get subtrees with automatic validation</h3>
 <p>Even when setting entire subtrees, things should still work as expected:</p>
-<pre class="prettyprint source lang-javascript"><code>import Errors from &quot;use-models-for-data&quot;;
-const { InvalidAssignment } = Errors;
-
-class ComplexModel extends Model {
+<pre class="prettyprint source lang-javascript"><code>class ComplexModel extends Model {
   /*
    Some class that models {
      key1: {
@@ -344,6 +345,22 @@ class ComplexModel extends Model {
 }
 
 const instance = ComplexModel.create();
+instance.key1 = {
+  subkey: {
+    fieldname: &quot;test&quot;,
+  },
+  keyfield: 1234,
+};
+</code></pre>
+<p>Although again, because bad assignments will throw, we can catch that:</p>
+<pre class="prettyprint source lang-javascript"><code>import Errors from &quot;use-models-for-data&quot;;
+const { InvalidAssignment } = Errors;
+
+class ComplexModel extends Model {
+  // ...
+}
+
+const instance = ComplexModel.create();
 
 try {
   instance.key1 = {
@@ -352,9 +369,10 @@ try {
     },
     keyfield: 1234,
   };
-} catch (e) {
+} catch (err) {
   if (e instanceof InvalidAssignment) {
-    console.error(e);
+    const { errors } = err;
+    console.log(errors);
   } else if (...) {
     ...
   }
@@ -369,7 +387,7 @@ let fieldValue = complexInstance.get(fieldKey);
 fieldValue = `${fieldValue}-plus`;
 complexInstance.set(fieldKey, fieldValue);
 </code></pre>
-<h3 id="converting-to-formatted-json-(with-defaults-omitted)---.tostring()">Converting to formatted JSON (with defaults omitted) - <code>.toString()</code></h3>
+<h3 id="converting-a-model-to-formatted-(sparse)-json">Converting a model to formatted (sparse) JSON</h3>
 <p>Any model instance can be turned into JSON (with sorted keys at all depths) by using its <code>.toString()</code> function. However, because model instances are backed by a model definition that may contain default values for anything that isn't explicit set, this JSON will not include any of those default values, only encoding real values. As such, the following model:</p>
 <pre class="prettyprint source lang-javascript"><code>class User extends Model {
   name = Fields.string({ required: true });
@@ -392,7 +410,7 @@ console.log(user.toString());
   }
 */
 </code></pre>
-<h3 id="converting-to-fully-qualified%2C-plain-js-object---.valueof()">Converting to fully qualified, plain JS object - <code>.valueOf()</code></h3>
+<h3 id="converting-to-fully-qualified-plain-js-object">Converting to fully qualified plain JS object</h3>
 <p>To generate a fully qualified object (e.g. when needing to send the model off to something that does <em>not</em> use models for data) the <code>.valueOf()</code> function can be used to turn any model instance into a plain JS object. If you've written your code right, you should never need to use this function. But if you absolutely <em>do</em> need it, it's there.</p>
 <p>Using the above <code>User</code> model:</p>
 <pre class="prettyprint source lang-javascript"><code>const user = User.create({ name: &quot;Tester McTesting&quot;, password: &quot;abcdef&quot; });
@@ -564,30 +582,10 @@ Models.useDefaultStore(`./data-store`)
   }
 }
 </code></pre>
-<p>The <code>name</code> property is used to name the auto-generated schema that is associated with your model, the <code>distinct</code> property must be set to <code>true</code>, which tells the library that instances of this model can be saved as distinct records in whatever backend is involved, and the <code>recordName</code> property lets the library determine the &quot;key&quot; with which to save your model instances. This is explained in more detail in the <a href="#saving-models-to-the-store">&quot;saving models to the store&quot;</a> section.</p>
-<h3 id="awaiting-all-model.create()-calls"><code>await</code>ing all <code>Model.create()</code> calls</h3>
-<p>When using a model store, all schema and record operations are necessarily asynchronous, and so one thing that changes is that <code>Model.create</code> will no longer work synchronously, instead returning a promise that you will either need to <code>await</code>, or resolve with <code>.then(instance =&gt; ...).catch(err =&gt; ...)</code> chaining.</p>
-<pre class="prettyprint source lang-javascript"><code>// await inside an async code path:
-async function() {
-  try {
-    const user = await User.create(...)
-  } catch(err) {
-    // ...
-  }
-}
-
-// using Promise syntax:
-Config.create(...)
-.then(config => {
-  // ...
-})
-.catch(err => {
-  // ...
-});
-</code></pre>
+<p>The <code>name</code> property is used to name the auto-generated schema that is associated with your model, the <code>distinct</code> property must be set to <code>true</code>, which tells the library that instances of this model can be saved as distinct records in whatever backend is involved, and the <code>recordName</code> property lets the library determine the &quot;key&quot; with which to save your model instances.</p>
 <h3 id="saving-models-to-the-store">Saving models to the store</h3>
 <p>With a store set up, saving a model is literally just a matter of calling <code>save</code>:</p>
-<pre class="prettyprint source lang-javascript"><code>const user = await User.create(...);
+<pre class="prettyprint source lang-javascript"><code>const user = User.create(...);
 
 //...
 
@@ -606,7 +604,7 @@ class Profile extends Model {
   name = Fields.string();
 }
 
-const user = await User.create({ profile: { name: &quot;Tester McTesting&quot; }});
+const user = User.create({ profile: { name: &quot;Tester McTesting&quot; }});
 await user.save();
 </code></pre>
 <p>In this example, the user will get saved keyed on both its schema name (&quot;users&quot;) and its recordName, which is the <code>user.profile.name</code> value (in this case, &quot;Tester McTesting&quot;).</p>
@@ -623,7 +621,7 @@ await user.save();
 
 //...
 
-const user = await User.create({ profile: { name: &quot;Tester McTesting&quot; }});
+const user = User.create({ profile: { name: &quot;Tester McTesting&quot; }});
 await user.save();
 </code></pre>
 <p>This has the same effect as above, but with more control over what exact identifier to generate.</p>
@@ -806,7 +804,7 @@ Please fill in the migration hooks to resolve the following errors:
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.7</a> on Thu Nov 11 2021 09:10:14 GMT-0800 (Pacific Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.7</a> on Thu Nov 11 2021 18:07:30 GMT-0800 (Pacific Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>

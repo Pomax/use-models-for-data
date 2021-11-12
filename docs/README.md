@@ -14,8 +14,8 @@ For the pure API docs, see the class navigation on the left. For a general discu
   - [set/get values with automatic validation](#set%2Fget-values-with-automatic-validation)
   - [set/get subtreees with automatic validation](#set%2Fget-subtrees-with-automatic-validation)
   - [set/get with path kes](#set%2Fget-with-path-keys)
-  - [converting to JSON](#converting-to-formatted-json-(with-defaults-omitted)---.tostring())
-  - [converting to fully qualified plain object](#converting-to-fully-qualified%2C-plain-js-object---.valueof())
+  - [converting to JSON](#converting-a-model-to-formatted-(sparse)-json)
+  - [converting to fully qualified plain object](#converting-to-fully-qualified-plain-js-object)
   - [(partially) resetting model instances)](#(partially)-resetting-model-instances)
 - [Using models for/in the browser](#using-models-for%2Fin-the-browser)
   - [import/bundling your model definitions](#import/bundling-your-model-definition)
@@ -254,6 +254,10 @@ const user = User.create({ name: ..., password: ... });
 
 user.name = `A new name`;
 user.password = `A new password`;
+
+// ...
+
+const { name, password } = user;
 ```
 
 However, because we now have always-on validation, bad assignments can throw, and we can catch those:
@@ -286,9 +290,6 @@ try {
 Even when setting entire subtrees, things should still work as expected:
 
 ```javascript
-import Errors from "use-models-for-data";
-const { InvalidAssignment } = Errors;
-
 class ComplexModel extends Model {
   /*
    Some class that models {
@@ -306,6 +307,25 @@ class ComplexModel extends Model {
 }
 
 const instance = ComplexModel.create();
+instance.key1 = {
+  subkey: {
+    fieldname: "test",
+  },
+  keyfield: 1234,
+};
+```
+
+Although again, because bad assignments will throw, we can catch that:
+
+```javascript
+import Errors from "use-models-for-data";
+const { InvalidAssignment } = Errors;
+
+class ComplexModel extends Model {
+  // ...
+}
+
+const instance = ComplexModel.create();
 
 try {
   instance.key1 = {
@@ -314,9 +334,10 @@ try {
     },
     keyfield: 1234,
   };
-} catch (e) {
+} catch (err) {
   if (e instanceof InvalidAssignment) {
-    console.error(e);
+    const { errors } = err;
+    console.log(errors);
   } else if (...) {
     ...
   }
@@ -336,7 +357,7 @@ fieldValue = `${fieldValue}-plus`;
 complexInstance.set(fieldKey, fieldValue);
 ```
 
-### Converting to formatted JSON (with defaults omitted) - `.toString()`
+### Converting a model to formatted (sparse) JSON
 
 Any model instance can be turned into JSON (with sorted keys at all depths) by using its `.toString()` function. However, because model instances are backed by a model definition that may contain default values for anything that isn't explicit set, this JSON will not include any of those default values, only encoding real values. As such, the following model:
 
@@ -366,7 +387,7 @@ console.log(user.toString());
 */
 ```
 
-### Converting to fully qualified, plain JS object - `.valueOf()`
+### Converting to fully qualified plain JS object
 
 To generate a fully qualified object (e.g. when needing to send the model off to something that does _not_ use models for data) the `.valueOf()` function can be used to turn any model instance into a plain JS object. If you've written your code right, you should never need to use this function. But if you absolutely _do_ need it, it's there.
 

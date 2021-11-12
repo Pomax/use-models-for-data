@@ -59,7 +59,7 @@ h1, h2, h3, h4, h5, h6 {
 
 h1 {
   font-weight: 300;
-  font-size: 2em;
+  font-size: 3em;
   margin: 1em 0 .5em;
 }
 
@@ -70,17 +70,17 @@ h1.page-title {
 }
 
 h2 {
-  font-size: 1.75em;
+  font-size: 2.5em;
   margin: 1.5em 0 .3em;
 }
 
 h3 {
-  font-size: 1.5em;
+  font-size: 2em;
   margin: 1.2em 0 .3em;
 }
 
 h4 {
-  font-size: 1.5em;
+  font-size: 2em;
   margin: 1em 0 .2em;
   color: #4d4e53;
 }
@@ -104,13 +104,13 @@ h4.name a:hover {
 }
 
 h5, .container-overview .subsection-title {
-  font-size: 1.5em;
+  font-size: 2em;
   letter-spacing: -0.01em;
   margin: 8px 0 3px 0;
 }
 
 h6 {
-  font-size: 1.5em;
+  font-size: 2em;
   letter-spacing: -0.01em;
   margin: 6px 0 3px 0;
   font-style: italic;
