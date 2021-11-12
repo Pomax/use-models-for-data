@@ -72,7 +72,7 @@ Now instead of accepting, or inventing, a bare `const data = { name: ..., age: .
 ```js
 import { User } from "./my-models.js";
 
-const data = User.from({
+const data = User.create({
     name: ...,
     age: ...
 })
@@ -192,12 +192,13 @@ class Profile extends Model {
 
     avatar = Fields.string({
         validate: function(value) {
-            try {
-              checkBase64Image(value);
-            } catch (err) {
-                // we want more details than just "yes/no" in this case
-                throw err;
-            }
+          const result = checkBase64Image(value);
+          if (result.error) {
+            // we want to signal with more details than just "yes/no" in this case
+            const err = new Error(`Image did not pass validation`);
+            err.details = result;
+            throw err;
+          }
         }
     });
 

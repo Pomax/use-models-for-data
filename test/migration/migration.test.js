@@ -18,7 +18,7 @@ describe(`Testing User model`, () => {
 
   beforeEach(async () => {
     Models.resetRegistrations();
-    await Models.useDefaultStore(storePath);
+    Models.useDefaultStore(storePath);
   });
 
   afterEach(() => {

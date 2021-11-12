@@ -25,7 +25,8 @@ For the pure API docs, see the class navigation on the left. For a general discu
     - [(P)React form/table)](#(p)react-form%2Ftable)
     - [Custom trees](#custom-trees)
 - [Using a data store](#using-a-data-store)
-  - [binding a data store for model use](#binding-a-data-store)
+  - [Using the FileSystemStore](#using-the-%7B%40link-filesystemstore%7D)
+  - [Registering your models](#registering-your-models)
   - [Setting store-related model metadata](#setting-store-related-metadata-on-your-model-classes)
   - [awaiting all model `create` calls](#awaiting-all-model.create()-calls)
   - [saving model instances](#saving-models-to-the-store)
@@ -565,38 +566,47 @@ In addition to this, you can tack any additional properties you need for your da
 
 Using models to ensure your data is always valid also requires knowing that your models themselves are synced between the various parts of your code, as well as between your storage backend(s) and your code. As such, this library lets you basically use any backend you like, as long as you can write a {@link ModelStore} for it.
 
-The library comes with a single ModelStore implementation predefined, the {@link FileSystemStore}, which uses your local filesystem as a storage backend.
-
-### Binding a data store
-
-Use the `Models.setStore` function:
+With a data store at hand, using it a matter of calling the `Models.setStore` function:
 
 ```javascript
 import { Models } from "use-models-for-data";
 import { MyDataStore } from "./src/store/my-data-store.js";
 
-Models.useStore(new MyDataStore());
+Models.setStore(new MyDataStore());
 ```
 
-If you just want to use the file system, there is a dedicated `useDefaultStore` function that takes a file system path as argument and builds an implicit {@link FileSystemStore}. Note that this is an `async` function, and so either needs `await`ing, or `.then(...)` handling:
+#### Using the {@link FileSystemStore}
+
+If you just want to use the file system, there is a dedicated `useDefaultStore` function that takes a file system path as argument and builds an implicit {@link FileSystemStore}.
 
 ```javascript
 import { Models } from "use-models-for-data";
 
+Models.useDefaultStore(`./data-store`);
+```
+
+### Registering your models
+
+As data stores verify model classes against stored schemas, using a data store means you need to register your models prior to use, using the `Models.register()` function.
+
+Note that this is an `async` function, and so either needs `await`ing, or `.then(...)` handling:
+
+```javascript
+import { Model, Models } from "use-models-for-data";
+import { User, Config } from "./my-models.js";
+
 // Either use async/await:
-async function setup() {
-  await Models.useDefaultStore(`./data-store`);
-  // ...
+async function init() {
+  Models.useDefaultStore(`./data-store`);
+  await Models.register(User, Config);
+  runRestOfCode();
 }
 
 // Or promise handling:
-Models.useDefaultStore(`./data-store`)
-.then(() = {
-  // ...
-})
-.catch(err => {
-  // ...
-})
+Models.useDefaultStore(`./data-store`);
+Models.register(User, Config).then(() => {
+  runRestOfCode();
+});
 ```
 
 ### Setting store related metadata on your Model classes
@@ -688,7 +698,7 @@ await user.delete();
 
 ### Updating your model definitions
 
-Models aren't write-once, use-forever, they are write-once, then-update, then-update-again, and you don't want to have to manually update all your data just because your model changed. As such, when using a data store, this library turns on change tracking for models, to help with the task of making sure your data is always consistent with respect to your models.
+Models aren't write-once, use-forever. Rather, they are write-once, then-update, then-update-again, then etc. and you don't want to have to manually update all your data just because your model changed. As such, when using a data store, this library turns on change-tracking for models, to help with the task of making sure your data is always consistent with respect to your models.
 
 Let's look at an example, with our basic user model:
 

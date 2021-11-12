@@ -79,7 +79,7 @@
 <li><a href="#set%2Fget-subtrees-with-automatic-validation">set/get subtreees with automatic validation</a></li>
 <li><a href="#set%2Fget-with-path-keys">set/get with path kes</a></li>
 <li><a href="#converting-a-model-to-formatted-(sparse)-json">converting to JSON</a></li>
-<li><a href="#converting-to-fully-qualified%2C-plain-js-object---.valueof()">converting to fully qualified plain object</a></li>
+<li><a href="#converting-to-fully-qualified-plain-js-object">converting to fully qualified plain object</a></li>
 <li><a href="#(partially)-resetting-model-instances">(partially) resetting model instances)</a></li>
 </ul>
 </li>
@@ -101,7 +101,8 @@
 </li>
 <li><a href="#using-a-data-store">Using a data store</a>
 <ul>
-<li><a href="#binding-a-data-store">binding a data store for model use</a></li>
+<li><a href="#using-the-%7B%40link-filesystemstore%7D">Using the FileSystemStore</a></li>
+<li><a href="#registering-your-models">Registering your models</a></li>
 <li><a href="#setting-store-related-metadata-on-your-model-classes">Setting store-related model metadata</a></li>
 <li><a href="#awaiting-all-model.create()-calls">awaiting all model <code>create</code> calls</a></li>
 <li><a href="#saving-models-to-the-store">saving model instances</a></li>
@@ -546,31 +547,36 @@ class UserProfile extends Component {
 <p>In addition to this, you can tack any additional properties you need for your data structures. For example, (P)React triggers an <code>onSubmit</code> when a form is submitted, and so adding an <code>onSubmit</code> property to the options object with a handling function will automatically cause that to kick in.</p>
 <h2 id="using-a-data-store">Using a data store</h2>
 <p>Using models to ensure your data is always valid also requires knowing that your models themselves are synced between the various parts of your code, as well as between your storage backend(s) and your code. As such, this library lets you basically use any backend you like, as long as you can write a <a href="ModelStore.html">ModelStore</a> for it.</p>
-<p>The library comes with a single ModelStore implementation predefined, the <a href="FileSystemStore.html">FileSystemStore</a>, which uses your local filesystem as a storage backend.</p>
-<h3 id="binding-a-data-store">Binding a data store</h3>
-<p>Use the <code>Models.setStore</code> function:</p>
+<p>With a data store at hand, using it a matter of calling the <code>Models.setStore</code> function:</p>
 <pre class="prettyprint source lang-javascript"><code>import { Models } from &quot;use-models-for-data&quot;;
 import { MyDataStore } from &quot;./src/store/my-data-store.js&quot;;
 
-Models.useStore(new MyDataStore());
+Models.setStore(new MyDataStore());
 </code></pre>
-<p>If you just want to use the file system, there is a dedicated <code>useDefaultStore</code> function that takes a file system path as argument and builds an implicit <a href="FileSystemStore.html">FileSystemStore</a>. Note that this is an <code>async</code> function, and so either needs <code>await</code>ing, or <code>.then(...)</code> handling:</p>
+<h4 id="using-the-%7B%40link-filesystemstore%7D">Using the <a href="FileSystemStore.html">FileSystemStore</a></h4>
+<p>If you just want to use the file system, there is a dedicated <code>useDefaultStore</code> function that takes a file system path as argument and builds an implicit <a href="FileSystemStore.html">FileSystemStore</a>.</p>
 <pre class="prettyprint source lang-javascript"><code>import { Models } from &quot;use-models-for-data&quot;;
 
+Models.useDefaultStore(`./data-store`);
+</code></pre>
+<h3 id="registering-your-models">Registering your models</h3>
+<p>As data stores verify model classes against stored schemas, using a data store means you need to register your models prior to use, using the <code>Models.register()</code> function.</p>
+<p>Note that this is an <code>async</code> function, and so either needs <code>await</code>ing, or <code>.then(...)</code> handling:</p>
+<pre class="prettyprint source lang-javascript"><code>import { Model, Models } from &quot;use-models-for-data&quot;;
+import { User, Config } from &quot;./my-models.js&quot;;
+
 // Either use async/await:
-async function setup() {
-  await Models.useDefaultStore(`./data-store`);
-  // ...
+async function init() {
+  Models.useDefaultStore(`./data-store`);
+  await Models.register(User, Config);
+  runRestOfCode();
 }
 
 // Or promise handling:
-Models.useDefaultStore(`./data-store`)
-.then(() = {
-  // ...
-})
-.catch(err => {
-  // ...
-})
+Models.useDefaultStore(`./data-store`);
+Models.register(User, Config).then(() => {
+  runRestOfCode();
+});
 </code></pre>
 <h3 id="setting-store-related-metadata-on-your-model-classes">Setting store related metadata on your Model classes</h3>
 <p>In order to use a data store with your models, you need to make sure that your model classes specify a few property in their <code>__meta</code> object. And of course, if you didn't specify one before, you'll have to add one:</p>
@@ -635,7 +641,7 @@ await user.save();
 await user.delete();
 </code></pre>
 <h3 id="updating-your-model-definitions">Updating your model definitions</h3>
-<p>Models aren't write-once, use-forever, they are write-once, then-update, then-update-again, and you don't want to have to manually update all your data just because your model changed. As such, when using a data store, this library turns on change tracking for models, to help with the task of making sure your data is always consistent with respect to your models.</p>
+<p>Models aren't write-once, use-forever. Rather, they are write-once, then-update, then-update-again, then etc. and you don't want to have to manually update all your data just because your model changed. As such, when using a data store, this library turns on change-tracking for models, to help with the task of making sure your data is always consistent with respect to your models.</p>
 <p>Let's look at an example, with our basic user model:</p>
 <pre class="prettyprint source lang-javascript"><code>class User extends Model {
   __meta = {
@@ -804,7 +810,7 @@ Please fill in the migration hooks to resolve the following errors:
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.7</a> on Thu Nov 11 2021 18:07:30 GMT-0800 (Pacific Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.7</a> on Fri Nov 12 2021 12:07:13 GMT-0800 (Pacific Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
 </footer>
 
 <script>prettyPrint();</script>

@@ -41,7 +41,7 @@ describe(`Testing User model with store backing`, () => {
    * model so that the on-disk schema file(s) exist when the tests run.
    */
   beforeAll(async () => {
-    await Models.useDefaultStore(storePath);
+    Models.useDefaultStore(storePath);
     Models.resetRegistrations();
     await Models.register(User);
   });
