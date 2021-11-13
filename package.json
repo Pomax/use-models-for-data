@@ -1,6 +1,6 @@
 {
   "name": "use-models-for-data",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "Instead of plain JS objects, work with your data through well-defined, always-consistent models, using this one simple trick",
   "main": "index.js",
   "type": "module",
