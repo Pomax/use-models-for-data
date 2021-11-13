@@ -11,10 +11,6 @@ class Secondary extends Model {
 }
 
 describe(`Testing models functionality for models without __meta`, () => {
-  beforeAll(() => {
-    Models.register(TestModel);
-  });
-
   // ╔══════════════════════╗
   // ║ THE TESTS START HERE ║
   // ╚══════════════════════╝
@@ -22,7 +18,7 @@ describe(`Testing models functionality for models without __meta`, () => {
   test(`Models without __meta still work`, () => {
     let instance;
 
-    expect(async () => {
+    expect(() => {
       instance = TestModel.create();
     }).not.toThrow();
 
@@ -35,13 +31,4 @@ describe(`Testing models functionality for models without __meta`, () => {
       },
     });
   });
-
-  /*
-    TODO: also make sure this works with a store backing.
-
-          When saving, we should be able to just determine
-          a schema for the top-level model and then we're going
-          to need the user to provide a filename because there's
-          no way to guess which field to use as record name.
-  */
 });
