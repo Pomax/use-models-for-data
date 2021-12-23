@@ -7,7 +7,6 @@ import { User, Config } from "./model.js";
 const HTML = false;
 const FULL = false;
 
-
 const config = Config.create();
 const user = User.create({
   profile: {
