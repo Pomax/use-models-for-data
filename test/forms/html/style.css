@@ -1,0 +1,116 @@
+form {
+  border: 2px solid #444;
+}
+
+form h2 {
+  margin: 0;
+}
+
+form,
+fieldset {
+  position: relative;
+  background: #444;
+  color: white;
+  padding: 0;
+  text-align: center;
+}
+
+fieldset {
+  border: none;
+  margin: 0;
+}
+
+form > div,
+fieldset > div {
+  background: #f0f0f0;
+  color: #333;
+  padding: 0 1rem;
+  text-align: center;
+}
+
+fieldset div .form-element {
+  display: block;
+}
+
+fieldset div .form-element select {
+  border: 1px solid grey;
+}
+
+fieldset div .form-element label[for] {
+  user-select: none;
+}
+
+fieldset div.controls {
+  text-align: center;
+  padding: 1rem;
+}
+
+fieldset div.controls button {
+  border: 2px solid #555;
+  border-left: 2px solid #999;
+  border-bottom: 2px solid #999;
+  background: #fcfcfc;
+  color: #222;
+  font-size: 1.2rem;
+  padding: 0.25rem 0.5rem;
+  cursor: pointer;
+}
+
+fieldset div.controls button:hover {
+  filter: brightness(0.9);
+}
+
+fieldset select {
+  background: white;
+}
+
+fieldset div:nth-of-type(1) {
+  padding-top: 1rem;
+}
+
+fieldset p {
+  display: inline-block;
+  margin: 0;
+  padding: 0.25rem 0 1rem;
+  color: #333;
+  font-style: italic;
+}
+
+h2, h3, .heading {
+  display: inline-block;
+  margin-bottom: 0.5rem;
+  font-weight: normal;
+  font-family: Verdana;
+  font-size: 1.5rem;
+  font-variant: small-caps;
+  text-transform: lowercase;
+}
+
+.heading.collapsible {
+  cursor: pointer;
+  user-select: none;
+}
+
+input[type="checkbox"].heading-collapse {
+  display: none;
+}
+
+.heading-collapse + span.heading-collapse {
+  position: absolute;
+  right: 1rem;
+  display: inline-block;
+}
+
+.heading-collapse + span.heading-collapse::before {
+  content: "⯅";
+  vertical-align: -0.7rem;
+}
+
+input[type="checkbox"].heading-collapse:checked ~ *:not(.heading-collapse) {
+  display: none;
+}
+
+.heading-collapse:checked + span.heading-collapse::before {
+  content: "⯆";
+  vertical-align: -0.5rem;
+}

@@ -1,23 +1,62 @@
-import { Model, Models } from "use-models-for-data";
+import { Model, Models } from "../../index.js";
 const { fields } = Models;
+
+export class User extends Model {
+  __meta = {
+    name: `users`,
+    description: `Mahjong user data`,
+    distinct: true,
+    recordName: `profile.name`,
+  };
+  admin = fields.boolean({ default: false });
+  profile = fields.model(Profile);
+}
 
 /**
  * ...
  */
-class Config extends Model {
+class Profile extends Model {
+  __meta = {
+    description: `...`,
+    required: true,
+  };
+
+  name = fields.string({ required: true });
+  password = fields.string({ required: true, configurable: false });
+  preferences = fields.model(Preferences);
+}
+
+class Preferences extends Model {
+  __meta = {
+    description: `General preferences object`,
+  };
+
+  layout = fields.string({
+    description: `Preferred game layout`,
+    choices: [`traditional`, `stacked`],
+    default: `traditional`,
+  });
+
+  config = fields.model(Config);
+}
+
+export class Config extends Model {
   __meta = {
     name: `config`,
     description: `Mahjong game configuration`,
     distinct: true,
     form: [
       {
-        heading: false,
+        heading: `Choose your settings`,
         fields: [`ruleset`, `game_mode`, `use_single_player_timeouts`],
+        controls: {
+          save: `Save`,
+          cancel: `Cancel`,
+        },
       },
       {
-        heading: `settings`,
-        descriptions: false,
-        collapsible: true,
+        heading: `Additional settings`,
+        collapsed: true,
         fields: [
           `allow_chat`,
           `auto_start_on_join`,
@@ -32,7 +71,7 @@ class Config extends Model {
         ],
       },
       {
-        heading: `timing`,
+        heading: `timeouts and delays`,
         descriptions: false,
         collapsed: true,
         fields: [
@@ -43,8 +82,7 @@ class Config extends Model {
         ],
       },
       {
-        heading: `debug`,
-        descriptions: false,
+        heading: `debug values`,
         collapsed: true,
         fields: [`prng_seed`, `wallhack`],
       },
@@ -218,5 +256,3 @@ class Config extends Model {
     default: 2147483647,
   });
 }
-
-export { Config };

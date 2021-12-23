@@ -1,3 +1,4 @@
+import util from "util";
 import { JSDOM } from "jsdom";
 import { Models } from "use-models-for-data";
 import { User } from "../models/user.model.js";
@@ -11,6 +12,7 @@ describe(`Testing form generation from models`, () => {
       if (node.id === id) return node;
       if (!node.children) return;
       for (let child of node.children) {
+        if (!child) continue;
         if (!child.findById) continue;
         const result = child.findById(id);
         if (result) return result;
@@ -122,7 +124,6 @@ describe(`Testing form generation from models`, () => {
       onSubmit: () => submit(done),
       create: iterableNodeCreate,
     });
-
     tree.onSubmit();
   });
 });
