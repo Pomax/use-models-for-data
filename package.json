@@ -4,6 +4,14 @@
   "description": "Instead of plain JS objects, work with your data through well-defined, always-consistent models, using this one simple trick",
   "main": "index.js",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Pomax/use-models-for-data.git"
+  },
+  "homepage": "https://pomax.github.io/use-models-for-data/",
+  "bugs": {
+    "url": "https://github.com/Pomax/use-models-for-data/issues"
+  },
   "browser": {
     "./lib/models/store/filesystem-store.js": "./lib/models/store/dummy-store.js"
   },
