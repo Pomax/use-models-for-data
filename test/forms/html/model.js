@@ -1,4 +1,4 @@
-import { Model, Models } from "../../index.js";
+import { Model, Models } from "../../../index.js";
 const { fields } = Models;
 
 export class User extends Model {
