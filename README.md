@@ -95,7 +95,7 @@ const user = User.create({
 });
 ```
 
-or the even easier, if we already had that `data` object mentioned above:
+Or, even easier if we already had that `data` object mentioned above:
 
 ```js
 import { User } from "./my-models.js";
