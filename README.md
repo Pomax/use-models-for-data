@@ -26,7 +26,7 @@ Say we have some code that works with data that looks like:
 const data = {
     name: "some string",
     age: <some number>
-}
+};
 ```
 
 Nothing fancy, nothing special, but we do want to make sure that we never work with data that doesn't have a value for `name`, and let's pretend that age legislation actually means anything on the web, and make sure that `data.age` is 13 or over.
@@ -92,7 +92,15 @@ import { User } from "./my-models.js";
 const data = User.create({
     name: ...,
     age: ...
-})
+});
+```
+
+or the even easier, if we already had that `data` object mentioned above:
+
+```js
+import { User } from "./my-models.js";
+
+const data = User.create(data);
 ```
 
 and that's all you have to do.
