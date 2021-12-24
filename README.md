@@ -89,7 +89,7 @@ Now instead of accepting, or inventing, a bare `const data = { name: ..., age: .
 ```js
 import { User } from "./my-models.js";
 
-const user = User.create({
+data = User.create({
     name: ...,
     age: ...
 });
@@ -100,33 +100,33 @@ Or, even easier if we already had that `data` object mentioned above:
 ```js
 import { User } from "./my-models.js";
 
-const user = User.create(data);
+data = User.create(data);
 ```
 
 and that's all you have to do.
 
-From that point on, `data` works exactly the way it did before, acting like a plain (possibly nested) key/value object, but with every value protected with auto-validation.
+From this point on, `data` works exactly the way as `data` did before, acting like a plain (possibly nested) key/value object, but with every value protected by auto-validation.
 
-Now, many libraries will say "_and that's all you have to do_" and then they immediately follow that up with "_now whenever you X, just remember to Y_": but we're doing none of that here. You really are now done, you don't even need to update your code, except for _removing_ the now superfluous code you had in place to explicitly run validation at various points: if you were using `data` as a plain object before, and you code worked, it needs exactly zero additional changes to accommodate the new model format.
+Now, many libraries will say "_and that's all you have to do_" and then immediately follow that up with "_now whenever you X, just remember to Y_": but we're doing none of that here. You really are now done, you don't even need to update your code, except for _removing_ the now superfluous code you had in place to explicitly run validation at various points: if you were using `data` as a plain object before, and you code worked, it needs exactly zero additional changes to accommodate the new model format.
 
 What to get values out? It's a regular object as far as JS knows, so just do that:
 
 ```js
-const { name } = user;
+const { name } = data;
 ```
 
 Assign a new value? Again, just do that.
 
 ```js
 // this may throw on an illegal assignment. Like it should.
-user.name = name;
+data.name = name;
 ```
 
 Assign an entire subtree of values because you defined a deeply nested model? Still again, just do that:
 
 ```js
 // this too may throw if any value is an illegal assignment.
-user.profile = {
+data.profile = {
   name: "new name",
   password: "this is secure, right?",
   preferences: {
