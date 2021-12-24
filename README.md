@@ -89,7 +89,7 @@ Now instead of accepting, or inventing, a bare `const data = { name: ..., age: .
 ```js
 import { User } from "./my-models.js";
 
-const data = User.create({
+const user = User.create({
     name: ...,
     age: ...
 });
@@ -100,7 +100,7 @@ or the even easier, if we already had that `data` object mentioned above:
 ```js
 import { User } from "./my-models.js";
 
-const data = User.create(data);
+const user = User.create(data);
 ```
 
 and that's all you have to do.
@@ -112,7 +112,7 @@ Now, many libraries will say "_and that's all you have to do_" and then they imm
 What to get values out? It's a regular object as far as JS knows, so just do that:
 
 ```js
-const { name } = data;
+const { name } = user;
 ```
 
 Assign a new value? Again, just do that.
