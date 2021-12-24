@@ -2,6 +2,7 @@ import util from "util";
 import { JSDOM } from "jsdom";
 import { Models } from "use-models-for-data";
 import { User } from "../models/user.model.js";
+import { BadForm } from "../models/model.with.bad.form.js";
 
 describe(`Testing form generation from models`, () => {
   let user = undefined;
@@ -37,6 +38,18 @@ describe(`Testing form generation from models`, () => {
   // ╔══════════════════════╗
   // ║ THE TESTS START HERE ║
   // ╚══════════════════════╝
+
+  test(`Form declarations with non-existent fields should throws on registration`, async () => {
+    let err;
+    try {
+      await Models.register(BadForm);
+    } catch (e) {
+      err = e;
+    }
+    expect(err).toBeDefined();
+    const missing = err.missing[0].list;
+    expect(missing).toStrictEqual([`unknown_field_1`, `unknown_field_2`]);
+  });
 
   test(`Can create HTML user form`, () => {
     const formHTML = user.toHTMLForm();

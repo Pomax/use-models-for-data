@@ -230,7 +230,7 @@ describe(`Testing User model`, () => {
     const { User } = await import("../models/user.model.js");
     await Models.register(User);
 
-    // As before, this introduces the "allow_cat" property
+    // As before, config v2 this introduces the "allow_cat" property
     const { Config: ConfigV2 } = await import("../models/config.model.v2.js");
     try {
       await Models.register(ConfigV2);
@@ -263,8 +263,9 @@ describe(`Testing User model`, () => {
       },
     ]);
 
-    // However, in addition to renaming "allow_chat" to "allow_chats",
-    // this sequence also means that "allow_cat" should get removed.
+    // We then load config v3, which removes "allow_cat" again, and also
+    // renames the "allow_chat" field to "allow_chats", which should
+    // trigger a v2-to-v3 migration process
 
     const { Config: ConfigV3 } = await import("../models/config.model.v3.js");
     try {
