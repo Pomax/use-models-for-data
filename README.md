@@ -63,7 +63,24 @@ export class User extends Model {
 }
 ```
 
-Is that more work than working with a plain object? Absolutely. But at least the syntax is about as low friction as I can make it. You need a string? Say you need a string. Do we _absolutely_ need that `__meta` description? No, _technically_ this will even work without a metadata property, but let's be honest: you were going to write code comments anyway. Just make that your metadata and gain the benefit from... you know... having metadata.
+Is that more work than working with a plain object? Absolutely. But at least the syntax is about as low friction as I can make it. You need a string? Say you need a string. Need a number? Say you need a number.
+
+If fact, we can take things one step further and add some metadata to describe our model:
+
+```js
+import { Model, Fields } from "use-models-for-data";
+
+export class User extends Model {
+    __meta = {
+        name: "System Users",
+        description: "A user model for our fancy project",
+    };
+    name = Fields.string({ required: true });
+    age = Fields.number({ validate: value => (value > 13) )});
+}
+```
+
+(Do we _need_ that `__meta` description? Not until we also want to save our models to a data backend. Things will work just fine without it but let's be honest: you were going to write some code comments here anyway, so you may as well make what you were going to write part of your model-queryable metadata)
 
 ### 2. Then use that model.
 
