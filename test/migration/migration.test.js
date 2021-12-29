@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import { Models } from "use-models-for-data";
+import { Fields, Model, Models } from "use-models-for-data";
 import { User as SimpleUser } from "./user.model.v1.js";
 import { User as ComplexUser } from "./user.model.v2.js";
 
@@ -59,9 +59,7 @@ describe(`Testing User model`, () => {
 
     expect(() => {
       throw error;
-    }).toThrow(
-      `Schema mismatch for User model, please migrate your data first.`
-    );
+    }).toThrow(`Schema mismatch for User, please migrate your data first.`);
   });
 
   test(`Migration file contains the correct operations`, async () => {
@@ -75,9 +73,7 @@ describe(`Testing User model`, () => {
 
     expect(() => {
       throw error;
-    }).toThrow(
-      `Schema mismatch for User model, please migrate your data first.`
-    );
+    }).toThrow(`Schema mismatch for User, please migrate your data first.`);
 
     const migrationFile = `${storePath}/users/users.v1.to.v2.js`;
     expect(fs.existsSync(migrationFile)).toBe(true);
@@ -305,5 +301,60 @@ describe(`Testing User model`, () => {
         type: "rename",
       },
     ]);
+  });
+
+  test(`Registering multiple models in a single call, with a migration, checks all models`, async () => {
+    class Sub extends Model {
+      __meta = {
+        name: `sub`,
+        distinct: true,
+        recordName: `name`,
+      };
+      name = Fields.string({ required: true });
+    }
+
+    class Test extends Model {
+      __meta = {
+        name: `test`,
+        distinct: true,
+        recordName: `name`,
+      };
+      name = Fields.string({ required: true });
+      sub = Fields.model(Sub);
+    }
+
+    await Models.register(Test, Sub);
+
+    class Sub2 extends Model {
+      __meta = {
+        name: `sub`,
+        distinct: true,
+        recordName: `name`,
+      };
+      different = Fields.string({ required: true }); // <- the only difference
+    }
+
+    class Test2 extends Model {
+      __meta = {
+        name: `test`,
+        distinct: true,
+        recordName: `name`,
+      };
+      name = Fields.string({ required: true });
+      sub = Fields.model(Sub2);
+    }
+
+    let error;
+    try {
+      await Models.register(Test2, Sub2);
+    } catch (e) {
+      error = e;
+    }
+
+    expect(() => {
+      throw error;
+    }).toThrow(
+      `Schema mismatch for Sub2 and Test2, please migrate your data first.`
+    );
   });
 });

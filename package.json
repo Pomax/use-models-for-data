@@ -24,7 +24,7 @@
     "test:jest:models:stored": "npm run test:jest -- test/models/model.stored.test.js",
     "test:jest:models:plain": "npm run test:jest -- test/models/model.plain.test.js",
     "test:jest:models:bare": "npm run test:jest -- test/models/model.bare.test.js",
-    "test:jest:migration": "npm run test:jest -- test/migration/migration.test.js",
+    "test:jest:migrations": "npm run test:jest -- test/migration/migration.test.js",
     "test:jest:forms": "npm run test:jest -- test/forms/forms.test.js",
     "test:jest:schema": "run-s test:jest:schema:*",
     "test:jest:schema:conforms": "npm run test:jest -- test/schema/conforms.test.js",
