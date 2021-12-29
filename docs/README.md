@@ -572,11 +572,24 @@ Models.setStore(new MyDataStore());
 
 If you just want to use the file system, there is a dedicated `useDefaultStore` function that takes a file system path as argument and builds an implicit {@link FileSystemStore}.
 
+Note that this is an `async` function, and so either needs `await`ing, or `.then(...)` handling:
+
 ```javascript
 import { Models } from "use-models-for-data";
 
-Models.useDefaultStore(`./data-store`);
+// Either use async/await:
+async function init() {
+  await Models.useDefaultStore(`./data-store`);
+  runRestOfCode();
+}
+
+// Or promise handling:
+Models.useDefaultStore(`./data-store`).then(() => {
+  runRestOfCode();
+});
 ```
+
+Also note that this may trigger migration logic, including a throw. See the [Schema change detection](#schema-change-detection) section for more information on this.
 
 ### Registering your models
 
@@ -590,16 +603,19 @@ import { User, Config } from "./my-models.js";
 
 // Either use async/await:
 async function init() {
-  Models.useDefaultStore(`./data-store`);
+  await Models.useDefaultStore(`./data-store`);
   await Models.register(User, Config);
   runRestOfCode();
 }
 
 // Or promise handling:
-Models.useDefaultStore(`./data-store`);
-Models.register(User, Config).then(() => {
+Models.useDefaultStore(
+  `./data-store`
+).then(() => 
+  return Models.register(User, Config);
+).then(() => 
   runRestOfCode();
-});
+);
 ```
 
 ### Setting store related metadata on your Model classes
