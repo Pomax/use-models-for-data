@@ -536,4 +536,4 @@ Whether you just want the API documentation, or a detailed explanation on how to
 
 To discuss this library, head on over to the [discussions]() for this project, or file a [new issue]() if you think you've found a bug that needs fixing.
 
-And if you just want to do a shout-out or engine in a short-term exchange, hit me up on [Twitter@TheRealPomax](https://twitter.com/TheRealPomax) or [Mastodon@TheRealPomax](https://mastodon.social/users/TheRealPomax).
+And if you just want to do a shout-out or engine in a short-term exchange, hit me up on [Mastodon@TheRealPomax](https://mastodon.social/@TheRealPomax).
