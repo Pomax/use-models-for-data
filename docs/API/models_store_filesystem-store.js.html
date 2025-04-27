@@ -61,8 +61,8 @@ export class FileSystemStore extends ModelStore {
   // We need a bootstrap so that the fs/path imports
   // don't cause problems for browser bundles.
   static async bootstrap() {
-    fs = await import("fs");
-    path = await import("path");
+    fs = await import("node:fs");
+    path = await import("node:path");
   }
 
   /**
