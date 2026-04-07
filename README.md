@@ -107,7 +107,7 @@ and that's all you have to do.
 
 From this point on, `data` works exactly the way as `data` did before, acting like a plain (possibly nested) key/value object, but with every value protected by auto-validation.
 
-Now, many libraries will say "_and that's all you have to do_" and then immediately follow that up with "_now whenever you X, just remember to Y_": but we're doing none of that here. You really are now done, you don't even need to update your code, except for _removing_ the now superfluous code you had in place to explicitly run validation at various points: if you were using `data` as a plain object before, and you code worked, it needs exactly zero additional changes to accommodate the new model format.
+Now, many libraries will say "_and that's all you have to do_" and then immediately follow that up with "_now whenever you X, just remember to Y_": but we're doing none of that here. You really are now done, you don't even need to update your code, except for _removing_ the now superfluous code you had in place to explicitly run validation at various points: if you were using `data` as a plain object before, and your code worked, it needs exactly zero additional changes to accommodate the new model format.
 
 What to get values out? It's a regular object as far as JS knows, so just do that:
 
