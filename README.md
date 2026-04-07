@@ -408,7 +408,7 @@ export async function checkAuthentication(req, res, next) {
 
 // A proxy for getUser(), for use with app.params()
 export async function resolveUsernameParam(req, res, next, username) {
-  req.username = username;
+  res.locals.username = username;
   getUser(req, res, next);
 }
 
