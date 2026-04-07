@@ -10,7 +10,7 @@ Plain JS objects and JSON are extremely convenient for moving data around, both 
 
 So: what if you didn't have to write any data validation code because that part gets handled automatically, and you can just focus on writing (and maintaining) code that really matters?
 
-This library takes care of that for you. It lets you declare data models as normal, modern JS classes, using an almost trivial API for model fields, after which you're done: any time you construct or receive data, you wrap it as a model instance, and if that didn't throw an error you now have a data object that behaves exactly same as its plain JS object counterpart, but with automatic validation on assignment. Anywhere in the object. Any properties you get (both individual values as well as and entire subtrees) are always consistent with your model, and assigning values that would violate your model's schema (again, both individual values as well as entire subtrees) will get rejected, making your life as dev or maintainer a _lot_ easier.
+This library takes care of that for you. It lets you declare data models as normal, modern JS classes, using an almost trivial API for model fields, after which you're done: any time you construct or receive data, you wrap it as a model instance, and if that didn't throw an error you now have a data object that behaves exactly the same as its plain JS object counterpart, but with automatic validation on assignment. Anywhere in the object. Any properties you get (both individual values as well as entire subtrees) are always consistent with your model, and assigning values that would violate your model's schema (again, both individual values as well as entire subtrees) will get rejected, making your life as dev or maintainer a _lot_ easier.
 
 ---
 
