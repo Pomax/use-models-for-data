@@ -63,7 +63,7 @@ export class User extends Model {
 }
 ```
 
-Is that more work than working with a plain object? Absolutely. But at least the syntax is about as low friction as I can make it. You need a string? Say you need a string. Need a number? Say you need a number.
+Is that more work than working with a plain object? Absolutely. But at least it's a one time action, and the syntax is about as low friction as I can make it. You need a string? Say you need a string. Need a number? Say you need a number. Need something complicated? Define another class that extends Model and use that as your field.
 
 If fact, we can take things one step further and add some metadata to describe our model:
 
