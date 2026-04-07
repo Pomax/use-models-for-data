@@ -109,23 +109,23 @@ From this point on, `data` works exactly the way as `data` did before, acting li
 
 Now, many libraries will say "_and that's all you have to do_" and then immediately follow that up with "_now whenever you X, just remember to Y_": but we're doing none of that here. You really are now done, you don't even need to update your code, except for _removing_ the now superfluous code you had in place to explicitly run validation at various points: if you were using `data` as a plain object before, and your code worked, it needs exactly zero additional changes to accommodate the new model format.
 
-What to get values out? It's a regular object as far as JS knows, so just do that:
+What about getting values out of a model instance? Well, it's just a regular object as far as JS knows, so just do that:
 
 ```js
 const { name } = data;
 ```
 
-Assign a new value? Again, just do that.
+Assigning a new value? Again, just do that.
 
 ```js
 // this may throw on an illegal assignment. Like it should.
 data.name = name;
 ```
 
-Assign an entire subtree of values because you defined a deeply nested model? Still again, just do that:
+Assign an entire subtree of values because you defined a deeply nested model? Again, just do that:
 
 ```js
-// this too may throw if any value is an illegal assignment.
+// this too may throw if any value leads to an illegal assignment.
 data.profile = {
   name: "new name",
   password: "this is secure, right?",
@@ -136,9 +136,9 @@ data.profile = {
 };
 ```
 
-The most important benefit is that we're no longer ever in a situation where required data is missing (because the model creation will have thrown), nor can we be in a situation where a bad assignment is allowed through (because that throws).
+The most important benefit is that we're no longer ever in a situation where required data is missing (because the model creation will have thrown), nor can we be in a situation where a bad assignment is allowed through (because that also throws).
 
-We can rely on the fact that any line of code that uses a model instance will be using a model instance that is _known_ to be valid data. And if it runs without throwing, we _know_ that on the next line, it's _still_ valid data. If we try to assign any invalid property values (particularly somewhere in a code path that you forgot about, performing a blind assignment form some other data source) then that assignment will immediately throw an error. Meaning that you don't have to hunt down where in your code things _actually_ went wrong, because there is no validation-after-the-fact anymore. If your code, including dependency code you never wrote, does something that would violate data integrity, you get an error _at that exact point in the code_, and the stack trace will tell you exactly where to start fixing the problem.
+We can rely on the fact that any line of code that uses a model instance will be using a model instance that is _known_ to be valid data. And if it runs without throwing, we _know_ that on the next line, it's _still_ valid data. If we try to assign any invalid property values (particularly somewhere in a code path that you forgot about, performing a blind assignment from some other data source) then that assignment will immediately throw an error. Meaning that you don't have to hunt down where in your code things _actually_ went wrong, because there is no validation-after-the-fact anymore. If your code, including dependency code you never wrote, does something that would violate data integrity, you get an error _at that exact point in the code_, and the stack trace will tell you exactly where to start fixing the problem.
 
 Which also means that data validation itself is no longer something that you need tests for: you just need tests to make sure that at critical points in your code paths, `data instanceof ThatModelTheyShouldBe` is true.
 
