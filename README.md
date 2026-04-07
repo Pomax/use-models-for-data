@@ -534,6 +534,6 @@ Whether you just want the API documentation, or a detailed explanation on how to
 
 ## Thoughts, comments, discussions
 
-To discuss this library, head on over to the [discussions]() for this project, or file a [new issue]() if you think you've found a bug that needs fixing.
+To discuss this library, head on over to the [discussions](https://github.com/Pomax/use-models-for-data/discussions) for this project, or file a [new issue](https://github.com/Pomax/use-models-for-data/issues) if you think you've found a bug that needs fixing.
 
 And if you just want to do a shout-out or engine in a short-term exchange, hit me up on [Mastodon@TheRealPomax](https://mastodon.social/@TheRealPomax).
