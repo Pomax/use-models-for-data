@@ -277,7 +277,7 @@ const app = express();
 app.post(`register`,
     registerNewUser,
     async function (req, res) => {
-        res.render(`welcome.html`, { user: req.forumUser });
+        res.render(`welcome.html`, res.locals );
     }
 );
 
@@ -286,11 +286,11 @@ app.param('username', resolveUsernameParam);
 app.get(`profile/:username/`,
   checkAuthentication,
   async function(req, res) {
-    const user = req.forumUser;
-    const { authenticated, name } = req.authInfo;
+    const { authInfo, forumUser: user } = res.locals;
+    const { authenticated, name } = authInfo;
     const ourProfile = authenticated && name === user.name;
     res.render(`profile.html`, {
-      user,
+      ...res.locals,
       /*
         * Models have "form building" built-in, because you're going to need
         * it. They can generate plain HTML, as well as any kind of tree you
@@ -312,7 +312,7 @@ app.update(`profile/:username/`,
   checkAuthentication,
   saveProfileUpdate,
   async function (req, res) {
-    res.render(`profile.html`, { user: req.forumUser, updated: true });
+    res.render(`profile.html`, { ...res.locals, updated: true });
   }
 );
 
@@ -321,7 +321,7 @@ app.post(`message/`,
   getUser,
   processForumPost,
   async function (req, res) {
-    res.render(`posted.html`, { user: req.forumUser });
+    res.render(`posted.html`, res.locals);
   }
 );
 
@@ -391,7 +391,7 @@ export async function registerNewUser(req, res, next) {
     await user.save();
 
     // Then we bind and continue
-    req.forumUser = user;
+    res.locals.forumUser = user;
     next();
   } catch (err) {
     next(err);
@@ -402,7 +402,7 @@ export async function registerNewUser(req, res, next) {
 // so we'll know whether to allow form submissions (e.g. for
 // editing their own profile).
 export async function checkAuthentication(req, res, next) {
-  req.authInfo = sessionManager.getAuthInfo(req);
+  res.locals.authInfo = sessionManager.getAuthInfo(req);
   next();
 }
 
@@ -414,7 +414,8 @@ export async function resolveUsernameParam(req, res, next, username) {
 
 // Get a ForumUser that matches the URL-indicated username.
 export async function getUser(req, res, next) {
-  const username = req.username || req.authInfo.name;
+  const { locals } = res;
+  const username = locals.username || locals.authInfo.name;
   if (!username) return next(`Could not get user`);
 
   try {
@@ -424,7 +425,7 @@ export async function getUser(req, res, next) {
      * record name, we can simply use the model .load() function
      * with the username as key to retrieve our stored user.
      */
-    req.forumUser = ForumUser.load(username);
+    res.locals.forumUser = ForumUser.load(username);
     next();
   } catch (err) {
     /*
@@ -440,7 +441,7 @@ export async function getUser(req, res, next) {
 
 // Update a user's profile and save it to the backend.
 export async function saveProfileUpdate(req, res, next) {
-  const user = req.forumUser;
+  const user = res.locals.forumUser;
 
   const { authenticated, name } = req.authInfo;
   if (!authenticated) return next(`Not logged in`);
@@ -476,7 +477,7 @@ export async function saveProfileUpdate(req, res, next) {
 
 // When users post to our forum, we bump out their post count.
 export async function processForumPost(req, res, next) {
-  const user = res.forumUser;
+  const user = res.locals.forumUser;
 
   // First, try to handle the posting.
   try {
